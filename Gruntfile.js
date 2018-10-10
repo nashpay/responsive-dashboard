@@ -76,6 +76,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.registerTask('default', ['babel']);
-  grunt.registerTask('webapp', ['copy', 'babel', 'pug', 'browserify', 'watch']);
+  grunt.registerTask('webapp', ['copy', 'babel', 'pug', 'browserify']);
   // grunt.registertask('web',['copy','babel','pug','browserify' ]);
 };

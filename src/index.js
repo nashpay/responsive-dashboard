@@ -17,7 +17,7 @@ const router = new VueRouter({
   base: '/',
   routes: [
     // Production Paths
-    { path: '/', component: Dashboard.ListView },
+    { name: 'dashboardHome', path: '/', component: Dashboard.ListView },
     { name: 'settingsHome', path: '/settings', component: Settings.ListView },
     { name: 'accountsHome', path: '/accounts', component: Accounts.ListView },
   ],

@@ -1,8 +1,14 @@
 <template lang="pug">
 .web-footer
   .columns.is-mobile.web-footer-col
-    .column.is-3-mobile.web-footer-tab
-    .column.is-3-mobile.web-footer-tab
+    .column.is-3-mobile.web-footer-tab(v-bind:class="{ 'tab-active': tabDashboardActive, 'tab-inactive': !tabDashboardActive }")
+      router-link(:to="{ name: 'dashboardHome' }")
+        i.fa.fa-industry.web-tab-icon
+        p Home
+    .column.is-3-mobile.web-footer-tab(v-bind:class="{ 'tab-active': tabTransactionActive, 'tab-inactive': !tabTransactionActive }")
+      router-link(:to="{ name: 'accountsHome' }")
+        i.fa.fa-list.web-tab-icon
+        p Transactions
     .column.is-3-mobile.web-footer-tab(v-bind:class="{ 'tab-active': tabAccountActive, 'tab-inactive': !tabAccountActive }")
       router-link(:to="{ name: 'accountsHome' }")
         i.fa.fa-user.web-tab-icon
@@ -72,7 +78,17 @@ export default {
       const activeTab = store.getters.activeTab;
       const isActive = activeTab === 'settings';
       return isActive;
-    }
+    },
+    tabDashboardActive () {
+      const activeTab = store.getters.activeTab;
+      const isActive = activeTab === 'dashboard';
+      return isActive;
+    },
+    tabTransactionActive () {
+      const activeTab = store.getters.activeTab;
+      const isActive = activeTab === 'transactions';
+      return isActive;
+    },
   },
   components: {
   },

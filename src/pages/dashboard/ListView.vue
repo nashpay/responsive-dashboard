@@ -1,10 +1,6 @@
 <template lang="pug">
 .web-dashboard.na-background
-  .is-mobile.columns.na-level
-    .column.is-6-mobile.na-left
-      p.na-padding-text Placeholder
-    .column.is-6-mobile.na-right
-      p.na-padding-text Some Value
+  dash-tx-flow-time
 </template>
 <style lang="less">
 @import (reference, less) url("../../theme.less");
@@ -13,6 +9,7 @@
 <script>
 import co from 'co';
 import { AppStore as store } from '../../store';
+import { DashTxFlowTime } from '../../components';
 
 export default {
   data() {
@@ -24,7 +21,7 @@ export default {
 
   },
   components: {
-
+    'dash-tx-flow-time': DashTxFlowTime,
   },
   mounted() {
     this.$nextTick(this.loaded);
@@ -38,8 +35,8 @@ export default {
   methods: {
     loaded() {
       // Load Page Title
-      store.dispatch('setTitle', { title: 'Home' });
-      store.dispatch('setActiveTab', { tabName: 'home' });
+      store.dispatch('setTitle', { title: 'Nash' });
+      store.dispatch('setActiveTab', { tabName: 'dashboard' });
       store.dispatch('setHeaderBackLink', { backLink: false });
       store.dispatch('setHeaderActionIcon', { iconName: false });
       store.dispatch('setHeaderActionLink', { actionLink:false });
