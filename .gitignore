@@ -62,3 +62,8 @@ typings/
 
 # ignore built files
 dist/
+
+# vim files
+*.swp
+*.swn
+*.swo
