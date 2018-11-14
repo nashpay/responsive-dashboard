@@ -1,13 +1,9 @@
 // index.js
-
-import 'babel-polyfill';
-
 import Vue from 'vue/dist/vue';
 import VueRouter from 'vue-router';
 // Components
 import App from './app.vue';
-import { Dashboard, Settings, Accounts} from './pages';
-
+import Dashboard from './dashboard';
 // Register Routes with Vue-Router
 Vue.use(VueRouter);
 
@@ -17,13 +13,16 @@ const router = new VueRouter({
   base: '/',
   routes: [
     // Production Paths
-    { name: 'dashboardHome', path: '/', component: Dashboard.ListView },
-    { name: 'settingsHome', path: '/settings', component: Settings.ListView },
-    { name: 'accountsHome', path: '/accounts', component: Accounts.ListView },
+    { name: 'dashboardHome', path: '/', component: Dashboard.Landing },
   ],
 });
-const stub = new Vue({
-  el: '#app',
-  router,
-  render: h => h(App),
-});
+function makeApp() {
+  const app = new Vue({
+    el: '#app',
+    router,
+    render: h => h(App),
+  });
+  return app;
+}
+
+makeApp();

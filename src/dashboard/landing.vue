@@ -1,32 +1,29 @@
 <template lang="pug">
-.web-sidebar
-  h1 sidebar
-
+h1 Landing Home
 </template>
+<style lang="less">
 
+</style>
 <script>
-
 export default {
   data() {
     return {
-      // Data Here.
     };
-  },
-  computed: {
   },
   components: {
   },
   mounted() {
     this.$nextTick(this.loaded);
   },
-  mixins: [],
+  mixins: [
+  ],
   watch: {
     $route(to, from) {
+      this.loaded();
     },
   },
   methods: {
     loaded() {
-
     },
   },
 };
