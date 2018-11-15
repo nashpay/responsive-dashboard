@@ -1,19 +1,9 @@
-/* eslint react/prop-types: 0 */
 <template lang="pug">
-.app-footer
+.box-balance
+  h1.title.is-2 0.0001 BTC
+  h2.subtitle.is-5 6.40 USD
 </template>
 <style lang="less">
-@import (reference, less) url("../theme/core.less");
-.app-footer {
-  width: 100%;
-  position: absolute;
-  height: @app-footer-height;
-  bottom: 0;
-  left: 0;
-  z-index: 2;  
-  background-color: #fff;
-  border-top: solid 1px @clr-gray-2;
-}
 
 </style>
 <script>

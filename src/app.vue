@@ -11,8 +11,18 @@
 <style lang="less">
 @import (reference, less) url("./theme/core.less");
 
+#app {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .app-container {
-  background-color: @clr-gray;
+  background-color: @clr-gray-0;
+  margin-top: @app-header-height * 2;
+  height: 100vh - @app-header-height - @app-footer-height;
 }
 
 </style>

@@ -1,24 +1,20 @@
 <template lang="pug">
-.app-header
-  .columns.is-mobile
-    .column.is-3 L
-    .column.is-6 C
-    .column.is-3 R
+.app-card
+  .card
+    .card-content
+      <slot name="card-content"></slot>
 </template>
  <style lang="less">
 @import (reference, less) url("../theme/core.less");
 
-.app-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;  
-  width: 100%;
-  height: @app-header-height;
-  .columns {
-    padding: @app-header-height / 3.3;
-    background-color: @clr-red;
-    margin: 0;
+.app-card {
+  padding: 1rem;
+  .card {
+    background-color: @clr-white;
+    border-radius: 0.5rem;
+    .card-content {
+      text-align: right; 
+    }
   }
 }
 
