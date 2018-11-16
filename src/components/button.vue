@@ -1,7 +1,7 @@
 <template lang="pug">
 .app-button
   p.buttons
-    a.button
+    a.button(:class="buttonClass")
       span.icon(v-if="bicon !== false")
         i.fa.fa-arrow-circle-o-down(v-if="bicoin === 'arrow-circle-o-down'", aria-hidden="true")
         i.fa.fa-arrow-circle-o-up(v-if="bicoin === 'arrow-circle-o-up'", aria-hidden="true")
@@ -17,6 +17,10 @@
 export default {
   data() {
     return {
+      buttonClass: {
+        'is-medium': false,
+        'is-large': false,
+      },
     };
   },
   props: {
@@ -27,6 +31,10 @@ export default {
     btext: {
       type: String,
       required: true,
+    },
+    bsize: {
+      type: String,
+      default: 'normal',
     },
   },
   components: {
@@ -43,6 +51,9 @@ export default {
   },
   methods: {
     loaded() {
+      if (this.bsize === 'medium') {
+        this.buttonClass['is-medium'] = true;
+      }
     },
   },
 };

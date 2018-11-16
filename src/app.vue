@@ -25,6 +25,13 @@
   height: 100vh - @app-header-height - @app-footer-height;
 }
 
+.clr-red-1 {
+  color: @clr-red;
+}
+.clr-green-1 {
+  color: @clr-green;
+}
+
 </style>
 <script>
 
