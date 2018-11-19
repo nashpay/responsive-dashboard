@@ -7,6 +7,8 @@
       transition(name="na-page-change")
         router-view
   app-footer
+  app-overlay
+  app-popup
 </template>
 <style lang="less">
 @import (reference, less) url("./theme/core.less");
@@ -35,7 +37,7 @@
 </style>
 <script>
 
-import { Header , Footer } from './navigation';
+import { Header , Footer, Overlay, Popup } from './navigation';
 
 export default {
   data() {
@@ -46,6 +48,8 @@ export default {
   components: {
     'app-header': Header,
     'app-footer': Footer,
+    'app-overlay': Overlay,
+    'app-popup': Popup,
   },
   mounted() {
     this.$nextTick(this.loaded);
