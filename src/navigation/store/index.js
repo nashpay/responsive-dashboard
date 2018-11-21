@@ -7,8 +7,12 @@ import * as actions from './actions.js';
 // Store State
 
 const store = {
-  popupScreen: types.popupEnum.LARGE,
-  layoverScreen: types.layoverEnum.SHOW,
+  // popupScreen: types.popupEnum.LARGE,
+  // layoverScreen: types.layoverEnum.SHOW,
+  popupScreen: types.popupEnum.HIDE,
+  layoverScreen: types.layoverEnum.HIDE,
+  popupHeader: '',
+  popupPage: '',
 };
 
 Vue.use(Vuex);
@@ -19,6 +23,12 @@ const mutations = {
   },
   [types.layoverScreen](state, val) {
     state.layoverScreen = val;
+  },
+  [types.popupHeader](state, val) {
+    state.popupHeader = val;
+  },
+  [types.popupPage](state, val) {
+    state.popupPage = val;
   },
 };
 

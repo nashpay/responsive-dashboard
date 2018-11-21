@@ -25,6 +25,13 @@
     padding-top: 0;
     padding-bottom: 0;
   }
+  .card-no-hori-padding {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .card-small-padding {
+    padding: 0.7rem;
+  }
 }
 
 </style>
@@ -38,6 +45,8 @@ export default {
       },
       cardContent: {
         'card-no-vert-padding': false,
+        'card-no-hori-padding': false,
+        'card-small-padding': false,
       },
     };
   },
@@ -47,6 +56,14 @@ export default {
       default: 'white',
     },
     'cardNoVertPadding': {
+      type: String,
+      default: 'no',
+    },
+    'cardNoHoriPadding': {
+      type: String,
+      default: 'no',
+    },
+    'cardSmallPadding': {
       type: String,
       default: 'no',
     },
@@ -70,9 +87,14 @@ export default {
       } else if (this.cardColor === 'transparent') {
         this.cardOuter['card-transparent'] = true;
       }
-      console.log(this.cardNoVertPadding);
       if (this.cardNoVertPadding === 'yes') {
         this.cardContent['card-no-vert-padding'] = true;
+      }
+      if (this.cardNoHoriPadding === 'yes') {
+        this.cardContent['card-no-hori-padding'] = true;
+      }
+      if (this.cardSmallPadding === 'yes') {
+        this.cardContent['card-small-padding'] = true;
       }
     },
   },

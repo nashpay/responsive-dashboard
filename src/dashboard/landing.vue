@@ -9,10 +9,22 @@
       .nav.level.is-mobile
         .level-left
           .level.item
-            component-button(bicoin="arrow-circle-o-down", btext='Deposit', bsize="medium")
+            component-button(
+              bicoin="arrow-circle-o-down",
+              btext='Deposit',
+              bsize="medium",
+              blabel="btn-deposit",
+              v-on:btn-clicked="onBtnClicked",
+            )
         .level-right
           .level.item
-            component-button(bicoin="arrow-circle-o-up", btext='Withdraw', bsize="medium")
+            component-button(
+              bicoin="arrow-circle-o-up",
+              btext='Withdraw',
+              bsize="medium",
+              blabel="btn-withdraw",
+              v-on:btn-clicked="onBtnClicked",
+            )
     </template>
   component-card(cardColor="transparent", cardNoVertPadding="yes")
     <template slot="card-content">
@@ -32,6 +44,8 @@
 <script>
 import { Card, Button  } from '../components';
 import { BoxTX } from '../transactions';
+import NavStore from '../navigation/store';
+import * as NavTypes from '../navigation/store/mutation-types';
 import BoxBalance from './box-balance.vue';
 export default {
   data() {
@@ -85,6 +99,18 @@ export default {
   },
   methods: {
     loaded() {
+    },
+    onBtnClicked (val) {
+      const { label } = val;
+      console.log(label);
+      if (label === 'btn-deposit') {
+        //
+        NavStore.dispatch('updatePopup', NavTypes.popupEnum.LARGE);
+        NavStore.dispatch('updateLayover', NavTypes.layoverEnum.SHOW);
+        NavStore.dispatch('updatePopupHeader', 'deposit');
+        NavStore.dispatch('updatePopupPage', 'deposit-landing');
+      }
+
     },
   },
 };

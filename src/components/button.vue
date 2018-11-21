@@ -1,7 +1,7 @@
 <template lang="pug">
 .app-button
   p.buttons
-    a.button(:class="buttonClass")
+    a.button(:class="buttonClass", @click="clicked")
       span.icon(v-if="bicon !== false")
         i.fa.fa-arrow-circle-o-down(v-if="bicoin === 'arrow-circle-o-down'", aria-hidden="true")
         i.fa.fa-arrow-circle-o-up(v-if="bicoin === 'arrow-circle-o-up'", aria-hidden="true")
@@ -36,6 +36,10 @@ export default {
       type: String,
       default: 'normal',
     },
+    blabel: {
+      type: String,
+      default: 'normal',
+    },
   },
   components: {
   },
@@ -54,6 +58,11 @@ export default {
       if (this.bsize === 'medium') {
         this.buttonClass['is-medium'] = true;
       }
+    },
+    clicked() {
+      const label = this.blabel;
+      this.$emit('btn-clicked', { label });
+
     },
   },
 };

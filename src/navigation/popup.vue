@@ -1,8 +1,22 @@
 <template lang="pug">
 .app-popup(:class="popupClass")
+  component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes")
+    template(slot="card-content")
+      h1.popup-header {{ popupHeader }}
+      template(v-if="popupPage === 'deposit-landing'")
+        deposit-landing
+  
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
+.popup-header {
+  padding: 1rem 0rem 1rem 0rem;
+  text-align: center;
+  width: 100%;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
 .app-popup-active {
   z-index: 4;
   background-color: @clr-gray-0;
@@ -47,8 +61,10 @@
 
 </style>
 <script>
+import { Card, Button  } from '../components';
 import store from './store';
 import * as types from './store/mutation-types';
+import { Landing } from '../deposits';
 
 export default {
   data() {
@@ -57,6 +73,12 @@ export default {
     };
   },
   computed: {
+    popupHeader () {
+      return store.getters.popupHeader;
+    },
+    popupPage () {
+      return store.getters.popupPage;
+    },
     popupClass () {
       const popupState = store.getters.popupScreen;
       console.log(popupState);
@@ -99,6 +121,8 @@ export default {
     }
   },
   components: {
+    'component-card': Card,
+    'deposit-landing': Landing,
   },
   mounted() {
     this.$nextTick(this.loaded);
