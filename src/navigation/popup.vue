@@ -1,6 +1,6 @@
 <template lang="pug">
 .app-popup(:class="popupClass")
-  component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes")
+  component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes", cardFullHeight="yes")
     template(slot="card-content")
       h1.popup-header {{ popupHeader }}
       template(v-if="popupPage === 'deposit-landing'")
@@ -25,37 +25,37 @@
   left: 0;
   bottom: 0;
   
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
   animation-timing-function: linear;
 }
 .app-popup-small {
-  height: 30vh;
+  height: 50vh;
   animation-name: popup-small;
 }
 .app-popup-medium {
-  height: 50vh;
+  height: 70vh;
   animation-name: popup-medium;
 }
 .app-popup-large {
-  height: 70vh;
+  height: 90vh;
   animation-name: popup-large;
 }
 
 // Enter Animation
 @keyframes popup-small {
   0% { height: 0vh; }
-  50% { height: 15vh; }
-  100% { height: 30vh; }
-}
-@keyframes popup-medium {
-  0% { height: 0vh; }
   50% { height: 25vh; }
   100% { height: 50vh; }
 }
-@keyframes popup-large {
+@keyframes popup-medium {
   0% { height: 0vh; }
   50% { height: 35vh; }
   100% { height: 70vh; }
+}
+@keyframes popup-large {
+  0% { height: 0vh; }
+  50% { height: 45vh; }
+  100% { height: 90vh; }
 }
 
 
@@ -64,7 +64,7 @@
 import { Card, Button  } from '../components';
 import store from './store';
 import * as types from './store/mutation-types';
-import { Landing } from '../deposits';
+import { Landing, Detail as DepositDetail } from '../deposits';
 
 export default {
   data() {
@@ -123,6 +123,7 @@ export default {
   components: {
     'component-card': Card,
     'deposit-landing': Landing,
+    'deposit-detail': DepositDetail,
   },
   mounted() {
     this.$nextTick(this.loaded);

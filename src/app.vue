@@ -33,6 +33,12 @@
 .clr-green-1 {
   color: @clr-green;
 }
+.app-align-bottom {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
 
 </style>
 <script>

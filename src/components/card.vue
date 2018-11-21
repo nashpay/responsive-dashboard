@@ -32,6 +32,9 @@
   .card-small-padding {
     padding: 0.7rem;
   }
+  .card-full-height {
+    height: 95%;
+  }
 }
 
 </style>
@@ -42,6 +45,7 @@ export default {
       cardOuter: {
         'card-white': false,
         'card-transparent': false,
+        'card-full-height': false,
       },
       cardContent: {
         'card-no-vert-padding': false,
@@ -67,6 +71,10 @@ export default {
       type: String,
       default: 'no',
     },
+    'cardFullHeight': {
+      type: String,
+      default: 'no',
+    }
   },
   components: {
   },
@@ -95,6 +103,9 @@ export default {
       }
       if (this.cardSmallPadding === 'yes') {
         this.cardContent['card-small-padding'] = true;
+      }
+      if (this.cardFullHeight === 'yes') {
+        this.cardContent['card-full-height'] = true;
       }
     },
   },

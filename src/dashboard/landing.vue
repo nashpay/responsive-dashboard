@@ -10,7 +10,7 @@
         .level-left
           .level.item
             component-button(
-              bicoin="arrow-circle-o-down",
+              bicon="arrow-circle-o-down",
               btext='Deposit',
               bsize="medium",
               blabel="btn-deposit",
@@ -19,7 +19,7 @@
         .level-right
           .level.item
             component-button(
-              bicoin="arrow-circle-o-up",
+              bicon="arrow-circle-o-up",
               btext='Withdraw',
               bsize="medium",
               blabel="btn-withdraw",
