@@ -5,6 +5,8 @@
       h1.popup-header {{ popupHeader }}
       template(v-if="popupPage === 'deposit-landing'")
         deposit-landing
+      template(v-if="popupPage === 'transfer-landing'")
+        transfer-landing
   
 </template>
 <style lang="less">
@@ -16,6 +18,9 @@
   font-size: 1.2rem;
   text-transform: uppercase;
   font-weight: bold;
+}
+.app-popup-hide {
+  display: none;
 }
 .app-popup-active {
   z-index: 4;
@@ -64,7 +69,8 @@
 import { Card, Button  } from '../components';
 import store from './store';
 import * as types from './store/mutation-types';
-import { Landing, Detail as DepositDetail } from '../deposits';
+import { Landing as DepositLanding } from '../deposits';
+import { Landing as TransferLanding } from '../transfers';
 
 export default {
   data() {
@@ -84,7 +90,6 @@ export default {
       console.log(popupState);
       if (popupState === types.popupEnum.HIDE) {
         //
-        console.log('Remove popup');
         return {
           'app-popup-hide': true,
           'app-popup-active': false,
@@ -122,8 +127,8 @@ export default {
   },
   components: {
     'component-card': Card,
-    'deposit-landing': Landing,
-    'deposit-detail': DepositDetail,
+    'deposit-landing': DepositLanding,
+    'transfer-landing': TransferLanding,
   },
   mounted() {
     this.$nextTick(this.loaded);

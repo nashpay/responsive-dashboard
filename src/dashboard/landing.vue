@@ -104,11 +104,16 @@ export default {
       const { label } = val;
       console.log(label);
       if (label === 'btn-deposit') {
-        //
         NavStore.dispatch('updatePopup', NavTypes.popupEnum.LARGE);
         NavStore.dispatch('updateLayover', NavTypes.layoverEnum.SHOW);
         NavStore.dispatch('updatePopupHeader', 'deposit');
         NavStore.dispatch('updatePopupPage', 'deposit-landing');
+      }
+      if (label === 'btn-withdraw') {
+        NavStore.dispatch('updatePopup', NavTypes.popupEnum.LARGE);
+        NavStore.dispatch('updateLayover', NavTypes.layoverEnum.SHOW);
+        NavStore.dispatch('updatePopupHeader', 'transfer');
+        NavStore.dispatch('updatePopupPage', 'transfer-landing');
       }
 
     },
