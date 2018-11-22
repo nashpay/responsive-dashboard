@@ -1,6 +1,5 @@
 <template lang="pug">
 .app-deposit-detail
-  h1.detail-header Details
   .app-form
     //
     .field.is-horizontal.app-field
@@ -121,6 +120,7 @@ export default {
     },
     onBtnClicked (label) {
       // @TODO All in check logic
+      store.dispatch('updateDepositStep', types.stepEnum.RESULT);
 
     }
   },

@@ -20,6 +20,8 @@
     account-selection 
   template(v-if="depositStep === 1")
     deposit-detail
+  template(v-if="depositStep === 2")
+    deposit-result
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
@@ -50,6 +52,7 @@ import store from './store';
 import * as types from './store/mutation-types';
 import AccountSelection from './account-selection.vue';
 import DepositDetail from './detail.vue';
+import DepositResult from './result.vue';
 
 export default {
   data() {
@@ -83,6 +86,7 @@ export default {
   components: {
     'account-selection': AccountSelection,
     'deposit-detail': DepositDetail,
+    'deposit-result': DepositResult,
   },
   mounted() {
     this.$nextTick(this.loaded);
