@@ -1,13 +1,32 @@
 <template lang="pug">
 .app-deposit-detail
   h1.detail-header Details
-  .field.is-horizontal.is-flex-mobile
-    .field-body
-      .field
-        .control
-          input.input.is-small(type="text", placeholder="0.0001")
-    .field-label.is-small
-      label.label BTC
+  .app-form
+    //
+    .field.is-horizontal.app-field
+      .field-label.is-normal
+        label.label Amount
+      .field-body
+        .field.has-addons
+          .control
+            input.input(type="text", placeholder="0.000")
+          .control
+            a.button BTC
+        .field.exchange-icon-wrapper
+          i.fa.fa-exchange.exchange-icon(aria-hidden="true")
+        .field.has-addons
+          .control
+            input.input(type="text", placeholder="0.000")
+          .control
+            a.button USD
+    .field.is-horizontal.app-field
+      .field-label.is-normal
+        label.label Reference
+      .field-body
+        .field.has-addons
+          .control
+            textarea.textarea(placeholder="Notes...")
+  
   //
   component-button.app-align-bottom(
     bicon='none',
@@ -31,6 +50,40 @@
     font-size: 0.8rem;
     text-transform: uppercase;
     font-weight: bold;
+  }
+}
+.app-form {
+  padding: 1rem;
+  .app-field {
+    .auto-center();
+  }
+  .exchange-icon-wrapper {
+    width: 100%;
+    text-align: center;
+  }
+  .exchange-icon {
+    transform: rotate(90deg);
+  }
+  .field.is-horizontal {
+    display: flex;
+    .field-label {
+      flex-basis: 0;
+      flex-grow: 1;
+      flex-shrink: 0;
+      margin-top: 0.25rem;
+      text-align: left;
+    }
+    .input {
+      width: 10rem;
+      text-align: right;
+    }
+    .or-block {
+      display: block;
+    }
+    .textarea {
+      width: 13.5rem;
+      text-align: left;
+    }
   }
 }
 </style>
