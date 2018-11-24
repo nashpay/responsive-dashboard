@@ -7,16 +7,17 @@
         .level-left
           .level-item
             span.tag.is-danger {{ txInputs.length }}
-            .recipient-list-title Inputs
+            .transfer-input-title Inputs
         .level-right
           .level-item
       nav.level.is-mobile
         .level-left
           .level-item
             span.tag.is-danger {{ txOutputs.length }}
-            .recipient-list-title Recipients
+            .transfer-output-title Recipients
         .level-right
           .level-item
+      component-slider
   component-button.app-align-bottom(
     bicon='none',
     btext='Next',
@@ -29,11 +30,19 @@
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
+.app-transfer-review {
+  .transfer-input-title {
+	padding: 0rem 1rem 0rem 1rem;
+  }
+  .transfer-output-title {
+	padding: 0rem 1rem 0rem 1rem;
+  }
+}
 </style>
 <script>
 import store from './store';
 import * as types from './store/mutation-types';
-import { Card, Divider, Checkbox, Button  } from '../components';
+import { Card, Slider, Checkbox, Button  } from '../components';
 
 export default {
   data() {
@@ -60,9 +69,9 @@ export default {
   },
   components: {
     'component-card': Card,
-    'component-divider': Divider,
     'component-checkbox': Checkbox,
     'component-button': Button,
+    'component-slider': Slider,
   },
   mounted() {
     this.$nextTick(this.loaded);
