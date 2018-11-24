@@ -5,9 +5,11 @@
       span.icon
         i.fa.fa-arrow-circle-o-down(v-if="bicon === 'arrow-circle-o-down'", aria-hidden="true")
         i.fa.fa-arrow-circle-o-up(v-if="bicon === 'arrow-circle-o-up'", aria-hidden="true")
+        i.fa.fa-plus(v-if="bicon === 'plus'", aria-hidden="true")
     template(v-else="")
       span
-    span {{ btext }}
+    template(v-if="btext !== 'none'")
+      span {{ btext }}
 
 </template>
  <style lang="less">
@@ -17,6 +19,9 @@
   .nprimary {
     background-color: @clr-red;
     color: #fff;
+  }
+  .margin-none {
+    margin: 0;
   }
 }
 
@@ -29,6 +34,7 @@ export default {
         'is-medium': false,
         'is-large': false,
         'nprimary': false,
+        'margin-none': false,
       },
     };
   },
@@ -53,6 +59,10 @@ export default {
       type: String,
       default: 'normal',
     },
+    noMargin: {
+      type: String,
+      deafult: 'no',
+    },
   },
   components: {
   },
@@ -73,6 +83,9 @@ export default {
       }
       if (this.bcat === 'primary') {
         this.buttonClass['nprimary'] = true;
+      }
+      if (this.noMargin === 'yes') {
+        this.buttonClass['margin-none'] = true;
       }
     },
     clicked() {

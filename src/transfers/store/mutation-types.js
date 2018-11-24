@@ -16,3 +16,8 @@ export const transferRequestEnum = {
   TIME_OUT: 3,
 };
 export const transferResponse = 'TRANSFER_RESPONSE';
+export const recipientAddBtnEnum = {
+  HIDE: 0,
+  SHOW: 1,
+};
+export const recipientAddBtn = 'RECIPIENT_ADD_BTN';

@@ -1,8 +1,8 @@
 import Vue from 'vue/dist/vue';
 import Vuex from 'vuex';
 import * as types from './mutation-types';
-import * as getters from './getters.js';
-import * as actions from './actions.js';
+import * as getters from './getters';
+import * as actions from './actions';
 
 // Store State
 
@@ -13,6 +13,7 @@ const store = {
   transferDetails: {},
   transferRequestStatus: types.transferRequestEnum.NIL,
   transferResponse: {},
+  recipientAddBtn: types.recipientAddBtnEnum.SHOW,
 };
 
 Vue.use(Vuex);
@@ -35,6 +36,9 @@ const mutations = {
   },
   [types.transferResponse](state, val) {
     state.transferReponse = val;
+  },
+  [types.recipientAddBtn](state, val) {
+    state.recipientAddBtn = val;
   },
 };
 
