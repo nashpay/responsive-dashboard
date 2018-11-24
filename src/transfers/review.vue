@@ -1,5 +1,22 @@
 <template lang="pug">
 .app-transfer-review
+  //
+  component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes")
+    template(slot="card-content")
+      nav.level.is-mobile
+        .level-left
+          .level-item
+            span.tag.is-danger {{ txInputs.length }}
+            .recipient-list-title Inputs
+        .level-right
+          .level-item
+      nav.level.is-mobile
+        .level-left
+          .level-item
+            span.tag.is-danger {{ txOutputs.length }}
+            .recipient-list-title Recipients
+        .level-right
+          .level-item
   component-button.app-align-bottom(
     bicon='none',
     btext='Next',
@@ -26,6 +43,19 @@ export default {
   computed: {
     childAccountList () {
       return []
+    },
+    txInputs () {
+      return [{
+        txId: 'f022f4bdb6c8ef3eff8b70eef5ec3cc31e728701e9e537851c9e996a9839f919',
+        vout: '1',
+        value: '100000',
+      }];
+    },
+    txOutputs () {
+      return [{
+        address: '3JSgBF1Ta7P5sZB7AMNvEtLvagJXKGxWkW',
+        value: '50000',
+      }];
     }
   },
   components: {

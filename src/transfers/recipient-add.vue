@@ -3,7 +3,7 @@
   .app-form
     .field.is-horizontal.app-field
       .field-label.is-normal
-        label.label Balance
+        label.label Available
       .field-body
         h1.title.is-4.box-transfer-balance 0.0001 BTC
         progress.progress.is-danger.remaining-balance(:value="remainingPct", max="100")
