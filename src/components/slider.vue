@@ -1,5 +1,5 @@
 <template lang="pug">
-input.app-slider(type="range")
+input.app-slider(type="range", :value="curVal", :max="maxVal", :min="minVal")
 </template>
  <style lang="less">
 @import (reference, less) url("../theme/core.less");
@@ -7,8 +7,18 @@ input.app-slider(type="range")
   -webkit-appearance: none;
   margin: 1rem 0;
   width: 100%;
+  outline: none;
 }
 .app-slider:focus {
+  border: 0;
+  outline: none;
+}
+.app-slider:active {
+  border: 0;
+  outline: none;
+}
+.app-slider::-moz-focus-outer {
+  border: 0;
   outline: none;
 }
 .app-slider::-moz-range-thumb {
@@ -39,6 +49,21 @@ export default {
     };
   },
   props: {
+    'curVal': {
+      type: Number,
+      default: 0.0,
+      required: true,
+    },
+    'minVal': {
+      type: Number,
+      default: 0.0,
+      required: true,
+    },
+    'maxVal': {
+      type: Number,
+      default: 10.0,
+      required: true,
+    }
   },
   components: {
   },
