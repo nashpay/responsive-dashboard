@@ -2,6 +2,7 @@ import * as types from './mutation-types';
 import { query } from '../export';
 import co from 'co';
 import Bluebird from 'bluebird';
+import { signTX } from '../export';
 
 export const updateCreds = ({ commit }, val) => {
   commit(types.setCreds, val);
@@ -25,8 +26,6 @@ export const updateRootAccountTransactions = ({ commit, state }, payload) => {
     // TODO: Remove Hardcode
     const paymentList = yield query('payments', 'list', payload, state.creds);
     const transferList = yield query('transfers', 'list', payload, state.creds);
-    console.log(paymentList);
-    console.log(transferList);
     // Label the paymentList and transferList
     const deposits = paymentList.res.body.reduce((acc, row) => {
       // const newRow = Object.assign(row, { category: 'deposit' });
@@ -70,6 +69,46 @@ export const updateRootAccountTransactions = ({ commit, state }, payload) => {
     const txList = Array.concat(deposits, transfers);
     console.log(txList);
     commit(types.setRootAccountTransactions, txList); // TODO Remove HardCode
+
+  }).catch((err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+
+export const sendTransferRequest = ({ commit, state }, payload) => {
+  co(function* () {
+    const sendTransfer = { addresses: payload.addresses, slave: 'default' };
+    const { store: transferStore, types: transferTypes } = payload;
+    // TODO: Remove Hardcode
+    const transferResp = yield query('transfers', 'makeRequest', sendTransfer, state.creds);
+    console.log('transferResp');
+    console.log(JSON.stringify(transferResp, null, 2));
+    transferStore.dispatch('updateTransferResponse', transferResp.res.body);
+    transferStore.dispatch('updateTransferStep', transferTypes.stepEnum.REVIEW);
+
+  }).catch((err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+
+export const signTransferRequest = ({ commit, state }, payload) => {
+  co(function* () {
+    // Sign
+    // const sendTransfer = { addresses: payload.addresses, slave: 'default' };
+    const { store: transferStore, types: transferTypes, networkLabel } = payload;
+    const transferInfo = transferStore.getters.transferResponse;
+    const signed = signTX(transferInfo.txInfo, state.creds.CRED_STORE[networkLabel], networkLabel);
+    transferInfo.txInfo = signed; 
+    // TODO: Remove Hardcode
+    const transferResp = yield query('transfers', 'makeAndSignRequest', transferInfo, state.creds);
+    console.log('transferSign Resp');
+    console.log(JSON.stringify(transferResp, null, 2));
+    transferStore.dispatch('updateTransferResponse', transferResp.res.body);
+    transferStore.dispatch('updateTransferStep', transferTypes.stepEnum.COMPLETE);
 
   }).catch((err) => {
     if (err) {

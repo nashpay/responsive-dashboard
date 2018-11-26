@@ -32,6 +32,7 @@
     "joi-error-formatter": "^0.5.3",
     "json-stable-stringify": "^1.0.1",
     "moment": "^2.22.2",
+    "node-rsa": "^1.0.1",
     "pino": "^5.9.0",
     "pug": "^2.0.3",
     "request": "^2.88.0",

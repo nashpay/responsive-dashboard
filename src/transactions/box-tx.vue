@@ -24,10 +24,14 @@
                 i.fa.fa-plus.clr-green-1.tx-icon-cat
                 // span {{ info.amount }} BTC
                 span {{ info.billed }} BTC
+              p.title.is-5(v-if="info.category === 'txinput'")
+                i.fa.fa-plus.clr-green-1.tx-icon-cat
+                // span {{ info.amount }} BTC
+                span {{ info.amount }} BTC
               p.title.is-5(v-if="info.category === 'transfer'")
                 i.fa.fa-minus.clr-red-1.tx-icon-cat
-                // span {{ info.amount }} BTC
-                span {{ info.billed }} BTC
+                span {{ info.amount }} BTC
+                // span {{ info.billed }} BTC
               p.heading.tx-fiat-heading {{ info.amountFiat }} {{ info.currencyFiat }}
 
 </template>

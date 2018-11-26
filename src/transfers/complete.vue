@@ -1,5 +1,7 @@
 <template lang="pug">
 .app-transfer-complete
+  h1.has-text-centered SUCCESS
+  p TXID: {{ transferResponse.result }}
   component-button.app-align-bottom(
     bicon='none',
     btext='Done',
@@ -41,6 +43,14 @@ export default {
   },
   mixins: [
   ],
+  computed: {
+    transferResponse () {
+      //
+ 
+      const resp = store.getters.transferResponse;
+      return resp;
+    }
+  },
   watch: {
     $route(to, from) {
       this.loaded();

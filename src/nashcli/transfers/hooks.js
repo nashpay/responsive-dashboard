@@ -78,20 +78,22 @@ export default {
     postPrompt: function* postPrompt(pInput, schema) {
       return pInput;
     },
-    preReq: function* preReq(rawPayload, cache) {
+    preReq: function* preReq(payload, cache) {
       // Call for the makeRequest
+      /*
       const { res: transferInfo } = yield execRequest(base, 'makeRequest', cache);
       const network = networkMap['btc-testnet'];
       const signed = signTX(transferInfo.txInfo, process.env.PRIV_BTC_TESTNET, network);
       transferInfo.txInfo = signed;
       const payload = clone(transferInfo);
+      */
       delete payload.slave;
       delete payload.tag;
       //
       const headers = {};
-      if (rawPayload.slave !== 'default') {
-        const subAccId = yield cache.getSubAccountIdByName(rawPayload.slave);
-        Object.assign(headers, { 'X-SubAccount-Id': subAccId });
+      if (payload.slave !== 'default') {
+        // const subAccId = yield cache.getSubAccountIdByName(payload.slave);
+        // Object.assign(headers, { 'X-SubAccount-Id': subAccId });
       }
       return { payload, headers };
     },

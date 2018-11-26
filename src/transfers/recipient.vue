@@ -67,6 +67,7 @@ import * as types from './store/mutation-types';
 import RecipientAdd from './recipient-add.vue';
 import BoxTxOutput from './box-output.vue';
 import { Card, Divider, Checkbox, Button  } from '../components';
+import ApiStore from '../nashcli/store';
 
 export default {
   data() {
@@ -110,7 +111,16 @@ export default {
       // @TODO All in check logic
       const { label } = val;
       if (label === 'btn-recipient-next') {
-        store.dispatch('updateTransferStep', types.stepEnum.REVIEW);
+        const addresses = this.recipientList.reduce((acc, row) => {
+          return acc.concat({
+            address: row.address.trim(),
+            value: row.amount.trim(),
+          });
+        }, []);
+        ApiStore.dispatch('sendTransferRequest', { addresses, slave: 'default', store, types });
+        /*
+         store.dispatch('updateTransferStep', types.stepEnum.REVIEW);
+        */
       }
       if (label === 'btn-recipient-add-more') {
         store.dispatch('updateRecipientAddBtn', types.recipientAddBtnEnum.SHOW);
