@@ -1,16 +1,46 @@
 <template lang="pug">
-.box-balance
-  h1.title.is-2 0.0001 BTC
-  h2.subtitle.is-5 6.40 USD
+.box-balance-level.level
+  .level-left
+    .level-item
+      //
+      .box-balance.text-left
+        p Pending
+        h1.title.is-2 BTC {{ pending }}
+        p 6.40 USD
+  .level-left
+    .level-item
+      //
+      .box-balance
+        p Available
+        h1.title.is-2 {{ available }} BTC
+        p 6.40 USD
 </template>
 <style lang="less">
-
+.box-balance-level {
+  height: 5rem;
+  .text-left {
+    text-align: left;
+  }
+  .text-right {
+    text-align: right;
+  }
+}
 </style>
 <script>
 export default {
   data() {
     return {
     };
+  },
+  props: {
+    available: {
+      type: Number,
+      default: 0.000,
+    },
+    pending: {
+      type: Number,
+      default: 0.000,
+    },
   },
   components: {
   },

@@ -2,7 +2,7 @@
 .mod-landing
   component-card(cardColor="white")
     <template slot="card-content">
-      box-balance
+      box-balance(:available="accountBalance.available", :pending="accountBalance.pending")
     </template>
   component-card(cardColor="transparent", cardNoVertPadding="yes")
     <template slot="card-content">
@@ -47,6 +47,9 @@ import { BoxTX } from '../transactions';
 import NavStore from '../navigation/store';
 import * as NavTypes from '../navigation/store/mutation-types';
 import BoxBalance from './box-balance.vue';
+
+import ApiStore from '../nashcli/store';
+
 export default {
   data() {
     return {
@@ -97,8 +100,18 @@ export default {
       this.loaded();
     },
   },
+  computed: {
+    accountBalance() {
+      console.log(ApiStore.getters.rootAccountBalance);
+      return ApiStore.getters.rootAccountBalance;
+    },
+  },
   methods: {
     loaded() {
+      // Call the Balance endpoint
+      console.log('Call Update Root Account Balance');
+      ApiStore.dispatch('updateRootAccountBalance', { slave: 'default' });
+      ApiStore.dispatch('updateRootAccountTransactions', { slave: 'default' });
     },
     onBtnClicked (val) {
       const { label } = val;
