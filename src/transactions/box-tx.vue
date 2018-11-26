@@ -6,11 +6,16 @@
         .level-left
           .level-item
             .level-inner.has-text-left
-              p.title.is-5.tx-address {{ info.address | shorten-address }}
+              p.title.is-5.tx-address {{ info.address | shorten-address }} ({{ info.billed }})
               .tx-tag-wrap
                 span.tag.is-light(v-if="info.stat === 1001") Created
                 span.tag.is-success(v-if="info.stat === 1003") Confirmed
+                span.tag.is-link(v-if="info.stat === 1002") {{ info.confirmations }} Confirmations
+                span.tag.is-danger(v-if="info.stat === 1005") Failed
+                span.tag.is-danger(v-if="info.stat === 1006") Cancelled
+                span.tag.is-light(v-if="info.stat === 1201") Created
                 span.tag.is-link(v-if="info.stat === 1202") {{ info.confirmations }} Confirmations
+                span.tag.is-success(v-if="info.stat === 1203") Confirmed
         .level-right
           .level-item
             .level-inner.has-text-right

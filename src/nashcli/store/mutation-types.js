@@ -7,3 +7,4 @@ export const requestEnum = {
   TIME_OUT: 3,
 };
 export const setRootAccountTransactions = 'SET_ROOT_ACCOUNT_TRANSACTIONS';
+export const setRootTXFilter = 'SET_ROOT_TX_FILTER';

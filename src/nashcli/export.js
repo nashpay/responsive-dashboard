@@ -26,6 +26,7 @@ const runRequest = function* runRequest(endpointInfo, endpointData, headers, cre
       //
       const uri = `${creds.API_SERVER_URL}${endpointInfo.uri}`;
       const resp = yield request.getAsync(uri, reqOpts);
+      console.log(`GET URI ${uri} success...`);
       console.log(JSON.stringify(resp.toJSON(), null, 2));
       return resp.toJSON();
     }
@@ -48,6 +49,7 @@ const runRequest = function* runRequest(endpointInfo, endpointData, headers, cre
     }
   } catch (err) {
     if (err) {
+      console.log(`Error in try catch for request ${uri}`)
       console.error(err);
       return false;
     }
@@ -56,8 +58,7 @@ const runRequest = function* runRequest(endpointInfo, endpointData, headers, cre
 //
 const execRequest = function* execRequest(resource, endpoint, rawPayload, creds) {
   //
-  console.log('execRequest called...');
-  console.log(resource);
+  console.log(`execRequest called...Resource: ${resource} Endpoint: ${endpoint}`);
   /*
   const schema = resource.schema[endpoint](Joi);
   console.log('schema...');
@@ -75,7 +76,7 @@ const execRequest = function* execRequest(resource, endpoint, rawPayload, creds)
 };
 //
 const query = function* query(resource, endpoint, payload, creds) {
-  console.log('query...');
+  console.log(`Starting Query Res: ${resource} Endpoint: ${endpoint}`);
   const result = yield execRequest(api[resource], endpoint, payload, creds);
   return result;
 };

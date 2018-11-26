@@ -30,16 +30,27 @@
     <template slot="card-content">
       h2.title.is-5.has-text-centered Recent Transactions
     </template>
-  template(v-for="tx in transactions")
-    box-tx(
-      :info="tx",
-    )
+  .tabs.is-centered.is-mobile
+    ul
+      li(:class="tabDeposit", @click="txTab('deposit')")
+        a Deposits
+      li(:class="tabTransfer", @click="txTab('transfer')")
+        a Transfers
+  .app-tx-list-wrapper
+    //
+    template(v-for="tx in transactions")
+      box-tx(
+        :info="tx",
+      )
     
     
     
 </template>
 <style lang="less">
-
+.app-tx-list-wrapper {
+  height: 45vh;
+  overflow-y: scroll;
+}
 </style>
 <script>
 import { Card, Button  } from '../components';
@@ -53,6 +64,7 @@ import ApiStore from '../nashcli/store';
 export default {
   data() {
     return {
+      /*
       transactions: [
         {
           category: 'deposit',
@@ -82,6 +94,7 @@ export default {
           confirmations: 0,
         },
       ],
+      */
     };
   },
   components: {
@@ -105,6 +118,31 @@ export default {
       console.log(ApiStore.getters.rootAccountBalance);
       return ApiStore.getters.rootAccountBalance;
     },
+    tabDeposit () {
+      const tabVal = ApiStore.getters.rootTXFilter;
+      if (tabVal === 'deposit') {
+        return { 'is-active': true };
+      }
+      return { 'is-active': false };
+    },
+    tabTransfer () {
+      const tabVal = ApiStore.getters.rootTXFilter;
+      if (tabVal === 'transfer') {
+        return { 'is-active': true };
+      }
+      return { 'is-active': false };
+    },
+    transactions () {
+      const txFilter = ApiStore.getters.rootTXFilter;
+      const txList = ApiStore.getters.rootAccountTransactions.reduce((acc, row) => {
+        if (row.category === txFilter) {
+          return acc.concat(row);
+        }
+        return acc;
+      }, []); 
+      txList.sort((a, b) => b.id - a.id);
+      return txList.slice(0,10);
+    }
   },
   methods: {
     loaded() {
@@ -129,6 +167,9 @@ export default {
         NavStore.dispatch('updatePopupPage', 'transfer-landing');
       }
 
+    },
+    txTab (val) {
+      ApiStore.dispatch('updateRootTXFilter', val);
     },
   },
 };

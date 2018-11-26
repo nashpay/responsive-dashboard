@@ -10,6 +10,7 @@ const store = {
   creds: {}, // Creds { API_SERVER_URL, API_KEY, API_SECRET, CRED_STORE }
   rootAccountBalance: {}, // { pending: 0, available: 0 }
   rootAccountTransactions: [],
+  rootTXFilter: 'deposit',
 };
 
 Vue.use(Vuex);
@@ -26,6 +27,10 @@ const mutations = {
     console.log(`rootAccountTransactions; ${val}`);
     state.rootAccountTransactions = val;
   },
+  [types.setRootTXFilter](state, val) {
+    state.rootTXFilter = val;
+  },
+
 };
 
 export default new Vuex.Store({
