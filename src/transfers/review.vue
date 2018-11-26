@@ -17,7 +17,6 @@
             .transfer-output-title Recipients
         .level-right
           .level-item
-      component-slider
   component-button.app-align-bottom(
     bicon='none',
     btext='Next',

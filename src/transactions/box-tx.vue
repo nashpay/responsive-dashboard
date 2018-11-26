@@ -6,7 +6,7 @@
         .level-left
           .level-item
             .level-inner.has-text-left
-              p.title.is-5.tx-address {{ info.address | shorten-address }} ({{ info.billed }})
+              p.title.is-5.tx-address {{ info.address | shorten-address }}
               .tx-tag-wrap
                 span.tag.is-light(v-if="info.stat === 1001") Created
                 span.tag.is-success(v-if="info.stat === 1003") Confirmed
@@ -16,15 +16,18 @@
                 span.tag.is-light(v-if="info.stat === 1201") Created
                 span.tag.is-link(v-if="info.stat === 1202") {{ info.confirmations }} Confirmations
                 span.tag.is-success(v-if="info.stat === 1203") Confirmed
+              // p.title.is-6 {{ info.billed }}
         .level-right
           .level-item
             .level-inner.has-text-right
               p.title.is-5(v-if="info.category === 'deposit'")
                 i.fa.fa-plus.clr-green-1.tx-icon-cat
-                span {{ info.amount }} BTC
+                // span {{ info.amount }} BTC
+                span {{ info.billed }} BTC
               p.title.is-5(v-if="info.category === 'transfer'")
                 i.fa.fa-minus.clr-red-1.tx-icon-cat
-                span {{ info.amount }} BTC
+                // span {{ info.amount }} BTC
+                span {{ info.billed }} BTC
               p.heading.tx-fiat-heading {{ info.amountFiat }} {{ info.currencyFiat }}
 
 </template>
@@ -77,8 +80,8 @@ export default {
   },
   filters: {
     'shorten-address' (val) {
-      const first = val.substr(0, 6);
-      const last = val.substr(-6);
+      const first = val.substr(0, 5);
+      const last = val.substr(-5);
       return `${first}...${last}`;
     }
   },

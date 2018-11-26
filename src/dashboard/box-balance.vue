@@ -1,18 +1,18 @@
 <template lang="pug">
-.box-balance-level.level
+.box-balance-level.level.is-mobile
   .level-left
     .level-item
       //
       .box-balance.text-left
         p Pending
-        h1.title.is-2 BTC {{ pending }}
+        h1.title.is-5 BTC {{ pending }}
         p 6.40 USD
   .level-left
     .level-item
       //
       .box-balance
         p Available
-        h1.title.is-2 {{ available }} BTC
+        h1.title.is-5 {{ available }} BTC
         p 6.40 USD
 </template>
 <style lang="less">

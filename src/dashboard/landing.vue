@@ -48,7 +48,7 @@
 </template>
 <style lang="less">
 .app-tx-list-wrapper {
-  height: 45vh;
+  height: 25vh;
   overflow-y: scroll;
 }
 </style>
