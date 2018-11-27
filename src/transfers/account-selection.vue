@@ -8,7 +8,7 @@
           .level-item
             .level-inner.has-text-left
               p.title.is-5.deposit-account-name Default
-              p.heading.deposit-account-value 0.0001 BTC
+              p.heading.deposit-account-value {{ defaultAccountBalance }} BTC
         .level-right
           .level-item
             component-checkbox
@@ -56,6 +56,7 @@
 import store from './store';
 import * as types from './store/mutation-types';
 import { Card, Divider, Checkbox, Button  } from '../components';
+import ApiStore from '../nashcli/store';
 
 export default {
   data() {
@@ -66,6 +67,10 @@ export default {
   computed: {
     childAccountList () {
       return []
+    },
+    defaultAccountBalance () {
+      const balanceInfo = ApiStore.getters.rootAccountBalance;
+      return balanceInfo.available;
     }
   },
   components: {

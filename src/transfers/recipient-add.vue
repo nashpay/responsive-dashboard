@@ -5,16 +5,21 @@
       .field-label.is-normal
         label.label Available
       .field-body
-        h1.title.is-4.box-transfer-balance 0.0001 BTC
+        h1.title.is-4.box-transfer-balance {{ accountBalance }} BTC
         progress.progress.is-danger.remaining-balance(:value="remainingPct", max="100")
    
     .field.is-horizontal.app-field
       .field-label.is-normal
         label.label Amount
       .field-body
+        p.help.is-danger(v-if="formSchema.cryptoAmount.errorMsg !== false") {{ formSchema.cryptoAmount.errorMsg }}
         .field.has-addons
           .control
-            input.input(type="text", placeholder="0.000",v-model="cryptoAmount")
+            input.input(
+              type="text", 
+              v-on:input="validate($event, formSchema.cryptoAmount, formValidator.cryptoAmount)",
+              :value="formSchema.cryptoAmount.displayValue",
+            )
           .control
             a.button BTC
         .field.exchange-icon-wrapper
@@ -24,6 +29,7 @@
             input.input(type="text", placeholder="0.000")
           .control
             a.button USD
+        
     .field.is-horizontal.app-field
       .field-label.is-normal
         label.label Address
@@ -62,18 +68,63 @@ import { storeActions } from '../utils/objectStore';
 import store from './store';
 import * as types from './store/mutation-types';
 import { Card, Divider, Checkbox, Button  } from '../components';
+import ApiStore from '../nashcli/store';
+import { BigNumber } from 'bignumber.js';
+import { validate, validateTypes } from '../validator';
 
 export default {
   data() {
     return {
       cryptoAmount: '',
       recipientAddress: '',
+      formValidator: {},
+      formSchema : {
+        cryptoAmount: {
+          name: 'Amount',
+          type: 'Decimal',
+          required: true,
+          min: BigNumber('0.00'),
+          meta: {
+            network: 'btc-testnet', 
+          },
+          errorMsg: false,
+          isValid: false,
+          value: '',
+          displayValue: '',
+        },
+        recipientAddress: {
+          name: 'Address',
+          type: 'CryptoAddress',
+          required: true,
+          meta: {
+            network: 'btc-testnet', 
+          },
+          errorMsg: false,
+          isValid: false,
+          value: '',
+          displayValue: '',
+        },
+      },
       remainingPct: 90,
     };
   },
   computed: {
     childAccountList () {
       return []
+    },
+    accountBalance () {
+       // TODO: Available Balance should be the sum of selected accounts + root Account 
+       // - commited transfers amounts in future.
+       const { available: balanceAvailable } = ApiStore.getters.rootAccountBalance;
+       return balanceAvailable;
+    },
+    recipientAvailable () {
+      const recipientSpent = this.recipientList.reduce((acc, row) => {
+      
+      }, 0); 
+    },
+    recipientList () {
+      return store.getters.recipientList; 
     }
   },
   components: {
@@ -94,6 +145,14 @@ export default {
   },
   methods: {
     loaded() {
+      const schemaList = Object.keys(this.formSchema);
+      schemaList.forEach((schemaKey) => {
+        const schema = this.formSchema[schemaKey];
+        this.formValidator[schemaKey] = new validateTypes[schema.type](schema);
+      });
+    },
+    validate (evt, schema, validator) {
+      validate(evt, schema, validator);
     },
     onBtnClicked (val) {
       // @TODO All in check logic
