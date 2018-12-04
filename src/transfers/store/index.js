@@ -35,11 +35,7 @@ const mutations = {
     state.transferRequestStatus = val;
   },
   [types.transferResponse](state, val) {
-    console.log('Saving Transfer Response');
-    console.log(val);
     state.transferResponse = val;
-    console.log('New State...');
-    console.log(state.transferResponse);
   },
   [types.recipientAddBtn](state, val) {
     state.recipientAddBtn = val;

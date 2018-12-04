@@ -2,12 +2,14 @@ class Validator {
   constructor(ruleset) {
     this.ruleset = ruleset;
   }
-  inlineCheck (inputData, inputRef) {
 
+  inlineCheck(inputData, inputRef) {
+    return this;
   }
-  preCheck (inputVal) {
 
+  preCheck(inputVal) {
+    return this;
   }
-};
+}
 
 export default Validator;
