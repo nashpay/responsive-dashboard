@@ -18,6 +18,7 @@
   font-size: 1.2rem;
   text-transform: uppercase;
   font-weight: bold;
+  height: 4rem;
 }
 .app-popup-hide {
   display: none;
@@ -34,33 +35,33 @@
   animation-timing-function: linear;
 }
 .app-popup-small {
-  height: 50vh;
+  height: 50%;
   animation-name: popup-small;
 }
 .app-popup-medium {
-  height: 70vh;
+  height: 70%;
   animation-name: popup-medium;
 }
 .app-popup-large {
-  height: 90vh;
+  height: 90%;
   animation-name: popup-large;
 }
 
 // Enter Animation
 @keyframes popup-small {
-  0% { height: 0vh; }
-  50% { height: 25vh; }
-  100% { height: 50vh; }
+  0% { height: 0%; }
+  50% { height: 25%; }
+  100% { height: 50%; }
 }
 @keyframes popup-medium {
-  0% { height: 0vh; }
-  50% { height: 35vh; }
-  100% { height: 70vh; }
+  0% { height: 0%; }
+  50% { height: 35%; }
+  100% { height: 70%; }
 }
 @keyframes popup-large {
-  0% { height: 0vh; }
-  50% { height: 45vh; }
-  100% { height: 90vh; }
+  0% { height: 0%; }
+  50% { height: 45%; }
+  100% { height: 90%; }
 }
 
 

@@ -29,14 +29,15 @@
                 v-on:btn-clicked="onBtnClicked",
               )
     box-tx-output(v-for="recipient in recipientList", :info="recipient")
-  component-button.app-align-bottom(
-    bicon='none',
-    btext='Next',
-    bsize="medium",
-    blabel="btn-recipient-next",
-    bcat="primary",
-    v-on:btn-clicked="onBtnClicked",
-  )
+  template(v-if="recipientList.length > 0 && showRecipientAdd === false")
+    component-button.app-align-bottom(
+      bicon='none',
+      btext='Next',
+      bsize="medium",
+      blabel="btn-recipient-next",
+      bcat="primary",
+      v-on:btn-clicked="onBtnClicked",
+    )
     
 </template>
 <style lang="less">

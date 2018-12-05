@@ -15,12 +15,14 @@ const validate = function validate(evt, schema) {
   validator.inlineCheck(inputData, schema);
 };
 */
+/*
 const validate = function validate(evt, schema, validator) {
   const inputData = clone(evt.target.value);
   validator.inlineCheck(inputData, schema);
 };
+*/
 
 export {
-  validate,
+  // validate,
   validateTypes,
 };

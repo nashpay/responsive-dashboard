@@ -2,8 +2,9 @@ import { BigNumber } from 'bignumber.js';
 import Validator from './base';
 
 const ErrorMsg = {
-  NOT_A_NUMBER: x => `${x} is not a number`,
-  LOWER_THAN_MIN: (x, y) => `${x} is lower than the minimum value of ${y}`,
+  NOT_A_NUMBER: x => 'Is not a number',
+  LOWER_THAN_MIN: x => `Lower than the minimum value of ${x}`,
+  LARGER_THAN_MAX: x => `Larger than the minimum value of ${x}`,
 };
 
 class ValidateDecimal extends Validator {
@@ -26,17 +27,16 @@ class ValidateDecimal extends Validator {
     super(defaultRuleSet);
     this.fnMap = {
       min: this.checkMin,
+      max: this.checkMax,
     };
   }
 
-  inlineCheck(inputData, schema) {
-    const { name } = schema;
-    schema.errorMsg = false;
+  inlineCheck(inputData) {
     // Check that it can be a Number
+    let output = false;
     let stop = false;
-    if (Math.isNaN(inputData) === true) {
-      schema.errorMsg = ErrorMsg.NOT_A_NUMBER(name);
-      schema.displayValue = inputData;
+    if (isNaN(inputData) === true) {
+      output = ErrorMsg.NOT_A_NUMBER();
       stop = true;
     }
     if (inputData === '') {
@@ -44,23 +44,24 @@ class ValidateDecimal extends Validator {
     }
     if (stop !== true) {
       const checks = Object.keys(this.ruleset).filter(k => this.ruleset[k] !== false && k !== 'meta');
-      const res = checks.map(k => this.fnMap[k](inputData, this.ruleset[k]));
+      const res = checks.map(k => this.fnMap[k].apply(this, [inputData]));
       res.some((row) => {
         if (row.success !== true) {
-          schema.errorMsg = row.err;
-          schema.displayValue = inputData;
-          return true;
+          output = row.err;
+          return false;
         }
-        return false;
+        return true;
       });
     }
+    return output;
   }
 
   preCheck(inputVal) {
     return this;
   }
 
-  checkMin(inputData, ruleVal) {
+  checkMin(inputData) {
+    const ruleVal = this.ruleset.min;
     // Convert to Number
     const raw = BigNumber(inputData);
     if (raw.isGreaterThanOrEqualTo(ruleVal) === true) {
@@ -69,6 +70,18 @@ class ValidateDecimal extends Validator {
     }
     return { success: false, err: ErrorMsg.LOWER_THAN_MIN(inputData, ruleVal) };
   }
+
+  checkMax(inputData) {
+    const ruleVal = this.ruleset.max;
+    // Convert to Number
+    const raw = BigNumber(inputData);
+    if (raw.isLessThanOrEqualTo(ruleVal) === true) {
+      // Pass
+      return { success: true, err: '' };
+    }
+    return { success: false, err: ErrorMsg.LARGER_THAN_MAX(inputData, ruleVal) };
+  }
 }
+
 
 export default ValidateDecimal;

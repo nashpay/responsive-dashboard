@@ -5,20 +5,22 @@
       .field-label.is-normal
         label.label Available
       .field-body
-        h1.title.is-4.box-transfer-balance {{ accountBalance }} BTC
+        // h1.title.is-4.box-transfer-balance {{ recipientAvailable }} BTC
+        // h1.title.is-4.box-transfer-balance {{ accountBalance }} BTC
+        h1.title.is-4.box-transfer-balance {{ initAvailable }} BTC
         progress.progress.is-danger.remaining-balance(:value="remainingPct", max="100")
    
     .field.is-horizontal.app-field
       .field-label.is-normal
         label.label Amount
       .field-body
-        p.help.is-danger(v-if="formSchema.cryptoAmount.errorMsg !== false") {{ formSchema.cryptoAmount.errorMsg }}
+        p.help.is-danger(v-if="cryptoAmountError !== false") {{ cryptoAmountError }}
         .field.has-addons
           .control
             input.input(
               type="text", 
-              v-on:input="validate($event, formSchema.cryptoAmount, formValidator.cryptoAmount)",
-              :value="formSchema.cryptoAmount.displayValue",
+              v-on:input="validate($event, 'cryptoAmount')",
+              :value="cryptoAmount",
             )
           .control
             a.button BTC
@@ -37,7 +39,10 @@
         .field
           .control
             input.input(type="text", placeholder="2Mn..",v-model="recipientAddress")
+
+        p.help.is-danger(v-if="cryptoAddressError !== false") {{ cryptoAddressError }}
     //
+  //
     nav.level.is-mobile
      .level-item
      .level-right
@@ -48,10 +53,18 @@
            blabel="btn-recipient-add",
            v-on:btn-clicked="onBtnClicked",
          )
+  component-button.app-align-bottom(
+    bicon='none',
+    btext='Confirm',
+    bsize="medium",
+    blabel="btn-recipient-add",
+    v-on:btn-clicked="onBtnClicked",
+  )
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
 .app-transfer-recipient-add {
+  height: 90% - 7rem;
   h1.box-transfer-balance {
     text-align: right;
     margin-bottom: 0;
@@ -70,45 +83,31 @@ import * as types from './store/mutation-types';
 import { Card, Divider, Checkbox, Button  } from '../components';
 import ApiStore from '../nashcli/store';
 import { BigNumber } from 'bignumber.js';
-import { validate, validateTypes } from '../validator';
+
+import RecipientAddMixin from './recipient-add-form';
 
 export default {
   data() {
     return {
-      cryptoAmount: '',
-      recipientAddress: '',
-      formValidator: {},
-      formSchema : {
-        cryptoAmount: {
-          name: 'Amount',
-          type: 'Decimal',
-          required: true,
-          min: BigNumber('0.00'),
-          meta: {
-            network: 'btc-testnet', 
-          },
-          errorMsg: false,
-          isValid: false,
-          value: '',
-          displayValue: '',
-        },
-        recipientAddress: {
-          name: 'Address',
-          type: 'CryptoAddress',
-          required: true,
-          meta: {
-            network: 'btc-testnet', 
-          },
-          errorMsg: false,
-          isValid: false,
-          value: '',
-          displayValue: '',
-        },
-      },
-      remainingPct: 90,
+      initAvailable: '0',
     };
   },
   computed: {
+    remainingPct () {
+      if (this.initAvailable !== '0'
+        && isNaN(this.recipientAvailable) === false
+      ) {
+        const a = BigNumber(this.initAvailable);
+        console.log(` InitAvailable: ${a}`);
+        const b = BigNumber(this.recipientAvailable);
+        console.log(` RecipientAvailable: ${b}`);
+        const c  = b.div(a).multipliedBy(100);
+        console.log(c);
+        console.log(c.toNumber());
+        return c.toNumber();
+      }
+      return 0;
+    },
     childAccountList () {
       return []
     },
@@ -120,12 +119,17 @@ export default {
     },
     recipientAvailable () {
       const recipientSpent = this.recipientList.reduce((acc, row) => {
-      
-      }, 0); 
+        const safeVal = BigNumber(String(row.amount));
+        return acc.plus(safeVal);
+      }, BigNumber('0.00'));
+      const serverBalance = BigNumber(String(this.accountBalance));
+      const currentSpend = BigNumber(String(this.cryptoAmount));
+      console.log(`RecipientSpent: ${recipientSpent} Server Balance: ${serverBalance} currentSpend: ${currentSpend}`);
+      return serverBalance.minus(recipientSpent).minus(currentSpend).toString();
     },
     recipientList () {
       return store.getters.recipientList; 
-    }
+    },
   },
   components: {
     'component-card': Card,
@@ -137,6 +141,7 @@ export default {
     this.$nextTick(this.loaded);
   },
   mixins: [
+    RecipientAddMixin,
   ],
   watch: {
     $route(to, from) {
@@ -145,22 +150,28 @@ export default {
   },
   methods: {
     loaded() {
+      /*
       const schemaList = Object.keys(this.formSchema);
       schemaList.forEach((schemaKey) => {
         const schema = this.formSchema[schemaKey];
         this.formValidator[schemaKey] = new validateTypes[schema.type](schema);
       });
+      */
+      this.initAvailable = String(this.recipientAvailable);
+      this.validatorSetup(this.initAvailable);
     },
+    /*
     validate (evt, schema, validator) {
       validate(evt, schema, validator);
     },
+    */
     onBtnClicked (val) {
       // @TODO All in check logic
       const { label } = val;
       if (label === 'btn-recipient-add') {
         const sdata = { 
           amount: this.cryptoAmount,
-          address: this.recipientAddress,
+          address: this.cryptoAddress,
           amountFiat: '100', // TODO Remove hardcode
           currencyFiat: 'USD', // TODO Remove hardcode
         };
@@ -169,8 +180,9 @@ export default {
           action: storeActions.CREATE,
         });
         store.dispatch('updateRecipientAddBtn', types.recipientAddBtnEnum.HIDE);
-        this.cryptoAmount = '';
-        this.recipientAddress = '';
+        this.fstore.dispatch('validateCryptoAmount', { input: '0', validator: this.validators['cryptoAmount'] });
+        this.fstore.dispatch('validateCryptoAddress1', { input: '0', validator: this.validators['cryptoAmount'] });
+        this.initAvailable = String(this.recipientAvailable);
       }
     }
   },
