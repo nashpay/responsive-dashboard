@@ -4,6 +4,7 @@ import { NETWORK } from '../constants';
 
 const ErrorMsg = {
   INVALID_ADDRESS: x => 'Invalid Address',
+  REQUIRED: x => 'Required',
 };
 
 class ValidateCryptoAddress extends Validator {
@@ -33,6 +34,7 @@ class ValidateCryptoAddress extends Validator {
     let stop = false;
     if (inputData === '') {
       stop = true;
+      output = ErrorMsg.REQUIRED();
     }
     if (stop !== true) {
       const checks = Object.keys(this.ruleset).filter(k => this.ruleset[k] !== false && k !== 'meta');
@@ -55,20 +57,23 @@ class ValidateCryptoAddress extends Validator {
   checkBitcoinLive(inputData) {
     try {
       //
-      bitcoinlib.address.toOutput(inputData, NETWORK['btc-live']);
+      bitcoinlib.address.toOutputScript(inputData, NETWORK['btc-live']);
       return { success: true, err: false };
     } catch (err) {
-      return { success: false, err: ErrorMsg.INVALID_ADDRESS };
+      return { success: false, err: ErrorMsg.INVALID_ADDRESS() };
     }
   }
 
   checkBitcoinTestnet(inputData) {
     try {
       //
-      bitcoinlib.address.toOutput(inputData, NETWORK['btc-testnet']);
+      console.log('checkBitcoinTestnet...');
+      console.log(NETWORK['btc-testnet']);
+      bitcoinlib.address.toOutputScript(inputData, NETWORK['btc-testnet']);
       return { success: true, err: false };
     } catch (err) {
-      return { success: false, err: ErrorMsg.INVALID_ADDRESS };
+      console.log(err);
+      return { success: false, err: ErrorMsg.INVALID_ADDRESS() };
     }
   }
 }

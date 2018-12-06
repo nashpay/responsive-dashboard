@@ -36,11 +36,15 @@
       .field-label.is-normal
         label.label Address
       .field-body
+        p.help.is-danger(v-if="cryptoAddressError !== false") {{ cryptoAddressError }}
         .field
           .control
-            input.input(type="text", placeholder="2Mn..",v-model="recipientAddress")
+            textarea.textarea(
+              type="text", 
+              v-on:input="validate($event, 'cryptoAddress')",
+              :value="cryptoAddress",
+            )
 
-        p.help.is-danger(v-if="cryptoAddressError !== false") {{ cryptoAddressError }}
     //
   //
     nav.level.is-mobile
@@ -54,9 +58,11 @@
            v-on:btn-clicked="onBtnClicked",
          )
   component-button.app-align-bottom(
+    v-if="cryptoAmountError === false && cryptoAddressError === false",
     bicon='none',
     btext='Confirm',
     bsize="medium",
+    bcat="primary", 
     blabel="btn-recipient-add",
     v-on:btn-clicked="onBtnClicked",
   )
@@ -73,6 +79,9 @@
   progress.remaining-balance {
     transform: rotate(180deg);
     height: 0.3rem;
+  }
+  textarea.textarea {
+    resize: none;
   }
 }
 </style>
@@ -98,12 +107,8 @@ export default {
         && isNaN(this.recipientAvailable) === false
       ) {
         const a = BigNumber(this.initAvailable);
-        console.log(` InitAvailable: ${a}`);
         const b = BigNumber(this.recipientAvailable);
-        console.log(` RecipientAvailable: ${b}`);
         const c  = b.div(a).multipliedBy(100);
-        console.log(c);
-        console.log(c.toNumber());
         return c.toNumber();
       }
       return 0;
@@ -181,7 +186,7 @@ export default {
         });
         store.dispatch('updateRecipientAddBtn', types.recipientAddBtnEnum.HIDE);
         this.fstore.dispatch('validateCryptoAmount', { input: '0', validator: this.validators['cryptoAmount'] });
-        this.fstore.dispatch('validateCryptoAddress1', { input: '0', validator: this.validators['cryptoAmount'] });
+        this.fstore.dispatch('validateCryptoAddress', { input: '', validator: this.validators['cryptoAddress'] });
         this.initAvailable = String(this.recipientAvailable);
       }
     }

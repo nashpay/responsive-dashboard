@@ -88,6 +88,7 @@ export default {
   methods: {
     //
     validatorSetup(curAmt) {
+      console.log(`validatorSetup called with ${curAmt}`);
       const validatorCryptoAmount = new validateTypes.Decimal({
         required: true,
         min: BigNumber('0.00'),
@@ -104,7 +105,8 @@ export default {
         cryptoAmount: validatorCryptoAmount,
         cryptoAddress: validatorCryptoAddress,
       };
-      console.log(this.validators);
+      this.fstore.dispatch('validateCryptoAmount', { input: '', validator: this.validators.cryptoAmount });
+      this.fstore.dispatch('validateCryptoAddress', { input: '', validator: this.validators.cryptoAddress });
       //
     },
     validate(evt, formKey) {

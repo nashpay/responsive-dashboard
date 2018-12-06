@@ -3,8 +3,9 @@ import Validator from './base';
 
 const ErrorMsg = {
   NOT_A_NUMBER: x => 'Is not a number',
-  LOWER_THAN_MIN: x => `Lower than the minimum value of ${x}`,
-  LARGER_THAN_MAX: x => `Larger than the minimum value of ${x}`,
+  REQUIRED: x => 'Required',
+  LOWER_THAN_MIN: x => `Min value is ${x}`,
+  LARGER_THAN_MAX: x => `Max value is ${x}`,
 };
 
 class ValidateDecimal extends Validator {
@@ -40,6 +41,7 @@ class ValidateDecimal extends Validator {
       stop = true;
     }
     if (inputData === '') {
+      output = ErrorMsg.REQUIRED();
       stop = true;
     }
     if (stop !== true) {
@@ -48,9 +50,9 @@ class ValidateDecimal extends Validator {
       res.some((row) => {
         if (row.success !== true) {
           output = row.err;
-          return false;
+          return true;
         }
-        return true;
+        return false;
       });
     }
     return output;
@@ -68,18 +70,22 @@ class ValidateDecimal extends Validator {
       // Pass
       return { success: true, err: '' };
     }
-    return { success: false, err: ErrorMsg.LOWER_THAN_MIN(inputData, ruleVal) };
+    return { success: false, err: ErrorMsg.LOWER_THAN_MIN(ruleVal) };
   }
 
   checkMax(inputData) {
+    console.log('Check Max Called...');
     const ruleVal = this.ruleset.max;
+    console.log(`ruleVal: ${ruleVal}`);
     // Convert to Number
     const raw = BigNumber(inputData);
+    const check = raw.isLessThanOrEqualTo(ruleVal);
+    console.log(`check: ${check}`);
     if (raw.isLessThanOrEqualTo(ruleVal) === true) {
       // Pass
       return { success: true, err: '' };
     }
-    return { success: false, err: ErrorMsg.LARGER_THAN_MAX(inputData, ruleVal) };
+    return { success: false, err: ErrorMsg.LARGER_THAN_MAX(ruleVal) };
   }
 }
 
