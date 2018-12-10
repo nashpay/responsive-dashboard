@@ -8,12 +8,13 @@
   z-index: 3;
   background-color: @clr-gray-3;
   opacity: 0.3;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   position: absolute;
   top: 0;
   left: 0;
   display: none;
+  overflow: none;
 }
 .app-overlay-hide {
   display: none;

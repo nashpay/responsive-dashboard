@@ -11,7 +11,7 @@
           .level.item
             component-button(
               bicon="arrow-circle-o-down",
-              btext='Deposit',
+              btext='Receive',
               bsize="medium",
               blabel="btn-deposit",
               v-on:btn-clicked="onBtnClicked",
@@ -20,7 +20,7 @@
           .level.item
             component-button(
               bicon="arrow-circle-o-up",
-              btext='Withdraw',
+              btext='Send',
               bsize="medium",
               blabel="btn-withdraw",
               v-on:btn-clicked="onBtnClicked",

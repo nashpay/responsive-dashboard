@@ -1,7 +1,7 @@
 <template lang="pug">
 .app-transfer-recipient-add
   .app-form
-    .field.is-horizontal.app-field
+    .field.is-horizontal.app-field(:class="field1")
       .field-label.is-normal
         label.label Available
       .field-body
@@ -10,7 +10,7 @@
         h1.title.is-4.box-transfer-balance {{ initAvailable }} BTC
         progress.progress.is-danger.remaining-balance(:value="remainingPct", max="100")
    
-    .field.is-horizontal.app-field
+    .field.is-horizontal.app-field(:class="field2")
       .field-label.is-normal
         label.label Amount
       .field-body
@@ -39,11 +39,13 @@
         p.help.is-danger(v-if="cryptoAddressError !== false") {{ cryptoAddressError }}
         .field
           .control
-            textarea.textarea(
+            textarea.textarea.crypto-address(
               type="text", 
               v-on:input="validate($event, 'cryptoAddress')",
+              v-on:focusin="scrollTo($event)",
               :value="cryptoAddress",
             )
+            a#textar
 
     //
   //
@@ -83,6 +85,12 @@
   textarea.textarea {
     resize: none;
   }
+  textarea.textarea.crypto-address:focus {
+    padding-bottom: -20rem;
+  }
+  .out-of-focus {
+    display: none !important;
+  }
 }
 </style>
 <script>
@@ -99,6 +107,7 @@ export default {
   data() {
     return {
       initAvailable: '0',
+      focused: false,
     };
   },
   computed: {
@@ -112,6 +121,24 @@ export default {
         return c.toNumber();
       }
       return 0;
+    },
+    field1 () {
+      if (this.focused === false) {
+        return { 'out-of-focus': false };
+      }
+      if (this.focused === 'field1') {
+        return { 'out-of-focus': false };
+      }
+      return { 'out-of-focus': true };
+    },
+    field2 () {
+      if (this.focused === false) {
+        return { 'out-of-focus': false };
+      }
+      if (this.focused === 'field2') {
+        return { 'out-of-focus': false };
+      }
+      return { 'out-of-focus': true };
     },
     childAccountList () {
       return []
@@ -170,6 +197,18 @@ export default {
       validate(evt, schema, validator);
     },
     */
+    scrollTo (evt) {
+      // this.focused = 'field3';
+      /*
+      const offset  = evt.target.offsetParent.offsetTop + evt.target.offsetParent.offsetHeight + 150;
+      window.scroll({
+        top: offset,
+        left: 0,
+        behaviour: 'smooth',
+      });
+      */
+      // window.location.hash = 'textar';
+    },
     onBtnClicked (val) {
       // @TODO All in check logic
       const { label } = val;

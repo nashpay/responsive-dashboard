@@ -16,15 +16,17 @@
 #app {
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  overflow: hidden;
 }
 
 .app-container {
   background-color: @clr-gray-0;
   margin-top: @app-header-height * 2.8%;
   height: 96% - @app-header-height - @app-footer-height;
+  overflow: hidden;
 }
 
 .clr-red-1 {
@@ -35,9 +37,9 @@
 }
 .app-align-bottom {
   width: 100%;
-  position: absolute;
+  position: fixed; 
   left: 0;
-  bottom: 0;
+  top: 90%;
 }
 
 </style>

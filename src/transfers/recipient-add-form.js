@@ -88,7 +88,6 @@ export default {
   methods: {
     //
     validatorSetup(curAmt) {
-      console.log(`validatorSetup called with ${curAmt}`);
       const validatorCryptoAmount = new validateTypes.Decimal({
         required: true,
         min: BigNumber('0.00'),

@@ -1,16 +1,22 @@
 <template lang="pug">
-.app-popup(:class="popupClass")
-  component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes", cardFullHeight="yes")
-    template(slot="card-content")
-      h1.popup-header {{ popupHeader }}
-      template(v-if="popupPage === 'deposit-landing'")
-        deposit-landing
-      template(v-if="popupPage === 'transfer-landing'")
-        transfer-landing
-  
+.app-popup-wrapper
+  .app-popup(:class="popupClass")
+    component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes", cardFullHeight="yes")
+      template(slot="card-content")
+        h1.popup-header {{ popupHeader }}
+        template(v-if="popupPage === 'deposit-landing'")
+          deposit-landing
+        template(v-if="popupPage === 'transfer-landing'")
+          transfer-landing
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
+.app-popup-wrapper {
+  overflow: hidden;
+}
+.app-popup {
+  overflow: hidden;
+}
 .popup-header {
   padding: 1rem 0rem 1rem 0rem;
   text-align: center;
@@ -27,24 +33,32 @@
   z-index: 4;
   background-color: @clr-gray-0;
   width: 100vw;
-  position: absolute;
-  left: 0;
-  bottom: 0;
+  overflow: hidden;
   
   animation-duration: 0.3s;
   animation-timing-function: linear;
 }
 .app-popup-small {
+  position: absolute;
+  left: 0;
+  top: 50%%;
   height: 50%;
   animation-name: popup-small;
 }
 .app-popup-medium {
+  position: absolute;
+  left: 0;
+  top: 30%%;
   height: 70%;
   animation-name: popup-medium;
 }
 .app-popup-large {
-  height: 90%;
+  position: fixed;
+  left: 0;
+  top: 10%;
+  height: 130%;
   animation-name: popup-large;
+  overflow: hidden;
 }
 
 // Enter Animation
@@ -59,9 +73,9 @@
   100% { height: 70%; }
 }
 @keyframes popup-large {
-  0% { height: 0%; }
-  50% { height: 45%; }
-  100% { height: 90%; }
+  0% { top: 90%; }
+  50% { top: 45%; }
+  100% { top: 10%; }
 }
 
 
