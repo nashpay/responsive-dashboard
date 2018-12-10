@@ -23,8 +23,8 @@
 
 .app-container {
   background-color: @clr-gray-0;
-  margin-top: @app-header-height * 2;
-  height: 100vh - @app-header-height - @app-footer-height;
+  margin-top: @app-header-height * 2.8%;
+  height: 96% - @app-header-height - @app-footer-height;
 }
 
 .clr-red-1 {
@@ -43,7 +43,9 @@
 </style>
 <script>
 
+import ApiStore from './nashcli/store';
 import { Header , Footer, Overlay, Popup } from './navigation';
+import NavStore from './navigation/store';
 
 export default {
   data() {
@@ -59,6 +61,8 @@ export default {
   },
   mounted() {
     this.$nextTick(this.loaded);
+    ApiStore.dispatch('updateRootAccountBalance', { slave: 'default' });
+    ApiStore.dispatch('updateRootAccountTransactions', { slave: 'default' });
   },
   mixins: [
   ],
@@ -73,6 +77,7 @@ export default {
       if (this.$route.matched.length > 0) {
         const routeObj = this.$route.matched[0];
         this.routePath = routeObj.path;
+        NavStore.dispatch('updateActiveTab', routeObj.name);
       } else {
         this.routePath = 'N/A';
       }

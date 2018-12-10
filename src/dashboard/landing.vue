@@ -26,6 +26,7 @@
               v-on:btn-clicked="onBtnClicked",
             )
     </template>
+//
   component-card(cardColor="transparent", cardNoVertPadding="yes")
     <template slot="card-content">
       h2.title.is-5.has-text-centered Recent Transactions
@@ -47,10 +48,6 @@
     
 </template>
 <style lang="less">
-.app-tx-list-wrapper {
-  height: 25vh;
-  overflow-y: scroll;
-}
 </style>
 <script>
 import { Card, Button  } from '../components';
@@ -147,13 +144,9 @@ export default {
   methods: {
     loaded() {
       // Call the Balance endpoint
-      console.log('Call Update Root Account Balance');
-      ApiStore.dispatch('updateRootAccountBalance', { slave: 'default' });
-      ApiStore.dispatch('updateRootAccountTransactions', { slave: 'default' });
     },
     onBtnClicked (val) {
       const { label } = val;
-      console.log(label);
       if (label === 'btn-deposit') {
         NavStore.dispatch('updatePopup', NavTypes.popupEnum.LARGE);
         NavStore.dispatch('updateLayover', NavTypes.layoverEnum.SHOW);

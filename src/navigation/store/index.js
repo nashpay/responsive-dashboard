@@ -1,8 +1,8 @@
 import Vue from 'vue/dist/vue';
 import Vuex from 'vuex';
 import * as types from './mutation-types';
-import * as getters from './getters.js';
-import * as actions from './actions.js';
+import * as getters from './getters';
+import * as actions from './actions';
 
 // Store State
 
@@ -13,6 +13,7 @@ const store = {
   layoverScreen: types.layoverEnum.HIDE,
   popupHeader: '',
   popupPage: '',
+  activeTab: 'dashboardHome',
 };
 
 Vue.use(Vuex);
@@ -29,6 +30,10 @@ const mutations = {
   },
   [types.popupPage](state, val) {
     state.popupPage = val;
+  },
+  [types.activeTab](state, val) {
+    console.log(`Mutating Active Tab to ${val}`);
+    state.activeTab = val;
   },
 };
 

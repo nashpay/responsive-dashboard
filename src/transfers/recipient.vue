@@ -3,14 +3,13 @@
   recipient-add(v-if="recipientList.length === 0 || showRecipientAdd === true") 
   // Show Recipient List
   template(v-if="recipientList.length > 0 && showRecipientAdd === false") 
-    //    
     .app-form
       .field.is-horizontal.app-field
         .field-label.is-normal
           label.label Available
         .field-body
-          h1.title.is-4.box-transfer-balance 0.0001 BTC
-          progress.progress.is-danger.remaining-balance(value="50", max="100")
+          h1.title.is-4.box-transfer-balance {{ recipientAvailable }}  BTC
+          // rogress.progress.is-danger.remaining-balance(value="50", max="100")
     component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes")
       template(slot="card-content")
         nav.level.is-mobile
@@ -69,6 +68,7 @@ import RecipientAdd from './recipient-add.vue';
 import BoxTxOutput from './box-output.vue';
 import { Card, Divider, Checkbox, Button  } from '../components';
 import ApiStore from '../nashcli/store';
+import { BigNumber } from 'bignumber.js';
 
 export default {
   data() {
@@ -76,6 +76,20 @@ export default {
     };
   },
   computed: {
+    recipientAvailable () {
+      const recipientSpent = this.recipientList.reduce((acc, row) => {
+        const safeVal = BigNumber(String(row.amount));
+        return acc.plus(safeVal);
+      }, BigNumber('0.00'));
+      const serverBalance = BigNumber(String(this.accountBalance));
+      return serverBalance.minus(recipientSpent).toString();
+    },
+    accountBalance () {
+       // TODO: Available Balance should be the sum of selected accounts + root Account 
+       // - commited transfers amounts in future.
+       const { available: balanceAvailable } = ApiStore.getters.rootAccountBalance;
+       return balanceAvailable;
+    },
     recipientList () {
       return store.getters.recipientList;
     },

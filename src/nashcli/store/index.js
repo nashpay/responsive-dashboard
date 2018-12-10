@@ -1,8 +1,8 @@
 import Vue from 'vue/dist/vue';
 import Vuex from 'vuex';
 import * as types from './mutation-types';
-import * as getters from './getters.js';
-import * as actions from './actions.js';
+import * as getters from './getters';
+import * as actions from './actions';
 
 // Store State
 

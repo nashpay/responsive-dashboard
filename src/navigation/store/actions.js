@@ -12,3 +12,6 @@ export const updatePopupHeader = ({ commit }, header) => {
 export const updatePopupPage = ({ commit }, page) => {
   commit(types.popupPage, page);
 };
+export const updateActiveTab = ({ commit }, activeTab) => {
+  commit(types.activeTab, activeTab);
+};
