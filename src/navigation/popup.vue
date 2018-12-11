@@ -3,7 +3,7 @@
   .app-popup(:class="popupClass")
     component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes", cardFullHeight="yes")
       template(slot="card-content")
-        h1.popup-header {{ popupHeader }}
+        // h1.popup-header(v-if="formFocusCurrent === false") {{ popupHeader }}
         template(v-if="popupPage === 'deposit-landing'")
           deposit-landing
         template(v-if="popupPage === 'transfer-landing'")
@@ -15,7 +15,6 @@
   overflow: hidden;
 }
 .app-popup {
-  overflow: hidden;
 }
 .popup-header {
   padding: 1rem 0rem 1rem 0rem;
@@ -56,9 +55,14 @@
   position: fixed;
   left: 0;
   top: 10%;
-  height: 130%;
+  /* height: 130%; */
+  height: 90%;
   animation-name: popup-large;
-  overflow: hidden;
+  /* overflow: hidden; */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right: 17px;
+  box-sizing: content-box;
 }
 
 // Enter Animation
@@ -138,7 +142,10 @@ export default {
           'app-popup-large': true,
         };
       }
-    }
+    },
+    formFocusCurrent () {
+      return store.getters.formFocusCurrent;
+    },
   },
   components: {
     'component-card': Card,

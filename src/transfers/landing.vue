@@ -34,6 +34,9 @@
 @import (reference, less) url("../theme/core.less");
 .app-transfer-landing {
   height: 100% - 7rem;
+  ul.steps {
+    padding-top: 1rem;
+  }
   .steps:not(.is-hollow) {
     .steps-marker:not(.is-hollow) {
       background-color: @clr-red;

@@ -18,7 +18,7 @@
         .field.has-addons
           .control
             input.input(
-              type="text", 
+              type="number", 
               v-on:input="validate($event, 'cryptoAmount')",
               v-on:focusin="focusIn('section-2')",
               v-on:focusout="focusOut('section-2')",
@@ -50,18 +50,18 @@
             )
             a#textar
 
-    //
-  //
-    nav.level.is-mobile
-     .level-item
-     .level-right
-       .level-item
-         component-button(
-           bicon='none',
-           btext='Confirm',
-           blabel="btn-recipient-add",
-           v-on:btn-clicked="onBtnClicked",
-         )
+    .app-transfer-add-buffer(v-if="formFocusCurrent === false")
+      //
+      p &nbsp;
+      component-button.app-align-bottom(
+        v-if="cryptoAmountError === false && cryptoAddressError === false",
+        bicon='none',
+        btext='Confirm',
+        bsize="medium",
+        bcat="primary", 
+        blabel="btn-recipient-add",
+        v-on:btn-clicked="onBtnClicked",
+      )
   nav.level.is-mobile(v-if="formFocusCurrent !== false")
     .level-left
       .level-item
@@ -81,20 +81,21 @@
           v-on:btn-clicked='onBtnClicked',
           v-if='formFocusNext !== false',
         )
-  component-button.app-align-bottom(
-    v-if="cryptoAmountError === false && cryptoAddressError === false",
-    bicon='none',
-    btext='Confirm',
-    bsize="medium",
-    bcat="primary", 
-    blabel="btn-recipient-add",
-    v-on:btn-clicked="onBtnClicked",
-  )
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
 .app-transfer-recipient-add {
-  height: 90% - 7rem;
+  /* height: 90% - 7rem; */
+  /*
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right: 17px;
+  box-sizing: content-box;
+  */
+  .app-transfer-add-buffer {
+    height: 2%;
+    padding: 1rem;
+  }
   h1.box-transfer-balance {
     text-align: right;
     margin-bottom: 0;
@@ -255,6 +256,7 @@ export default {
         focusTotal,
       };
       NavStore.dispatch('updateFormFocus', payload);
+      window.moveTo(0, 0);
     },
     focusOut(sectionName) {
       setTimeout(() => {
