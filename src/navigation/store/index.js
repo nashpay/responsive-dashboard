@@ -14,6 +14,11 @@ const store = {
   popupHeader: '',
   popupPage: '',
   activeTab: 'dashboardHome',
+  formFocusCurrent: false,
+  formFocusNext: false,
+  formFocusPrev: false,
+  formFocusIndex: 0,
+  formFocusTotal: 0,
 };
 
 Vue.use(Vuex);
@@ -32,8 +37,23 @@ const mutations = {
     state.popupPage = val;
   },
   [types.activeTab](state, val) {
-    console.log(`Mutating Active Tab to ${val}`);
     state.activeTab = val;
+  },
+  [types.formFocus](state, {
+    focusCurrent,
+    focusNext,
+    focusPrev,
+    focusIndex,
+    focusTotal,
+  }) {
+    const mutation = {
+      formFocusCurrent: focusCurrent,
+      formFocusNext: focusNext,
+      formFocusPrev: focusPrev,
+      formFocusIndex: focusIndex,
+      formFocusTotal: focusTotal,
+    };
+    Object.assign(state, mutation);
   },
 };
 

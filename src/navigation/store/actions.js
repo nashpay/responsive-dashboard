@@ -15,3 +15,15 @@ export const updatePopupPage = ({ commit }, page) => {
 export const updateActiveTab = ({ commit }, activeTab) => {
   commit(types.activeTab, activeTab);
 };
+
+// formProp
+/*
+  focusCurrent,
+  focusNext,
+  focusPrev,
+  focusIndex,
+  focusTotal,
+*/
+export const updateFormFocus = ({ commit }, formProp) => {
+  commit(types.formFocus, formProp);
+};

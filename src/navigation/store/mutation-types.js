@@ -14,3 +14,4 @@ export const layoverScreen = 'LAYOVER_SCREEN';
 export const popupHeader = 'POPUP_HEADER';
 export const popupPage = 'POPUP_PAGE';
 export const activeTab = 'ACTIVE_TAB';
+export const formFocus = 'FORM_FOCUS';

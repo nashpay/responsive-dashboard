@@ -1,6 +1,6 @@
 <template lang="pug">
 .app-transfer-landing
-  ul.steps.is-horizontal.has-content-centered
+  ul.steps.is-horizontal.has-content-centered(v-if="formFocusCurrent === false")
     li.steps-segment(:class="accountStepClass")
       a.has-text-dark(href='#')
         span.steps-marker
@@ -62,6 +62,7 @@ import AccountSelection from './account-selection.vue';
 import TransferRecipient from './recipient.vue';
 import TransferReview from './review.vue';
 import TransferComplete from './complete.vue';
+import NavStore from '../navigation/store';
 
 export default {
   data() {
@@ -96,7 +97,13 @@ export default {
         return { 'is-active': true };
       }
       return { 'is-active': false };
-    }
+    },
+    // Form Focus Store
+    formFocusCurrent () { return NavStore.getters.formFocusCurrent; },
+    formFocusNext () { return NavStore.getters.formFocusNext; },
+    formFocusPrev () { return NavStore.getters.formFocusPrev; },
+    formFocusIndex () { return NavStore.getters.formFocusIndex; },
+    formFocusTotal () { return NavStore.getters.formFocusTotal; },
   },
   components: {
     'account-selection': AccountSelection,

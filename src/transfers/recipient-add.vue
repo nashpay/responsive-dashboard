@@ -1,7 +1,7 @@
 <template lang="pug">
 .app-transfer-recipient-add
   .app-form
-    .field.is-horizontal.app-field(:class="field1")
+    .field.is-horizontal.app-field(:class="section1")
       .field-label.is-normal
         label.label Available
       .field-body
@@ -10,7 +10,7 @@
         h1.title.is-4.box-transfer-balance {{ initAvailable }} BTC
         progress.progress.is-danger.remaining-balance(:value="remainingPct", max="100")
    
-    .field.is-horizontal.app-field(:class="field2")
+    .field.is-horizontal.app-field(:class="section2")
       .field-label.is-normal
         label.label Amount
       .field-body
@@ -20,6 +20,8 @@
             input.input(
               type="text", 
               v-on:input="validate($event, 'cryptoAmount')",
+              v-on:focusin="focusIn('section-2')",
+              v-on:focusout="focusOut('section-2')",
               :value="cryptoAmount",
             )
           .control
@@ -32,7 +34,7 @@
           .control
             a.button USD
         
-    .field.is-horizontal.app-field
+    .field.is-horizontal.app-field(:class="section3")
       .field-label.is-normal
         label.label Address
       .field-body
@@ -42,7 +44,8 @@
             textarea.textarea.crypto-address(
               type="text", 
               v-on:input="validate($event, 'cryptoAddress')",
-              v-on:focusin="scrollTo($event)",
+              v-on:focusin="focusIn('section-3')",
+              v-on:focusout="focusOut('section-3')",
               :value="cryptoAddress",
             )
             a#textar
@@ -59,6 +62,25 @@
            blabel="btn-recipient-add",
            v-on:btn-clicked="onBtnClicked",
          )
+  nav.level.is-mobile(v-if="formFocusCurrent !== false")
+    .level-left
+      .level-item
+        component-button(
+          bicon='none',
+          btext='Prev',
+          blabel='btn-form-prev',
+          v-on:btn-clicked='onBtnClicked',
+          v-if='formFocusPrev !== false',
+        )
+    .level-right
+      .level-item
+        component-button(
+          bicon='none',
+          btext='Next',
+          blabel='btn-form-next',
+          v-on:btn-clicked='onBtnClicked',
+          v-if='formFocusNext !== false',
+        )
   component-button.app-align-bottom(
     v-if="cryptoAmountError === false && cryptoAddressError === false",
     bicon='none',
@@ -100,6 +122,7 @@ import * as types from './store/mutation-types';
 import { Card, Divider, Checkbox, Button  } from '../components';
 import ApiStore from '../nashcli/store';
 import { BigNumber } from 'bignumber.js';
+import NavStore from '../navigation/store';
 
 import RecipientAddMixin from './recipient-add-form';
 
@@ -108,6 +131,8 @@ export default {
     return {
       initAvailable: '0',
       focused: false,
+      // TODO MOve this to store,
+      formFocusBusy: false,
     };
   },
   computed: {
@@ -122,30 +147,10 @@ export default {
       }
       return 0;
     },
-    field1 () {
-      if (this.focused === false) {
-        return { 'out-of-focus': false };
-      }
-      if (this.focused === 'field1') {
-        return { 'out-of-focus': false };
-      }
-      return { 'out-of-focus': true };
-    },
-    field2 () {
-      if (this.focused === false) {
-        return { 'out-of-focus': false };
-      }
-      if (this.focused === 'field2') {
-        return { 'out-of-focus': false };
-      }
-      return { 'out-of-focus': true };
-    },
     childAccountList () {
       return []
     },
     accountBalance () {
-       // TODO: Available Balance should be the sum of selected accounts + root Account 
-       // - commited transfers amounts in future.
        const { available: balanceAvailable } = ApiStore.getters.rootAccountBalance;
        return balanceAvailable;
     },
@@ -156,12 +161,30 @@ export default {
       }, BigNumber('0.00'));
       const serverBalance = BigNumber(String(this.accountBalance));
       const currentSpend = BigNumber(String(this.cryptoAmount));
-      console.log(`RecipientSpent: ${recipientSpent} Server Balance: ${serverBalance} currentSpend: ${currentSpend}`);
       return serverBalance.minus(recipientSpent).minus(currentSpend).toString();
     },
     recipientList () {
       return store.getters.recipientList; 
     },
+    // Popup Form Fields
+    formFocusCurrent () {
+      return NavStore.getters.formFocusCurrent;
+    },
+    formFocusNext () { return NavStore.getters.formFocusNext; },
+    formFocusPrev () { return NavStore.getters.formFocusPrev; },
+    formFocusIndex () { return NavStore.getters.formFocusIndex; },
+    formFocusTotal () { return NavStore.getters.formFocusTotal; },
+    // Form Display Sections
+    section1() {
+      return { 'out-of-focus': this.formFocusCurrent !== false };
+    },
+    section2() {
+      return { 'out-of-focus': (this.formFocusCurrent !== false && this.formFocusCurrent !== 'section-2') };
+    },
+    section3() {
+      return { 'out-of-focus': (this.formFocusCurrent !== false && this.formFocusCurrent !== 'section-3') };
+    },
+    
   },
   components: {
     'component-card': Card,
@@ -197,21 +220,99 @@ export default {
       validate(evt, schema, validator);
     },
     */
+    /*
     scrollTo (evt) {
       // this.focused = 'field3';
-      /*
       const offset  = evt.target.offsetParent.offsetTop + evt.target.offsetParent.offsetHeight + 150;
       window.scroll({
         top: offset,
         left: 0,
         behaviour: 'smooth',
       });
-      */
       // window.location.hash = 'textar';
+    },
+    */
+    focusIn(sectionName) {
+      this.formFocusBusy = false;
+      let focusIndex = -1;
+      let focusNext = false;
+      let focusPrev = false;
+      const focusTotal = 1;
+      const focusCurrent = sectionName;
+      if (sectionName === 'section-2') {
+        focusIndex = 0;
+        focusNext = 1;
+      }      
+      if (sectionName === 'section-3') {
+        focusIndex = 1;
+        focusPrev = 0;
+      }      
+      const payload = {
+        focusCurrent,
+        focusNext,
+        focusPrev,
+        focusIndex,
+        focusTotal,
+      };
+      NavStore.dispatch('updateFormFocus', payload);
+    },
+    focusOut(sectionName) {
+      setTimeout(() => {
+        if (this.formFocusBusy === false) {
+          NavStore.dispatch('updateFormFocus', {
+            focusCurrent: false,
+            focusNext: false,
+            focusPrev: false,
+            focusIndex: 0,
+            focusTotal: 0,
+          });
+        }
+        // TODO Move to Store
+        this.formFocusBusy = false;
+      }, 150);
     },
     onBtnClicked (val) {
       // @TODO All in check logic
       const { label } = val;
+      const mapping = ['section-2', 'section-3'];
+      if (label === 'btn-form-next') {
+        //
+        const newIndex = this.formFocusIndex + 1;
+        let focusNext = false;
+        const nextIndex = newIndex + 1;
+        if (nextIndex < this.formFocusTotal) {
+          focusNext = nextIndex;
+        }
+        NavStore.dispatch('updateFormFocus', {
+          focusCurrent: mapping[newIndex],
+          focusNext,
+          focusPrev: this.formFocusIndex,
+          focusIndex: newIndex,
+          focusTotal: this.formFocusTotal,
+        });
+        // TODO Move to Store
+        this.formFocusBusy = true;
+
+      }
+      if (label === 'btn-form-prev') {
+        //
+        const newIndex = this.formFocusIndex - 1;
+        let focusPrev = false;
+        const prevIndex = newIndex - 1;
+        if (prevIndex > 0) {
+          focusPrev = prevIndex;
+        }
+        const sectionName = mapping[newIndex];
+        NavStore.dispatch('updateFormFocus', {
+          focusCurrent: sectionName,
+          focusNext: this.formFocusIndex,
+          focusPrev,
+          focusIndex: newIndex,
+          focusTotal: this.formFocusTotal,
+        });
+        // TODO Move to Store
+        this.formFocusBusy = true;
+      }
       if (label === 'btn-recipient-add') {
         const sdata = { 
           amount: this.cryptoAmount,
