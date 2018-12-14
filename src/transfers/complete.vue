@@ -21,6 +21,7 @@ import * as types from './store/mutation-types';
 import { Card, Divider, Checkbox, Button  } from '../components';
 import NavStore from '../navigation/store';
 import * as NavTypes from '../navigation/store/mutation-types';
+import { storeActions } from '../utils/objectStore';
 
 export default {
   data() {
@@ -60,8 +61,13 @@ export default {
     loaded() {
     },
     onBtnClicked (label) {
-      // @TODO All in check logic
-      // @TODO All in check logic
+      // Clear Store for Transfers
+      store.dispatch('updateRecipientList', {
+        data: {},
+        action: storeActions.CLEAR,
+      });
+
+      // Update Navigation
       NavStore.dispatch('updatePopup', NavTypes.popupEnum.HIDE);
       NavStore.dispatch('updateLayover', NavTypes.layoverEnum.HIDE);
       NavStore.dispatch('updatePopupHeader', '');

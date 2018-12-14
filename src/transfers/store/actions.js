@@ -3,6 +3,7 @@ import {
   storeCreate,
   storeUpdate,
   storeDelete,
+  storeClear,
   storeActions,
 } from '../../utils/objectStore';
 
@@ -22,6 +23,9 @@ export const updateRecipientList = ({ state, commit }, { data, dataId, action })
   }
   if (action === storeActions.DELETE) {
     val = storeDelete(state.recipientList, dataId);
+  }
+  if (action === storeActions.CLEAR) {
+    val = storeClear();
   }
   commit(types.recipientList, val);
 };

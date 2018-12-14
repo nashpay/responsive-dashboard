@@ -8,6 +8,7 @@ export const storeActions = {
   CREATE: 1,
   UPDATE: 2,
   DELETE: 3,
+  CLEAR: 5,
 };
 
 export const storeCreate = function storeAdd(initState, val) {
@@ -36,4 +37,8 @@ export const storeDelete = function storeDelete(initState, id) {
     workState.splice(findIndex, 1);
   }
   return workState;
+};
+
+export const storeClear = function storeClear() {
+  return [];
 };
