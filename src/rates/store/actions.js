@@ -17,3 +17,7 @@ export const updateAPIKey = ({ commit }, apiKey) => {
 export const updateAPIProvider = ({ commit }, apiProvider) => {
   commit(types.updateAPIProvider, apiProvider);
 };
+
+export const updateBaseCurrency = ({ commit }, baseCurrency) => {
+  commit(types.updateBaseCurrency, baseCurrency);
+};

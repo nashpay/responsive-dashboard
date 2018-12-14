@@ -3,11 +3,12 @@ import Vue from 'vue/dist/vue';
 import VueRouter from 'vue-router';
 // Components
 import App from './app.vue';
-import Dashboard from './dashboard';
-import { Landing as TxLanding } from './transactions';
 import ApiStore from './nashcli/store';
 import RateStore from './rates/store';
 import Hardcodes from './hardcoded';
+import Dashboard from './dashboard';
+import { Landing as TxLanding } from './transactions';
+import { Landing as SettingLanding } from './settings';
 
 // Register Routes with Vue-Router
 Vue.use(VueRouter);
@@ -20,6 +21,7 @@ const router = new VueRouter({
     // Production Paths
     { name: 'dashboardHome', path: '/', component: Dashboard.Landing },
     { name: 'transactionHome', path: '/transaction', component: TxLanding },
+    { name: 'settingHome', path: '/setting', component: SettingLanding },
   ],
 });
 function makeApp() {

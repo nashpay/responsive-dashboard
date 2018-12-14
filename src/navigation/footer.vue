@@ -2,12 +2,15 @@
 <template lang="pug">
 .app-footer
   .columns.is-mobile
-    .column.is-6-mobile.web-footer-tab(v-bind:class="dashboardTabClass")
+    .column.is-4-mobile.web-footer-tab(v-bind:class="dashboardTabClass")
       router-link(:to="{ name: 'dashboardHome' }")
         i.fa.fa-home.footer-icon(aria-hidden="true")
-    .column.is-6-mobile.web-footer-tab(v-bind:class="transactionTabClass")
+    .column.is-4-mobile.web-footer-tab(v-bind:class="transactionTabClass")
       router-link(:to="{ name: 'transactionHome' }")
         i.fa.fa-list.footer-icon(aria-hidden="true")
+    .column.is-4-mobile.web-footer-tab(v-bind:class="settingTabClass")
+      router-link(:to="{ name: 'settingHome' }")
+        i.fa.fa-cog.footer-icon(aria-hidden="true")
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
@@ -56,6 +59,13 @@ export default {
     },
     transactionTabClass() {
       const isActive = NavStore.getters.activeTab === 'transactionHome';
+      return {
+        'tab-active': isActive,
+        'tab-inactive': !isActive,
+      };
+    },
+    settingTabClass() {
+      const isActive = NavStore.getters.activeTab === 'settingHome';
       return {
         'tab-active': isActive,
         'tab-inactive': !isActive,

@@ -41,6 +41,12 @@
   left: 0;
   top: 90%;
 }
+.app-align-bottom-footer {
+  width: 100%;
+  position: fixed; 
+  left: 0;
+  top: 80%;
+}
 
 </style>
 <script>

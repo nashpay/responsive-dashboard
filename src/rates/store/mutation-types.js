@@ -11,3 +11,4 @@ export const fiatEnum = {
 export const updatePrice = 'updatePrice';
 export const updateAPIKey = 'updateAPIKey';
 export const updateAPIProvider = 'updateAPIProvider';
+export const updateBaseCurrency = 'updateBaseCurrency';

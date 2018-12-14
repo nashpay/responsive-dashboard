@@ -25,6 +25,9 @@ const mutations = {
   [types.updateAPIProvider](state, apiProvider) {
     Object.assign(state, { apiProvider });
   },
+  [types.updateBaseCurrency](state, baseCurrency) {
+    Object.assign(state, { baseCurrency });
+  },
 };
 
 export default new Vuex.Store({
