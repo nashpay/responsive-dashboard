@@ -28,6 +28,7 @@ const NETWORK = {
   },
 };
 
+
 export {
   NETWORK_PRECISION,
   NETWORK,

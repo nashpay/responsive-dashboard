@@ -6,9 +6,12 @@ const CRED_STORE = {
   'btc-testnet': 'tprv8g2j6Az852TScPu16TnztUgPhNZ8UKAkDJc4gaxSKEWsXYFURkBgwZrEu3PFJPUSC5TUjkaY8jUvBFeznXUUYKNe7kkJ8SFDmxZejgBizZw',
 };
 
+const CRYPTO_COMPARE_API_KEY = '1ef6bab1b70dbe26bab708e767c94212dfafeadfb1dae773aa4dc133a4620466';
+
 export default {
   API_SERVER_URL,
   API_KEY,
   API_SECRET,
   CRED_STORE,
+  CRYPTO_COMPARE_API_KEY,
 };

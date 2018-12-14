@@ -30,9 +30,9 @@
           i.fa.fa-exchange.exchange-icon(aria-hidden="true")
         .field.has-addons
           .control
-            input.input(type="text", placeholder="0.000")
+            input.input(type="text", placeholder="0.000", :value="amountFiat", disabled)
           .control
-            a.button USD
+            a.button {{ baseFiat }}
         
     .field.is-horizontal.app-field(:class="section3")
       .field-label.is-normal
@@ -114,6 +114,10 @@
   .out-of-focus {
     display: none !important;
   }
+  input:disabled {
+    color: #000;
+    font-weight: 600;
+  }
 }
 </style>
 <script>
@@ -123,7 +127,9 @@ import * as types from './store/mutation-types';
 import { Card, Divider, Checkbox, Button  } from '../components';
 import ApiStore from '../nashcli/store';
 import { BigNumber } from 'bignumber.js';
+import { Decimal } from 'decimal.js';
 import NavStore from '../navigation/store';
+import RateStore from '../rates/store';
 
 import RecipientAddMixin from './recipient-add-form';
 
@@ -185,6 +191,29 @@ export default {
     section3() {
       return { 'out-of-focus': (this.formFocusCurrent !== false && this.formFocusCurrent !== 'section-3') };
     },
+    // Price Box Computed Properties
+    baseFiat () {
+      return RateStore.getters.getBaseCurrency;
+    },
+    amountFiat () {
+      //
+      const providerFiatPrice = RateStore.getters.getFiatPrice;
+      const cryptoAmount = JSON.parse(JSON.stringify(this.cryptoAmount));
+      if (
+        typeof cryptoAmount !== 'undefined'
+        && typeof providerFiatPrice !== 'undefined'
+        && cryptoAmount !== ''
+        && cryptoAmount !== ' '
+        && isNaN(cryptoAmount) === false
+        && isNaN(providerFiatPrice) === false
+      ) {
+        //
+        const amountDec = new Decimal(String(cryptoAmount));
+        const fiatDec = new Decimal(providerFiatPrice);
+        return amountDec.mul(fiatDec).toFixed(2);
+      }
+      return '0.00';
+    }
     
   },
   components: {
@@ -319,8 +348,8 @@ export default {
         const sdata = { 
           amount: this.cryptoAmount,
           address: this.cryptoAddress,
-          amountFiat: '100', // TODO Remove hardcode
-          currencyFiat: 'USD', // TODO Remove hardcode
+          amountFiat: this.amountFiat,
+          currencyFiat: this.baseFiat,
         };
         store.dispatch('updateRecipientList', {
           data: sdata,

@@ -13,7 +13,7 @@
             .level-inner.has-text-right
               p.title.is-6
                 span {{ info.amount }} BTC
-              p.heading.tx-fiat-heading {{ info.amountFiat }} {{ info.currencyFiat }}
+              p.heading.tx-fiat-heading {{ amountFiat }} {{ baseFiat }}
 
 </template>
  <style lang="less">
@@ -53,6 +53,9 @@
 
 </style>
 <script>
+import { Decimal } from 'decimal.js';
+import RateStore from '../rates/store';
+
 export default {
   data() {
     return {
@@ -69,6 +72,32 @@ export default {
       const last = val.substr(-6);
       return `${first}...${last}`;
     }
+  },
+  computed: {
+    // Price Box Computed Properties
+    baseFiat () {
+      return RateStore.getters.getBaseCurrency;
+    },
+    amountFiat () {
+      //
+      const providerFiatPrice = RateStore.getters.getFiatPrice;
+      const cryptoAmount = JSON.parse(JSON.stringify(this.info.amount));
+      if (
+        typeof cryptoAmount !== 'undefined'
+        && typeof providerFiatPrice !== 'undefined'
+        && isNaN(cryptoAmount) === false
+        && isNaN(providerFiatPrice) === false
+      ) {
+        //
+        console.log(`cryptoAmount: ${cryptoAmount}`);
+        console.log(`providerFiatPrice: ${providerFiatPrice}`);
+        const amountDec = new Decimal(String(cryptoAmount));
+        const fiatDec = new Decimal(providerFiatPrice);
+        return amountDec.mul(fiatDec).toFixed(2);
+      }
+      return '0.00';
+    }
+
   },
   components: {
   },

@@ -6,6 +6,7 @@ import App from './app.vue';
 import Dashboard from './dashboard';
 import { Landing as TxLanding } from './transactions';
 import ApiStore from './nashcli/store';
+import RateStore from './rates/store';
 import Hardcodes from './hardcoded';
 
 // Register Routes with Vue-Router
@@ -23,6 +24,9 @@ const router = new VueRouter({
 });
 function makeApp() {
   ApiStore.dispatch('updateCreds', Hardcodes);
+  RateStore.dispatch('updateAPIKey', Hardcodes.CRYPTO_COMPARE_API_KEY);
+  RateStore.dispatch('updateAPIProvider', 'cryptocompare.com');
+  RateStore.dispatch('pollPrices');
   const app = new Vue({
     el: '#app',
     router,
