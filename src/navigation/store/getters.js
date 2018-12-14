@@ -9,3 +9,6 @@ export const formFocusNext = state => state.formFocusNext;
 export const formFocusPrev = state => state.formFocusPrev;
 export const formFocusIndex = state => state.formFocusIndex;
 export const formFocusTotal = state => state.formFocusTotal;
+
+export const modalScreen = state => state.modalScreen;
+export const modalElement = state => state.modalElement;

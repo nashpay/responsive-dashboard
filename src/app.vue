@@ -9,6 +9,7 @@
   app-footer
   app-overlay
   app-popup
+  app-modal
 </template>
 <style lang="less">
 @import (reference, less) url("./theme/core.less");
@@ -52,7 +53,7 @@
 <script>
 
 import ApiStore from './nashcli/store';
-import { Header , Footer, Overlay, Popup } from './navigation';
+import { Header , Footer, Overlay, Popup, Modal } from './navigation';
 import NavStore from './navigation/store';
 import RateStore from './rates/store';
 
@@ -67,6 +68,7 @@ export default {
     'app-footer': Footer,
     'app-overlay': Overlay,
     'app-popup': Popup,
+    'app-modal': Modal,
   },
   mounted() {
     this.$nextTick(this.loaded);

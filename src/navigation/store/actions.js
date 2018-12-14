@@ -27,3 +27,11 @@ export const updateActiveTab = ({ commit }, activeTab) => {
 export const updateFormFocus = ({ commit }, formProp) => {
   commit(types.formFocus, formProp);
 };
+
+export const updateModalElement = ({ commit }, modalElement) => {
+  commit(types.modalElement, modalElement);
+};
+
+export const updateModalScreen = ({ commit }, modalScreen) => {
+  commit(types.modalScreen, modalScreen);
+};

@@ -15,3 +15,10 @@ export const popupHeader = 'POPUP_HEADER';
 export const popupPage = 'POPUP_PAGE';
 export const activeTab = 'ACTIVE_TAB';
 export const formFocus = 'FORM_FOCUS';
+
+export const modalEnum = {
+  HIDE: 0,
+  SHOW: 1,
+};
+export const modalScreen = 'MODAL_SCREEN';
+export const modalElement = 'MODAL_ELEMENT';

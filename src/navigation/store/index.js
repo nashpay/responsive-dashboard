@@ -19,6 +19,11 @@ const store = {
   formFocusPrev: false,
   formFocusIndex: 0,
   formFocusTotal: 0,
+  // Modals
+  modalScreen: types.modalEnum.HIDE,
+  // modalScreen: types.modalEnum.SHOW,
+  // modalElement: 'success',
+  modalElement: '',
 };
 
 Vue.use(Vuex);
@@ -54,6 +59,12 @@ const mutations = {
       formFocusTotal: focusTotal,
     };
     Object.assign(state, mutation);
+  },
+  [types.modalScreen](state, val) {
+    state.modalScreen = val;
+  },
+  [types.modalElement](state, val) {
+    state.modalElement = val;
   },
 };
 
