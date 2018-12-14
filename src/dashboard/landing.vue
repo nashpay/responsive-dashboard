@@ -112,7 +112,6 @@ export default {
   },
   computed: {
     accountBalance() {
-      console.log(ApiStore.getters.rootAccountBalance);
       return ApiStore.getters.rootAccountBalance;
     },
     tabDeposit () {

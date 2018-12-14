@@ -20,11 +20,9 @@ const mutations = {
     state.creds = val;
   },
   [types.setRootAccountBalance](state, val) {
-    console.log(`rootAccountBalance; ${val}`);
     state.rootAccountBalance = val;
   },
   [types.setRootAccountTransactions](state, val) {
-    console.log(`rootAccountTransactions; ${val}`);
     state.rootAccountTransactions = val;
   },
   [types.setRootTXFilter](state, val) {

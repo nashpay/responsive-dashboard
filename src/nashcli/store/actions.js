@@ -74,11 +74,8 @@ export const sendTransferRequest = ({ commit, state }, payload) => {
   co(function* () {
     // TODO: Remove Hardcode
     const sendTransfer = { addresses: payload.addresses, slave: 'default' };
-    console.log(`sendTransferRequest : ${sendTransfer}`);
     const { store: transferStore, types: transferTypes } = payload;
     const transferResp = yield query('transfers', 'makeRequest', sendTransfer, state.creds);
-    console.log('transferResp');
-    console.log(JSON.stringify(transferResp, null, 2));
     transferStore.dispatch('updateTransferResponse', transferResp.res.body);
     transferStore.dispatch('updateTransferStep', transferTypes.stepEnum.REVIEW);
   }).catch((err) => {
@@ -95,14 +92,11 @@ export const signTransferRequest = ({ commit, state }, payload) => {
     const { store: transferStore, types: transferTypes, networkLabel } = payload;
     const transferInfo = transferStore.getters.transferResponse;
     const signed = signTX(transferInfo.txInfo, state.creds.CRED_STORE[networkLabel], networkLabel);
-    transferInfo.txInfo = signed; 
+    transferInfo.txInfo = signed;
     // TODO: Remove Hardcode
     const transferResp = yield query('transfers', 'makeAndSignRequest', transferInfo, state.creds);
-    console.log('transferSign Resp');
-    console.log(JSON.stringify(transferResp, null, 2));
     transferStore.dispatch('updateTransferResponse', transferResp.res.body);
     transferStore.dispatch('updateTransferStep', transferTypes.stepEnum.COMPLETE);
-
   }).catch((err) => {
     if (err) {
       console.log(err);

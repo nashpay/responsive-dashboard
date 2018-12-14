@@ -230,7 +230,6 @@ const runRequest = function* runRequest(endpointInfo, endpointData, headers) {
       //
       const uri = `${process.env.ENDPOINT}${endpointInfo.uri}`;
       const resp = yield request.getAsync(uri, reqOpts);
-      console.log(JSON.stringify(resp.toJSON(), null, 2));
       return resp.toJSON().body;
     }
     if (endpointInfo.method === 'POST') {
@@ -244,10 +243,7 @@ const runRequest = function* runRequest(endpointInfo, endpointData, headers) {
         'X-API-Signature': signature,
       });
       const uri = `${process.env.ENDPOINT}${endpointInfo.uri}`;
-      console.log('Sending req...');
-      console.log(JSON.stringify(reqOpts, null, 2));
       const resp = yield request.postAsync(uri, reqOpts);
-      console.log(JSON.stringify(resp.toJSON(), null, 2));
       return resp.toJSON().body;
     }
   } catch (err) {

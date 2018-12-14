@@ -74,13 +74,10 @@ class ValidateDecimal extends Validator {
   }
 
   checkMax(inputData) {
-    console.log('Check Max Called...');
     const ruleVal = this.ruleset.max;
-    console.log(`ruleVal: ${ruleVal}`);
     // Convert to Number
     const raw = BigNumber(inputData);
     const check = raw.isLessThanOrEqualTo(ruleVal);
-    console.log(`check: ${check}`);
     if (raw.isLessThanOrEqualTo(ruleVal) === true) {
       // Pass
       return { success: true, err: '' };

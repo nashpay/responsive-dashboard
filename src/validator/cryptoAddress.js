@@ -67,8 +67,6 @@ class ValidateCryptoAddress extends Validator {
   checkBitcoinTestnet(inputData) {
     try {
       //
-      console.log('checkBitcoinTestnet...');
-      console.log(NETWORK['btc-testnet']);
       bitcoinlib.address.toOutputScript(inputData, NETWORK['btc-testnet']);
       return { success: true, err: false };
     } catch (err) {

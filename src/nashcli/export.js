@@ -6,22 +6,16 @@ import NodeRSA from 'node-rsa';
 import Bluebird from 'bluebird';
 import request from 'request';
 import stringify from 'json-stable-stringify';
-import Joi from 'joi';
 import bip32 from 'bip32';
 import bitcoinlib from 'bitcoinjs-lib';
 import api from './index';
-import store from './store';
 
 Bluebird.promisifyAll(request);
 //
 const signPayload = function signPayload(payloadStr, secret) {
-  console.log('Signing');
-  console.log('secret');
-  console.log(secret);
   const privKey = new NodeRSA(atob(secret));
   // const encoded = node(secret, Buffer.from(payloadStr));
   const encoded = privKey.encrypt(payloadStr, 'base64');
-  console.log('Done Signing');
   return encoded;
 };
 // TX Signing Stuff
@@ -118,8 +112,6 @@ const signTX = function signTX(txInfo, privKey, networkLabel) {
   return { txinc: txinc.toHex(), allInputs: inputs };
 };
 
-// 
-
 const runRequest = function* runRequest(endpointInfo, endpointData, headers, creds) {
   //
   Object.assign(headers, { 'X-API-KEY': creds.API_KEY });
@@ -128,68 +120,42 @@ const runRequest = function* runRequest(endpointInfo, endpointData, headers, cre
     headers,
     timeout: 30, // 30 seconds timeout
   };
-  console.log('Just Before Request.');
   try {
     if (endpointInfo.method === 'GET') {
       //
       const uri = `${creds.API_SERVER_URL}${endpointInfo.uri}`;
       const resp = yield request.getAsync(uri, reqOpts);
-      console.log(`GET URI ${uri} success...`);
-      console.log(JSON.stringify(resp.toJSON(), null, 2));
       return resp.toJSON();
     }
     if (endpointInfo.method === 'POST') {
-      console.log('Start of POST');
       // Need to Stringify and Sign
       const payloadStr = stringify(endpointData);
-      console.log(payloadStr);
       const signature = signPayload(payloadStr, creds.API_SECRET);
-      console.log('Signature');
-      console.log(signature);
       Object.assign(reqOpts, {
         body: endpointData,
       });
       Object.assign(reqOpts.headers, {
         'X-API-Signature': signature,
       });
-      console.log('Making URI for POST');
       const uri = `${creds.API_SERVER_URL}${endpointInfo.uri}`;
-      console.log('Sending req...');
-      console.log(JSON.stringify(reqOpts, null, 2));
       const resp = yield request.postAsync(uri, reqOpts);
-      console.log(JSON.stringify(resp.toJSON(), null, 2));
       return resp.toJSON();
     }
   } catch (err) {
     if (err) {
-      console.log('Caught dumb error in transfers');
-      console.log(err);
       return false;
     }
   }
+  return false;
 };
 //
 const execRequest = function* execRequest(resource, endpoint, rawPayload, creds) {
-  //
-  console.log(`execRequest called...Resource: ${resource} Endpoint: ${endpoint}`);
-  /*
-  const schema = resource.schema[endpoint](Joi);
-  console.log('schema...');
-  console.log(schema);
-  const sanitized = sanitizeInputs(schema, rawPayload);
-  const { error: vError, value: vRes } = Joi.validate(sanitized, schema);
-  if (vError !== null) {
-    throw Error(vError);
-  }
-  */
   const { payload, headers } = yield resource.hooks[endpoint].preReq(rawPayload, {});
-  console.log('runRequest...');
   const res = yield runRequest(resource.endpoints[endpoint], payload, headers, creds);
   return { res, payload };
 };
 //
 const query = function* query(resource, endpoint, payload, creds) {
-  console.log(`Starting Query Res: ${resource} Endpoint: ${endpoint}`);
   const result = yield execRequest(api[resource], endpoint, payload, creds);
   return result;
 };

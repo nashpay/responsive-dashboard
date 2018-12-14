@@ -1,7 +1,7 @@
 <template lang="pug">
 .app-transfer-review
   //
-  component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes")
+  // component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes")
     template(slot="card-content")
       nav.level.is-mobile
         .level-left
@@ -11,7 +11,7 @@
         .level-right
           .level-item
   //
-  template(v-for="tx in txInputs")
+  // template(v-for="tx in txInputs")
     box-tx(
       :info="tx",
     )
@@ -70,8 +70,6 @@ export default {
     },
     txInputs () {
       const rawResponse = store.getters.transferResponse;
-      console.log('rawResponse for txInputs');
-      console.log(rawResponse);
       if (rawResponse === {}) {
         return [];
       }
@@ -103,8 +101,6 @@ export default {
       if (rawResponse === {}) {
         return [];
       }
-      console.log('rawResponse');
-      console.log(rawResponse);
       const outputs = rawResponse.txOutputs.reduce((acc, row) => {
         if (Object.hasOwnProperty.call(row, 'addressId') === false) {
           return acc.concat({

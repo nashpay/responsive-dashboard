@@ -48,6 +48,7 @@
 import ApiStore from './nashcli/store';
 import { Header , Footer, Overlay, Popup } from './navigation';
 import NavStore from './navigation/store';
+import RateStore from './rates/store';
 
 export default {
   data() {
@@ -65,6 +66,11 @@ export default {
     this.$nextTick(this.loaded);
     ApiStore.dispatch('updateRootAccountBalance', { slave: 'default' });
     ApiStore.dispatch('updateRootAccountTransactions', { slave: 'default' });
+    setInterval(() => {
+      RateStore.dispatch('pollPrices');
+      ApiStore.dispatch('updateRootAccountBalance', { slave: 'default' });
+      ApiStore.dispatch('updateRootAccountTransactions', { slave: 'default' });
+    }, 3000); // Poll every 3 seconds..
   },
   mixins: [
   ],

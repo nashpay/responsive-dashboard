@@ -106,7 +106,6 @@ export default {
     },
     popupClass () {
       const popupState = store.getters.popupScreen;
-      console.log(popupState);
       if (popupState === types.popupEnum.HIDE) {
         //
         return {

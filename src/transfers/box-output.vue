@@ -88,9 +88,6 @@ export default {
         && isNaN(cryptoAmount) === false
         && isNaN(providerFiatPrice) === false
       ) {
-        //
-        console.log(`cryptoAmount: ${cryptoAmount}`);
-        console.log(`providerFiatPrice: ${providerFiatPrice}`);
         const amountDec = new Decimal(String(cryptoAmount));
         const fiatDec = new Decimal(providerFiatPrice);
         return amountDec.mul(fiatDec).toFixed(2);

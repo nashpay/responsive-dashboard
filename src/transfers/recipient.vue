@@ -85,8 +85,6 @@ export default {
       return serverBalance.minus(recipientSpent).toString();
     },
     accountBalance () {
-       // TODO: Available Balance should be the sum of selected accounts + root Account 
-       // - commited transfers amounts in future.
        const { available: balanceAvailable } = ApiStore.getters.rootAccountBalance;
        return balanceAvailable;
     },

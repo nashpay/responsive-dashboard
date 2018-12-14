@@ -48,10 +48,8 @@ export default {
   computed: {
     overlayClass () {
       const overlayState = store.getters.layoverScreen;
-      console.log(overlayState);
       if (overlayState === types.layoverEnum.HIDE) {
         //
-        console.log('Remove layover');
         return {
           'app-overlay-hide': true,
           'app-overlay-show': false,
