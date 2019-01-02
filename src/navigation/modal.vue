@@ -3,11 +3,28 @@
   .app-modal(:class="modalClass")
     component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes", cardFullHeight="yes")
       template(slot="card-content")
-        // h1.popup-header(v-if="formFocusCurrent === false") {{ popupHeader }}
         component-card(v-if="modalElement === 'success'")
           template(slot="card-content")
             h1
               span SUCCESS &nbsp;
+              span
+                i.fa.fa-check
+        component-card(v-if="modalElement === 'fail'")
+          template(slot="card-content")
+            h1
+              span FAIL &nbsp;
+              span
+                i.fa.fa-check
+        component-card(v-if="modalElement === 'saved'")
+          template(slot="card-content")
+            h1
+              span SAVED &nbsp;
+              span
+                i.fa.fa-check
+        component-card(v-if="modalElement === 'pending'")
+          template(slot="card-content")
+            h1
+              span PENDING &nbsp;
               span
                 i.fa.fa-check
          
