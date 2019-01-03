@@ -1,4 +1,7 @@
 // index.js
+// Fix IE
+import 'babel-polyfill';
+
 import Vue from 'vue/dist/vue';
 import VueRouter from 'vue-router';
 // Components

@@ -1,5 +1,5 @@
 <template lang="pug">
-.app-overlay(:class="overlayClass")
+.app-overlay(:class="overlayClass", @click="hideAll")
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
@@ -77,6 +77,10 @@ export default {
   },
   methods: {
     loaded() {
+    },
+    hideAll() {
+      store.dispatch('updateModalElement', types.modalEnum.HIDE);
+      store.dispatch('updateLayover', types.layoverEnum.HIDE);
     },
   },
 };

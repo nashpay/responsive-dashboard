@@ -1,6 +1,8 @@
 import co from 'co';
 import * as types from './mutation-types';
 import providerCryptoCompare from '../cryptocompare';
+import NaviStore from '../../navigation/store';
+import { modalEnum, layoverEnum } from '../../navigation/store/mutation-types';
 
 export const pollPrices = ({ state, commit }) => {
   if (state.apiProvider === 'cryptocompare.com') {
@@ -20,4 +22,7 @@ export const updateAPIProvider = ({ commit }, apiProvider) => {
 
 export const updateBaseCurrency = ({ commit }, baseCurrency) => {
   commit(types.updateBaseCurrency, baseCurrency);
+  NaviStore.dispatch('updateModalScreen', modalEnum.SHOW);
+  NaviStore.dispatch('updateModalElement', 'saved');
+  NaviStore.dispatch('updateLayover', layoverEnum.SHOW);
 };

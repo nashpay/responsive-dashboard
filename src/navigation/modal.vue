@@ -1,5 +1,5 @@
 <template lang="pug">
-.app-modal-wrapper
+.app-modal-wrapper(@click="hideAll")
   .app-modal(:class="modalClass")
     component-card(cardColor="transparent", cardNoVertPadding="yes", cardNoHoriPadding="yes", cardFullHeight="yes")
       template(slot="card-content")
@@ -36,7 +36,7 @@
 }
 .app-modal-active {
   z-index: 5;
-  background-color: @clr-gray-0;
+  /* background-color: @clr-gray-0; */
   width: 100vw;
   overflow: hidden;
   
@@ -119,6 +119,10 @@ export default {
   },
   methods: {
     loaded() {
+    },
+    hideAll() {
+      store.dispatch('updateModalElement', types.modalEnum.HIDE);
+      store.dispatch('updateLayover', types.layoverEnum.HIDE);
     },
   },
 };
