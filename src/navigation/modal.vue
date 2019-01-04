@@ -42,6 +42,7 @@
   
   animation-duration: 0.3s;
   animation-timing-function: linear;
+  animation-name: app-modal;
 }
 .app-modal {
   position: fixed;
@@ -49,7 +50,6 @@
   top: 45%;
   /* height: 130%; */
   height: 20%;
-  animation-name: app-modal;
   /* overflow: hidden; */
   overflow-y: scroll;
   overflow-x: hidden;
@@ -65,9 +65,9 @@
 }
 
 @keyframes app-modal {
-  0% { top: 90%; }
-  50% { top: 75; }
-  100% { top: 45%; }
+  0% { visibility: 0%; }
+  50% { visibility: 50%; }
+  100% { visibility: 100%; }
 }
 
 

@@ -2,6 +2,9 @@ import co from 'co';
 import * as types from './mutation-types';
 import { query, signTX } from '../export';
 
+import NaviStore from '../../navigation/store';
+import { modalEnum as NaviModalEnum, layoverEnum as NaviLayoverEnum } from '../../navigation/store/mutation-types';
+
 export const updateCreds = ({ commit }, val) => {
   commit(types.setCreds, val);
 };
@@ -75,11 +78,20 @@ export const sendTransferRequest = ({ commit, state }, payload) => {
     // TODO: Remove Hardcode
     const sendTransfer = { addresses: payload.addresses, slave: 'default' };
     const { store: transferStore, types: transferTypes } = payload;
+    // Send Request
+    NaviStore.dispatch('updateModalScreen', NaviModalEnum.SHOW);
+    NaviStore.dispatch('updateModalElement', 'pending');
+    NaviStore.dispatch('updateLayover', NaviLayoverEnum.SHOW);
     const transferResp = yield query('transfers', 'makeRequest', sendTransfer, state.creds);
+    // Request Success
+    NaviStore.dispatch('updateModalElement', NaviModalEnum.HIDE);
+    NaviStore.dispatch('updateLayover', NaviLayoverEnum.HIDE);
+    //
     transferStore.dispatch('updateTransferResponse', transferResp.res.body);
     transferStore.dispatch('updateTransferStep', transferTypes.stepEnum.REVIEW);
   }).catch((err) => {
     if (err) {
+      //
       console.log(err);
     }
   });
@@ -94,7 +106,14 @@ export const signTransferRequest = ({ commit, state }, payload) => {
     const signed = signTX(transferInfo.txInfo, state.creds.CRED_STORE[networkLabel], networkLabel);
     transferInfo.txInfo = signed;
     // TODO: Remove Hardcode
+    // Send Request
+    NaviStore.dispatch('updateModalScreen', NaviModalEnum.SHOW);
+    NaviStore.dispatch('updateModalElement', 'pending');
+    NaviStore.dispatch('updateLayover', NaviLayoverEnum.SHOW);
     const transferResp = yield query('transfers', 'makeAndSignRequest', transferInfo, state.creds);
+    // Request Success
+    NaviStore.dispatch('updateModalElement', NaviModalEnum.HIDE);
+    NaviStore.dispatch('updateLayover', NaviLayoverEnum.HIDE);
     transferStore.dispatch('updateTransferResponse', transferResp.res.body);
     transferStore.dispatch('updateTransferStep', transferTypes.stepEnum.COMPLETE);
   }).catch((err) => {
