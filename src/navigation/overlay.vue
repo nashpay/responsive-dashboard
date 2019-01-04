@@ -18,6 +18,9 @@
 }
 .app-overlay-hide {
   display: none;
+  animation-name: fade-out;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
 }
 .app-overlay-show {
   display: block; 
@@ -31,6 +34,11 @@
   0% { opacity: 0.1; }
   50% { opacity: 0.2; }
   100% { opacity: 0.3; display: block; }
+}
+@keyframes fade-out {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.2; }
+  100% { opacity: 0.0; display: none; }
 }
 
 

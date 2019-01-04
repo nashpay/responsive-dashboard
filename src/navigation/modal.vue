@@ -33,6 +33,9 @@
 @import (reference, less) url("../theme/core.less");
 .app-modal-hide {
   display: none;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-name: app-modal-hide;
 }
 .app-modal-active {
   z-index: 5;
@@ -68,6 +71,12 @@
   0% { visibility: 0%; }
   50% { visibility: 50%; }
   100% { visibility: 100%; }
+}
+
+@keyframes app-modal-hide {
+  0% { visibility: 100%; }
+  50% { visibility: 50%; }
+  100% { visibility: 0%; }
 }
 
 
