@@ -1,9 +1,11 @@
 import Decimal from './decimal';
 import CryptoAddress from './cryptoAddress';
+import SimpleText from './simpleText';
 
 const validateTypes = {
   Decimal,
   CryptoAddress,
+  SimpleText,
 };
 const clone = function clone(x) {
   return JSON.parse(JSON.stringify(x));
