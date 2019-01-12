@@ -48,8 +48,7 @@
 }
 </style>
 <script>
-import store from './store';
-import * as types from './store/mutation-types';
+import { store as depositStore, types as dtypes } from './store';
 import AccountSelection from './account-selection.vue';
 import DepositDetail from './detail.vue';
 import DepositResult from './result.vue';
@@ -62,22 +61,22 @@ export default {
   },
   computed: {
     depositStep () {
-      return store.getters.depositStep;
+      return depositStore.getters.depositStep;
     },
     accountStepClass () {
-      if (this.depositStep === types.stepEnum.ACCOUNT) {
+      if (this.depositStep === dtypes.stepEnum.ACCOUNT) {
         return { 'is-active': true };
       }
       return { 'is-active': false };
     },
     detailStepClass () {
-      if (this.depositStep === types.stepEnum.DETAILS) {
+      if (this.depositStep === dtypes.stepEnum.DETAILS) {
         return { 'is-active': true };
       }
       return { 'is-active': false };
     },
     resultStepClass () {
-      if (this.depositStep === types.stepEnum.RESULT) {
+      if (this.depositStep === dtypes.stepEnum.RESULT) {
         return { 'is-active': true };
       }
       return { 'is-active': false };
@@ -100,6 +99,7 @@ export default {
   },
   methods: {
     loaded() {
+      console.log(`Deposit Step: ${this.depositStep}`);
     },
   },
 };

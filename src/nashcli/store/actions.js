@@ -39,7 +39,7 @@ export const updateRootAccountTransactions = ({ commit, state }, payload) => {
       }, -1);
       const newRow = {
         id: row.id,
-        billed: row.amount.toFixed(6),
+        billed: row.amount,
         category: 'deposit',
         amount: received.toFixed(6),
         amountFiat: '63.00',
@@ -55,7 +55,7 @@ export const updateRootAccountTransactions = ({ commit, state }, payload) => {
       const newRow = {
         id: row.id,
         category: 'transfer',
-        amount: row.outputs[0].amt.toFixed(6),
+        amount: row.outputs[0].amt,
         amountFiat: '63.00',
         currencyFiat: 'USD',
         address: row.outputs[0].address,

@@ -87,8 +87,7 @@
 }
 </style>
 <script>
-import store from './store';
-import * as types from './store/mutation-types';
+import { store as depositStore, types as dtypes } from './store';
 import { Card, Divider, Checkbox, Button  } from '../components';
 
 export default {
@@ -120,7 +119,7 @@ export default {
     },
     onBtnClicked (label) {
       // @TODO All in check logic
-      store.dispatch('updateDepositStep', types.stepEnum.RESULT);
+      depositStore.dispatch('updateDepositStep', dtypes.stepEnum.RESULT);
 
     }
   },

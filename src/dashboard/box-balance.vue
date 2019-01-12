@@ -69,12 +69,12 @@ export default {
   },
   props: {
     available: {
-      type: Number,
-      default: 0.000,
+      type: String,
+      default: '0.000',
     },
     pending: {
-      type: Number,
-      default: 0.000,
+      type: String,
+      default: '0.000',
     },
   },
   components: {
