@@ -87,11 +87,10 @@ export default {
   },
   methods: {
     //
-    validatorSetup(curAmt) {
+    validatorSetup() {
       const validatorCryptoAmount = new validateTypes.Decimal({
         required: true,
         min: BigNumber('0.00'),
-        max: BigNumber(curAmt.toString()),
         meta: {
           network: 'btc-testnet',
         },

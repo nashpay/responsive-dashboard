@@ -2,6 +2,7 @@ import Validator from './base';
 
 const ErrorMsg = {
   NO_SPECIAL_SYMBOLS: x => 'No special symbols',
+  REQUIRED: x => 'Required',
 };
 
 const regExNoSpecialSymbols = new RegExp('^[A-z0-9 ]*$', 'g');
