@@ -1,9 +1,9 @@
 <template lang="pug">
 .app-header
   .columns.is-mobile
-    .column.is-3 L
-    .column.is-6 C
-    .column.is-3 R
+    .column.is-3 
+    .column.is-6.top-nav-middle TEST USER C
+    .column.is-3 
 </template>
  <style lang="less">
 @import (reference, less) url("../theme/core.less");
@@ -19,6 +19,11 @@
     padding: @app-header-height / 3.3;
     background-color: @clr-red;
     margin: 0;
+    .top-nav-middle {
+      color: #fff;
+      font-weight: bold;
+      text-align: center;
+    }
   }
 }
 
