@@ -26,7 +26,7 @@ const plugins = [
 const config = {
   input: 'src/index.js',
   output: {
-    file: 'dist/js/bundle.js',
+    file: 'dist/assets/bundle.js',
     format: 'iife',
     sourcemap: true,
   },
