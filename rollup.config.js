@@ -5,13 +5,15 @@ import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import commonjs from 'rollup-plugin-commonjs';
+import css from 'rollup-plugin-css-only';
 // import { uglify } from 'rollup-plugin-uglify';
 
 const production = !process.env.ROLLUP_WATCH;
 
 const plugins = [
-  postcss({ extract: true }),
+  // postcss({ extract: true }),
   vue({ css: false }),
+  css(),
   replace({
     'process.env.NODE_ENV': JSON.stringify('production'),
   }),

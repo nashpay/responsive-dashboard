@@ -1,23 +1,27 @@
 <template>
-<div id="app">
-  <div class="columns">
-    <app-sidebar />
-    <div class="app-container column">
-      <app-header />
-      <router-view />
-      <app-footer />
-    </div>
-  </div>
+<div class="column is-3 app-sidebar">
+  <h1> Sidebar </h1>
 </div>
   
 </template>
 <style lang="less">
-#app {
-  font-family: 'Roboto', sans-serif;
+@import (reference, less) url("../theme/core.less");
+
+.app-sidebar {
+  display: none;
+  background-color: #fafafa;
+  color: @secondary-color;
+  @media @desktop {
+    display: inline-flex;
+    max-width: 16rem;
+  }
+  @media @tablet {
+    display: inline-flex;
+    max-width: 16rem;
+  }
 }
 </style>
 <script>
-import { Header, Footer, Sidebar } from './navigation';
 
 export default {
   data() { 
@@ -25,11 +29,6 @@ export default {
   },
   mounted() {
     this.$nextTick(this.loaded);
-  },
-  components: {
-    'app-header': Header,
-    'app-footer': Footer,
-    'app-sidebar': Sidebar,
   },
   watch: {
     $route(to, from) {
