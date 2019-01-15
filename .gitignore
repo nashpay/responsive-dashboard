@@ -62,3 +62,8 @@ typings/
 
 # ignore built files
 dist/
+
+# ignore swp files
+*.swp
+*.swn
+*.swo

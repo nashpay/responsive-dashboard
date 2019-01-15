@@ -58,7 +58,7 @@ export default {
   data() { 
     return {
       dashboardIndex: { name: 'dashboard-index' },
-      paymentIndex: { name: 'payment-index' },
+      paymentIndex: { name: 'payment-list' },
     };
   },
   mounted() {
