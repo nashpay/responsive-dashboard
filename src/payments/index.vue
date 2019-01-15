@@ -1,14 +1,17 @@
 <template>
-<div class="app-footer">
-  <h1>&nbsp;</h1>
-</div>
-  
+  <div class="container-inner">
+    <h1> Payments </h1>
+    <router-view />
+  </div>
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
-
-.app-footer {
-
+.container-inner {
+  padding: 1rem 0rem 0.75 1.0rem;
+  h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
 }
 </style>
 <script>
@@ -20,8 +23,8 @@ export default {
   mounted() {
     this.$nextTick(this.loaded);
   },
-  components: {
-  },
+  props: [
+  ], 
   watch: {
     $route(to, from) {
       this.loaded();

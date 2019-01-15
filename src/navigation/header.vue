@@ -1,6 +1,20 @@
 <template>
 <div class="app-header">
-  <h1> Header </h1>
+  <div class="app-header-wrap">
+    <nav class="level">
+      <div class="level-left">
+        <i class="fa fa-bars" /> 
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <i class="fa fa-bell-o" />
+        </div>
+        <div class="level-item logout-btn">
+          <p> Logout </p>
+        </div>
+      </div>
+    </nav>
+  </div>
 </div>
   
 </template>
@@ -8,6 +22,23 @@
 @import (reference, less) url("../theme/core.less");
 
 .app-header {
+  /* background-color: @primary-color; */
+  background-color: #fafafa;
+  /* border-bottom: solid 1px @primary-color; */
+  .app-header-wrap {
+    padding: 1.50rem 1rem 1.50rem 1rem;
+    .logout-btn {
+      p {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.25;
+        margin-bottom: -0.2rem;
+        display: block;
+        word-break: break-word;
+        text-align: left;
+      }
+    }
+  }
 }
 </style>
 <script>

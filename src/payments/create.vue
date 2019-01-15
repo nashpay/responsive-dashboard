@@ -1,15 +1,9 @@
 <template>
-<div class="app-footer">
-  <h1>&nbsp;</h1>
-</div>
-  
+  <p>Payment Create</p>
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
 
-.app-footer {
-
-}
 </style>
 <script>
 
@@ -20,8 +14,8 @@ export default {
   mounted() {
     this.$nextTick(this.loaded);
   },
-  components: {
-  },
+  props: [
+  ], 
   watch: {
     $route(to, from) {
       this.loaded();

@@ -14,6 +14,12 @@
 <style lang="less">
 #app {
   font-family: 'Roboto', sans-serif;
+  height: 100%;
+  .columns {
+    .app-container.column {
+      padding: 0.75rem 0rem 0.75rem 0rem;
+    }
+  }
 }
 </style>
 <script>

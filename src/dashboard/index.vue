@@ -1,15 +1,7 @@
 <template>
-<div class="app-footer">
-  <h1>&nbsp;</h1>
-</div>
-  
+  <h1> Dashboard </h1> 
 </template>
 <style lang="less">
-@import (reference, less) url("../theme/core.less");
-
-.app-footer {
-
-}
 </style>
 <script>
 

@@ -1,5 +1,3 @@
-
-import postcss from 'rollup-plugin-postcss';
 import vue from 'rollup-plugin-vue';
 import replace from 'rollup-plugin-replace';
 import resolve from 'rollup-plugin-node-resolve';
@@ -33,6 +31,9 @@ const config = {
     sourcemap: true,
   },
   plugins,
+  watch: {
+    include: 'src/**',
+  },
 };
 
 if (production) {
