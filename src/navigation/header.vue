@@ -23,7 +23,8 @@
 
 .app-header {
   /* background-color: @primary-color; */
-  background-color: #fafafa;
+  /* background-color: #fafafa; */
+  background-color: #fff;
   /* border-bottom: solid 1px @primary-color; */
   .app-header-wrap {
     padding: 1.50rem 1rem 1.50rem 1rem;

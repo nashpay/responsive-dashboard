@@ -52,7 +52,7 @@
         </tr>
       </tfoot>
      <tbody>
-       <tr>
+       <tr @click="paymentDetail(1)">
         <td> 1 </td><td> 1 Jan 2019 22:59 </td><td> 2MuDYfKAKp3XL4EYa5xPBGccqDCBLgBXuJW </td> <td>0.00001</td><td> 2 Confirmations </td>
        </tr>
        <tr>
@@ -147,6 +147,9 @@ export default {
         // 404
       } 
     },
+    paymentDetail(id) {
+      this.$router.push({ name: 'payment-detail', params: { id }});
+    }
   }
 };
 </script>

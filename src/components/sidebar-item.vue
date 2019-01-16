@@ -20,8 +20,8 @@
 @import (reference, less) url("../theme/core.less");
 
 .app-sidebar-item {
-  width: 15rem;
-  background-color: #fff;
+  width: 12.5rem;
+  background-color: #fafafa;
   a {
     color: @gray; 
     .app-sidebar-wrap {

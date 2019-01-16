@@ -16,7 +16,7 @@
 @import (reference, less) url("../theme/core.less");
 
 .app-sidebar-header {
-  width: 15rem;
+  width: 12.5rem;
   /* background-color: @primary-color; */
   background-color: #fafafa;
   display: block;

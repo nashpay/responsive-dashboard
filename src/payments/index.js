@@ -7,7 +7,7 @@ import CreateFail from './create-fail.vue';
 import CreateSuccess from './create-success.vue';
 
 const Routes = [{
-  path: '/payments/',
+  path: '/payments',
   name: 'payment-index',
   component: Index,
   children: [{

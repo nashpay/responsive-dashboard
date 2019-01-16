@@ -38,7 +38,7 @@
 .app-sidebar {
   padding: 0;
   display: none;
-  background-color: #fff;
+  background-color: #fafafa;
   height: 100% - 0.75rem;
   color: @secondary-color;
   @media @desktop {
