@@ -13,7 +13,53 @@
       </ul>
     </nav> 
     <div class="field">
-
+      <label class="label">Account</label>
+      <div class="control">
+        <div class="select">
+          <select>
+            <option>Default</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="field">
+      <label class="label">Reference</label>
+      <div class="control">
+        <input class="input"></input>
+      </div>
+    </div>
+    <div class="field is-grouped">
+      <div class="field">
+        <label class="label">Amount</label>
+        <div class="control">
+          <input class="input is-danger" type="number"></input>
+          <p class="help is-danger">Amount must be a valid number</p>
+        </div>
+      </div>
+      <div class="control">
+        <label class="label">&nbsp;</label>
+        <div class="button">
+          1000.00 USD
+        </div>
+      </div>
+    </div>
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button" @click="createPayment">Create</button>
+      </div>
+      <div class="control">
+        <router-link :to="pageRoute">
+          <button class="button is-text">Cancel</button>
+        </router-link>
+      </div>
+      <!--
+      <div class="control">
+        <router-link :to="{ name: 'payment-create-fail' }">
+          <button class="button is-text">Cancel</button>
+        </router-link>
+      </div>
+      -->
     </div>
   </div>
 </template>
@@ -47,6 +93,9 @@ export default {
       } else {
         // 404
       } 
+    },
+    createPayment() {
+      this.$router.push({ name: 'payment-create-success' });
     },
   }
 };
