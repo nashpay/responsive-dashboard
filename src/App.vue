@@ -19,6 +19,9 @@
     .app-container.column {
       padding: 0.75rem 0rem 0.75rem 0rem;
     }
+    .app-container.column:last-child {
+      padding: 0.75rem 1.50rem 0.75rem 0rem;
+    }
   }
 }
 </style>

@@ -10,6 +10,28 @@
         <li>&nbsp</li>
       </ul>
     </nav> 
+    <nav class="level">
+      <div class="level-left">
+        <div class="level-item">
+          Showing
+        </div>
+        <div class="level-item">
+          <div class="select">
+            <select>
+              <option> 20 </option>
+            </select>
+          </div>
+        </div>
+        <div class="level-item">
+          Entries
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <router-link class="button app-form-create" :to="createRoute"> Create </router-link>
+        </div>
+      </div>
+    </nav>
     <table class="table is-fullwidth">
       <thead>
         <tr>
@@ -103,6 +125,7 @@ export default {
   data() { 
     return {
       pageRoute: { name: 'payment-list' },
+      createRoute: { name: 'payment-create' },
     }
   },
   mounted() {

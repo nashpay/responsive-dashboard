@@ -1,5 +1,21 @@
 <template>
-  <p>Payment Create</p>
+  <div class="container-subrouter">
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <ul>
+        <li>
+          <router-link :to="pageRoute">
+            Home
+          </router-link>
+        </li>
+        <li class="is-active">
+            <a>Create</a>
+        </li>
+      </ul>
+    </nav> 
+    <div class="field">
+
+    </div>
+  </div>
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
@@ -9,7 +25,9 @@
 
 export default {
   data() { 
-    return {};
+    return {
+      pageRoute: { name: 'payment-list' },
+    };
   },
   mounted() {
     this.$nextTick(this.loaded);
