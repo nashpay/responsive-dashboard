@@ -1,9 +1,9 @@
 <template>
 <div class="app-header">
   <div class="app-header-wrap">
-    <nav class="level">
+    <nav class="level is-mobile">
       <div class="level-left">
-        <i class="fa fa-bars" /> 
+        <i class="fa fa-bars" @click="toggleSidebar"/> 
       </div>
       <div class="level-right">
         <div class="level-item">
@@ -43,6 +43,7 @@
 }
 </style>
 <script>
+import NavStore from './store';
 
 export default {
   data() { 
@@ -66,6 +67,14 @@ export default {
       } else {
         // 404
       } 
+    },
+    toggleSidebar() {
+      const currentSidebarStatus = NavStore.getters.sidebarStatus;
+      if (currentSidebarStatus === 0) {
+        NavStore.dispatch('saveSidebarStatus', 1);
+      } else {
+        NavStore.dispatch('saveSidebarStatus', 0);
+      };
     },
   }
 };

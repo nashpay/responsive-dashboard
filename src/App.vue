@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <div class="columns">
+  <div class="columns is-mobile">
     <app-sidebar />
     <div class="app-container column">
       <app-header />
@@ -12,6 +12,7 @@
   
 </template>
 <style lang="less">
+@import (reference, less) url("./theme/core.less");
 #app {
   font-family: 'Roboto', sans-serif;
   height: 100%;
@@ -21,12 +22,15 @@
     }
     .app-container.column:last-child {
       padding: 0.75rem 1.50rem 0.75rem 0rem;
+      @media @tablet {
+        padding: 0.75rem 1.50rem 0.75rem 0rem;
+      }
     }
   }
 }
 </style>
 <script>
-import { Header, Footer, Sidebar } from './navigation';
+import { Header, Footer, Sidebar, store as NavStore } from './navigation';
 
 export default {
   data() { 
@@ -42,6 +46,8 @@ export default {
   },
   watch: {
     $route(to, from) {
+      // Always hide sidebar on route change
+      NavStore.dispatch('saveSidebarStatus', 0);
       this.loaded();
     } 
   },

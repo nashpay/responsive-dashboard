@@ -10,7 +10,7 @@
         <li>&nbsp</li>
       </ul>
     </nav> 
-    <nav class="level">
+    <nav class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
           Showing
