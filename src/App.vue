@@ -19,12 +19,26 @@
   height: 100%;
   .columns {
     .app-container.column {
-      padding: 0.75rem 0rem 0.75rem 0rem;
+      padding: 0.75rem;
     }
-    .app-container.column:last-child {
-      padding: 0.75rem 1.50rem 0.75rem 0rem;
+    .app-container.column:nth-last-child(1) {
+      padding: 0.75rem 1.50rem 0.75rem 1.50rem;
       @media @tablet {
-        padding: 0.75rem 1.50rem 0.75rem 0rem;
+        width: 75%;
+        padding: 0.75rem 1.50rem 0.75rem 0.75rem;
+      }
+      @media @desktop {
+        width: 75%;
+        padding: 0.75rem 1.50rem 0.75rem 0.75rem;
+      }
+    }
+    .app-container.column:nth-last-child(2) {
+      padding: 0.75rem 1.50rem 0.75rem 0.75rem;
+      @media @tablet {
+        padding: 0.75rem 1.50rem 0.75rem 0.75rem;
+      }
+      @media @desktop {
+        padding: 0.75rem 1.50rem 0.75rem 0.75rem;
       }
     }
 	.column:last-child {
