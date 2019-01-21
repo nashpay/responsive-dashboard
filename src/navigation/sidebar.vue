@@ -16,7 +16,7 @@
       v-bind:sidebarStatus="sidebarStatus"
     >
       <template slot="fa-icon">
-        <i class="fa fa-tachometer" />
+        <i class="fa fa-tachometer"/>
       </template>
     </sidebar-item>
     <sidebar-item 
@@ -64,17 +64,32 @@
 .app-sidebar {
   padding: 0;
   color: @secondary-color;
-  height: 100% - 0.75rem;
+  height: 100%;
   /* background-color: #fafafa; */
   background-color: #e5e5e5;
+  @media @desktop {
+    width: 25%;
+  }
+  @media @tablet {
+    width: 25%;
+  }
 }
 .app-sidebar.app-sidebar-show {
+  z-index: 10;
+  /* position: absolute; */
+  position: fixed;
   @media @desktop {
     display: block;
+	z-index: 0;
+	/* position: relative; */
+	position: static;
     max-width: 13rem;
   }
   @media @tablet {
+	z-index: 0;
     display: block;
+	/* position: relative; */
+	position: static;
     max-width: 13rem;
   }
 }
@@ -100,7 +115,7 @@ export default {
       dashboardIndex: { name: 'dashboard-index' },
       paymentIndex: { name: 'payment-list' },
       // Classes
-      baseClass: ['column', 'app-sidebar', 'is-3'],
+      baseClass: ['column', 'app-sidebar'],
     };
   },
   mounted() {

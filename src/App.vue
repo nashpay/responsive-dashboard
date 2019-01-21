@@ -2,6 +2,7 @@
 <div id="app">
   <div class="columns is-mobile">
     <app-sidebar />
+    <app-sidebar-overlay/>
     <div class="app-container column">
       <app-header />
       <router-view />
@@ -26,11 +27,14 @@
         padding: 0.75rem 1.50rem 0.75rem 0rem;
       }
     }
+	.column:last-child {
+	  margin: 0;
+	}
   }
 }
 </style>
 <script>
-import { Header, Footer, Sidebar, store as NavStore } from './navigation';
+import { Header, Footer, Sidebar, SidebarOverlay, store as NavStore } from './navigation';
 
 export default {
   data() { 
@@ -43,6 +47,7 @@ export default {
     'app-header': Header,
     'app-footer': Footer,
     'app-sidebar': Sidebar,
+    'app-sidebar-overlay': SidebarOverlay,
   },
   watch: {
     $route(to, from) {
