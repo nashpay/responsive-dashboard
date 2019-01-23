@@ -1,5 +1,6 @@
 import { Decimal } from 'decimal.js';
 
+
 const ERROR_MSG = {
   NOT_A_NUMBER: x => `${x} is not a number`,
   MIN: y => x => `${x} is lesser than ${y}`,
@@ -7,8 +8,9 @@ const ERROR_MSG = {
 };
 
 const ruleMin = (opts = {}) => (x) => {
-  const n = new Decimal(opts.value.toString(), { precision: opts.places });
-  const y = new Decimal(x.toString(), { precision: opts.places });
+  const { value, eqs, ...decOpts } = opts;
+  const n = new Decimal(value.toString(), decOpts);
+  const y = new Decimal(x.toString(), decOpts).round();
   if (y.lessThan(n)) {
     return ERROR_MSG.MIN(n);
   }
@@ -16,9 +18,11 @@ const ruleMin = (opts = {}) => (x) => {
 };
 
 const ruleMax = (opts = {}) => (x) => {
-  const n = new Decimal(opts.value.toString(), { precision: opts.places });
-  const y = new Decimal(x.toString(), { precision: opts.places });
-  if (y.greaterThan(n)) {
+  const { value, eqs = true, ...decOpts } = opts;
+  const n = new Decimal(value.toString(), decOpts);
+  const y = new Decimal(x.toString(), decOpts).round();
+  const res = eqs ? y.greaterThan(n) : y.greaterThanOrEqualTo(n);
+  if (res) {
     return ERROR_MSG.MAX(n);
   }
   return true;

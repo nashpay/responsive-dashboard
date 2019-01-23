@@ -1,4 +1,5 @@
 import decimalRuleMap from './rules/decimal';
+import textRuleMap from './rules/text';
 
 
 const ERROR_MSG = {
@@ -15,6 +16,7 @@ const ruleRequired = (opts = {}) => (x) => {
 const ruleMap = {
   required: ruleRequired,
   ...decimalRuleMap,
+  ...textRuleMap,
 };
 //
 const engine = (opts = {}) => (y) => {

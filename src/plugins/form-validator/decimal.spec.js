@@ -18,7 +18,7 @@ describe('Decimal', () => {
       assert.equal(res[1]('amount'), 'amount is required');
     });
     it('calculate to 9.dp', () => {
-      const decimal = Decimal({ places: 9 });
+      const decimal = Decimal({ precision: 9 });
       const a1 = decimal('0.00000001234');
       assert.equal(a1, true);
     });
@@ -26,7 +26,7 @@ describe('Decimal', () => {
   describe('Minimum Rule', () => {
     it('return true for numbers > min', () => {
       const validator = Decimal({
-        rules: { min: { places: 4, value: '0' } },
+        rules: { min: { precision: 4, value: '0' } },
       });
       const r1 = validator('-1');
       const r2 = validator('0');
@@ -40,7 +40,7 @@ describe('Decimal', () => {
   describe('Maximum Rule', () => {
     it('return true for numbers < max', () => {
       const validator = Decimal({
-        rules: { max: { places: 4, value: '0' } },
+        rules: { max: { precision: 4, value: '0' } },
       });
       const r1 = validator('-1');
       const r2 = validator('0');
@@ -55,8 +55,8 @@ describe('Decimal', () => {
     it('return true for numbers < max', () => {
       const validator = Decimal({
         rules: {
-          max: { places: 4, value: '100' },
-          min: { places: 4, value: '0' },
+          max: { precision: 4, value: '100' },
+          min: { precision: 4, value: '0' },
         },
       });
       const r1 = validator('2');

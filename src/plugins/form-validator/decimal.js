@@ -2,7 +2,8 @@ import ruleEngine from './base';
 
 export default (userOpts = {}) => {
   const defaultConfig = {
-    places: 2,
+    precision: 2,
+    rounding: 0,
   };
   const defaultRuleSet = {
     max: false,
