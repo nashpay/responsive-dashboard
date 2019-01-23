@@ -1,7 +1,7 @@
 import bitcoinlib from 'bitcoinjs-lib';
 
-const regexNoSpecialSymbols = new RegExp('[^a-zA-Z0-9 -]*', 'g');
-const regexAlphaNumeric = new RegExp('[^a-zA-Z0-9]*', 'g');
+const regexNoSpecialChars = new RegExp('[^a-zA-Z0-9 -]', 'gm');
+const regexAlphaNumeric = new RegExp('[^a-zA-Z0-9]', 'gm');
 
 const NETWORK = {
   'btc-live': {
@@ -35,13 +35,14 @@ const ERROR_MSG = {
 };
 
 const ruleNoSpecialChars = (opts = {}) => (x) => {
-  if (regexNoSpecialSymbols.exec(x) === null) {
+  const res = regexNoSpecialChars.test(x);
+  if (res === true || x.indexOf('?') > -1) {
     return ERROR_MSG.NO_SPECIAL_CHARS;
   }
   return true;
 };
 const ruleAlphaNumeric = (opts = {}) => (x) => {
-  if (regexAlphaNumeric.exec(x) === null) {
+  if (regexAlphaNumeric.exec(x) !== null) {
     return ERROR_MSG.ALPHA_NUMERIC;
   }
   return true;
