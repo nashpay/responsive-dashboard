@@ -4,7 +4,7 @@ export default (userOpts = {}) => {
   const defaultConfig = {
   };
   const defaultRuleSet = {
-    noSpecialChars: true,
+    alphaNumeric: true,
     cryptoAddress: true,
   };
   const opts = {
