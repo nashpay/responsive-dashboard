@@ -13,6 +13,8 @@
 		  </li>
 		</ul>
 	  </nav> 
+     <napp-form v-bind:formFields="formFields" />
+      <!--
 	  <div class="field">
 		<label class="label">Account</label>
 		<div class="control">
@@ -56,32 +58,29 @@
 		  </router-link>
 		</div>
 	  </div>
+    -->
 	</div>
-    </div>
+  </div>
 </template>
 <style lang="less">
 @import (reference, less) url("../theme/core.less");
 @import (less, reference) url("../theme/form.less");
-/* TODO Export this later */
-.napp-form-wrapper {
-  .field {
-	.control {
-	  input.input {
-		max-width: 10rem;
-	  }
-	  select {
-		width: 10rem;
-	  }
-	}
-  }
-}
 </style>
 <script>
+import Form from '../components/forms/index.vue';
+
+const formFields = [{
+  label: 'Amount',
+  category: 'currency',
+}];
+
+console.log(formFields);
 
 export default {
   data() { 
     return {
       pageRoute: { name: 'payment-list' },
+      formFields,
     };
   },
   mounted() {
@@ -93,6 +92,9 @@ export default {
     $route(to, from) {
       this.loaded();
     } 
+  },
+  components: {
+    'napp-form': Form,
   },
   methods: {
     loaded() {

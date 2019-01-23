@@ -8,10 +8,16 @@ const ERROR_MSG = {
 };
 
 const ruleMin = (opts = {}) => (x) => {
-  const { value, eqs, ...decOpts } = opts;
+  const {
+    value,
+    eqs,
+    rounded,
+    ...decOpts
+  } = opts;
   const n = new Decimal(value.toString(), decOpts);
-  const y = new Decimal(x.toString(), decOpts).round();
-  if (y.lessThan(n)) {
+  const y = new Decimal(x.toString(), decOpts);
+  const cmp = y.lessThan(n);
+  if (cmp) {
     return ERROR_MSG.MIN(n);
   }
   return true;
@@ -29,7 +35,8 @@ const ruleMax = (opts = {}) => (x) => {
 };
 
 const ruleNotNumber = (opts = {}) => (x) => {
-  if (isNaN(x)) {
+  const res = isNaN(x);
+  if (res) {
     return ERROR_MSG.NOT_A_NUMBER;
   }
   return true;
