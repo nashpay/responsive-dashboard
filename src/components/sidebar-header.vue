@@ -85,7 +85,6 @@ export default {
   computed: {
     clsSidebarHeader() {
       const toggleClass = this.sidebarStatus === 0 ? 'app-sidebar-header-hide': null;
-      console.log(`toggleClass for sidebar header: ${toggleClass}`);
       return [...this.baseClassHeader, toggleClass];
     },
   },

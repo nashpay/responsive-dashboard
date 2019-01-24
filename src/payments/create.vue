@@ -16,8 +16,8 @@
      <napp-form 
        v-bind:formFields="formFields"
        v-bind:formStore="formStore"
+       v-bind:formConfig="formConfig"
      />
-     <p> ValidCreate? {{ validCreate }} </p>
       <!--
       <div class="field">
         <label class="label">Account</label>
@@ -74,19 +74,26 @@
 import Form from '../components/forms/index.vue';
 import storeCreateForm from './store.create-form.js';
 
-const formFields = [{
-  label: 'Amount',
-  category: 'currency',
-}];
-
-console.log(formFields);
+const formData = {
+  formFields: [{
+    label: 'Amount',
+    category: 'currency',
+  }, {
+    label: 'Reference',
+    category: 'text',
+  }],
+  formConfig: {
+    'btnOKLabel': 'Create',
+    'btnCancelLabel': 'Cancel',
+  },
+  formStore: storeCreateForm,
+};
 
 export default {
   data() { 
     return {
       pageRoute: { name: 'payment-list' },
-      formFields,
-      formStore: storeCreateForm,
+      ...formData,
     };
   },
   mounted() {

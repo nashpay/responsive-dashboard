@@ -4,6 +4,7 @@ export default (userOpts = {}) => {
   const defaultConfig = {
   };
   const defaultRuleSet = {
+    required: true,
     noSpecialChars: true,
   };
   const opts = {
