@@ -8,7 +8,7 @@
           v-on:input="updateVal"
           v-bind:value="fieldValue"
         />
-        <p class="help is-danger" v-if="fieldError !== null"> {{ fieldError }}</p>
+        <p class="help is-danger" v-if="fieldError !== false"> {{ fieldError }}</p>
       </div>
     </div>
     <div class="control">
@@ -40,7 +40,7 @@ export default {
   data() { 
     return {
        fieldValue: 0,
-       fieldError: null,
+       fieldError: false,
     };
   },
   mounted() {
@@ -76,8 +76,16 @@ export default {
         const errorMsg = res.reduce((acc, row) => `${acc}\n${row(this.label)}`, '');
         this.fieldError = errorMsg;
       } else {
-        this.fieldError = null;
+        this.fieldError = false;
       }
+      this.$emit('formOutput', {
+        values: {
+          [this.label]: this.fieldValue,
+        },
+        errors: {
+          [this.label]: this.fieldError,
+        },
+      });
     },
   }
 };

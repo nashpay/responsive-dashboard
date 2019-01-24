@@ -3,7 +3,7 @@
   <div class="app-header-wrap">
     <nav class="level is-mobile">
       <div class="level-left">
-        <i class="fa fa-bars" @click="toggleSidebar"/> 
+        <i class="fa fa-bars" @click="toggleSidebar"/>
       </div>
       <div class="level-right">
         <div class="level-item">

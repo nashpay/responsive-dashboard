@@ -15,14 +15,14 @@
 /* TODO Export this later */
 .napp-form-wrapper {
   .field {
-	.control {
-	  input.input {
-		max-width: 10rem;
-	  }
-	  select {
-		width: 10rem;
-	  }
-	}
+    .control {
+      input.input {
+        max-width: 10rem;
+      }
+      select {
+        width: 10rem;
+      }
+    }
   }
 }
 </style>
@@ -44,6 +44,7 @@ export default {
   },
   props: [
     'formFields',
+    'formStore',
   ], 
   watch: {
     $route(to, from) {
@@ -55,8 +56,12 @@ export default {
       //
       console.log(this.formFields);
     },
-    formOutput() {
-
+    formOutput({ values, errors }) {
+      // Update the Store
+      const newValues = { ...this.formStore.values, ...values };
+      this.formStore.dispatch('saveValues', newValues);
+      const newErrors = { ...this.formStore.errors, ...errors };
+      this.formStore.dispatch('saveErrors', newErrors);
     },
   }
 };

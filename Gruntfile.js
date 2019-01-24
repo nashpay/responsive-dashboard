@@ -39,6 +39,7 @@ module.exports = function (grunt) {
           transform: [
             ['babelify', {
               presets: ['es2015'],
+              // presets: ['preset-env'],
               plugins: [
                 'transform-runtime',
                 'transform-es2015-spread',
