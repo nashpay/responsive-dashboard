@@ -23,7 +23,12 @@
   "homepage": "https://github.com/nashpay/responsive-dashboard#readme",
   "dependencies": {
     "bitcoinjs-lib": "^4.0.2",
+    "bluebird": "^3.5.3",
+    "co": "^4.6.0",
     "decimal.js": "^10.0.2",
+    "json-stable-stringify": "^1.0.1",
+    "node-rsa": "^1.0.3",
+    "request": "^2.88.0",
     "vue": "^2.5.22",
     "vue-router": "^3.0.2",
     "vueify": "^9.4.1",
@@ -49,6 +54,7 @@
     "grunt-contrib-pug": "^2.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "less": "^3.9.0",
+    "nock": "^10.0.6",
     "postcss": "^7.0.11",
     "sinon": "^7.2.2"
   }

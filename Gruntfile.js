@@ -3,9 +3,11 @@ module.exports = function (grunt) {
     babel: {
       options: {
         sourceMap: true,
-        presets: ['env', 'stage-2'],
+        presets: ['es2015'],
         plugins: [
           'transform-runtime',
+          'transform-es2015-spread',
+          'transform-object-rest-spread',
         ],
       },
       debug: {
@@ -16,6 +18,12 @@ module.exports = function (grunt) {
             src: ['**/*.js'],
             dest: 'dist',
             ext: '.js',
+          },
+          {
+            expand: true,
+            cwd: 'src/plugins',
+            src: ['**/*.js', '**/*.spec.js'],
+            dest: 'dist/plugins',
           },
         ],
       },
