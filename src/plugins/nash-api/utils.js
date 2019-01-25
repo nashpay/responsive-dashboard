@@ -24,30 +24,24 @@ const query = ({ opts, creds }) => function* execQuery({
     if (method === 'GET') {
       const resp = yield request.getAsync(uri, reqOpts);
       const { statusCode, body: replyBody } = resp.toJSON();
-      console.log(`statusCode: ${statusCode}`);
-      console.log(replyBody);
       return { success: true, statusCode, body: replyBody };
     }
     if (method === 'POST') {
       const bodyStr = stringify(body);
       const signature = creds.signBody(bodyStr);
-      console.log(`signature: ${signature}`);
-      const resp = yield request.postAsync(uri, {
+      const postOpts = {
         json: true,
         headers: {
           'x-api-signature': signature,
           'x-api-key': creds.API_KEY,
         },
         body,
-      });
+      };
+      const resp = yield request.postAsync(uri, postOpts);
       const { statusCode, body: replyBody } = resp.toJSON();
-      console.log(`statusCode: ${statusCode}`);
-      console.log(replyBody);
       return { success: true, statusCode, body: replyBody };
     }
   } catch (err) {
-    console.log('Some Error');
-    console.log(err);
     return { success: false, err };
   }
   return { success: false, err: new Error('Method not supported') };

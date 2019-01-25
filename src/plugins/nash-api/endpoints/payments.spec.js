@@ -58,7 +58,6 @@ describe('NASH API v1 Payments', () => {
       }))
         .then(({ success, body }) => {
           assert.equal(success, true);
-          console.log(body);
           done();
         }).catch(done);
     });
