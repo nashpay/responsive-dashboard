@@ -8,10 +8,10 @@ import CreateSuccess from './create-success.vue';
 
 const Routes = [{
   path: '/payments',
-  name: 'payment-index',
+  // name: 'payment-index',
   component: Index,
   children: [{
-    path: ':id',
+    path: 'detail/:id',
     name: 'payment-detail',
     component: Detail,
   }, {
@@ -19,11 +19,11 @@ const Routes = [{
     name: 'payment-list',
     component: List,
   }, {
-    path: ':id/delete',
+    path: 'detail/:id/delete',
     name: 'payment-detail-delete',
     component: DetailDelete,
   }, {
-    path: 'create',
+    path: 'create/',
     name: 'payment-create',
     component: Create,
   }, {

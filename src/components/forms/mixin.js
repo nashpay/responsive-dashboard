@@ -33,5 +33,8 @@ export default (formData) => ({
     formBtnOk(evt) {
       this.formHooks.btnOk.call(this, evt);
     },
+    formBtnCancel(evt) {
+      this.formHooks.btnCancel.call(this, evt);
+    },
   }
 });

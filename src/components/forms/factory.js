@@ -12,6 +12,7 @@ export default (validator) => ({
     'label',
     'name',
     'errorMsg',
+    'defaultValue',
   ], 
   watch: {
     $route(to, from) {
@@ -20,12 +21,9 @@ export default (validator) => ({
   },
   methods: {
     loaded() {
-      //
-      if(this.$route.matched.length > 0) {
-        // Update NavStore
-      } else {
-        // 404
-      } 
+      if (typeof this.defaultValue !== 'undefined' && this.defaultValue !== null) {
+        this.updateVal({ target: { value: this.defaultValue }});
+      }
     },
     updateVal(evt) {
       const val = JSON.parse(JSON.stringify(evt.target.value));

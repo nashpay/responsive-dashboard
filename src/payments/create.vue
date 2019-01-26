@@ -17,6 +17,7 @@
        v-bind:formFields="formFields"
        v-bind:formConfig="formConfig"
        v-on:btnOk="formBtnOk"
+       v-on:btnCancel="formBtnCancel"
      />
     </div>
   </div>
@@ -81,7 +82,9 @@ const formData = {
         });
     },
     btnCancel () {
-
+	  this.$router.push({
+		name: 'payment-list',
+	  });
     },
   },
 };

@@ -5,12 +5,14 @@
         v-if="field.category === 'currency'"
         v-bind:label="field.label"
         v-bind:name="field.name"
+        v-bind:defaultValue="field.defaultValue"
         v-on:formOutput="formOutput"
       />
       <input-text
         v-if="field.category === 'text'"
         v-bind:label="field.label"
         v-bind:name="field.name"
+        v-bind:defaultValue="field.defaultValue"
         v-on:formOutput="formOutput"
       />
     </template>
@@ -81,6 +83,8 @@ export default {
   },
   methods: {
     loaded() {
+      // Apply Defaults
+      
     },
     formOutput({ values, errors }) {
       // Update the Store
