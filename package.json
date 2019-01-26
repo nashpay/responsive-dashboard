@@ -29,7 +29,7 @@
     "json-stable-stringify": "^1.0.1",
     "node-rsa": "^1.0.1",
     "request": "^2.88.0",
-    "ursa": "^0.9.4",
+    "ursa": "https://github.com/JoshKaufman/ursa",
     "vue": "^2.5.22",
     "vue-router": "^3.0.2",
     "vueify": "^9.4.1",

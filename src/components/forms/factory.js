@@ -10,6 +10,7 @@ export default (validator) => ({
   },
   props: [
     'label',
+    'name',
     'errorMsg',
   ], 
   watch: {
@@ -42,10 +43,10 @@ export default (validator) => ({
       }
       this.$emit('formOutput', {
         values: {
-          [this.label]: this.fieldValue,
+          [this.name]: this.fieldValue,
         },
         errors: {
-          [this.label]: this.fieldError,
+          [this.name]: this.fieldError,
         },
       });
     },

@@ -15,54 +15,9 @@
       </nav> 
      <napp-form 
        v-bind:formFields="formFields"
-       v-bind:formStore="formStore"
        v-bind:formConfig="formConfig"
+       v-on:btnOk="formBtnOk"
      />
-      <!--
-      <div class="field">
-        <label class="label">Account</label>
-        <div class="control">
-          <div class="select">
-            <select>
-              <option>Default</option>
-              <option>Account 1</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      
-      <div class="field">
-        <label class="label">Reference</label>
-        <div class="control">
-          <input class="input"></input>
-        </div>
-      </div>
-      <div class="field is-grouped">
-        <div class="field">
-          <label class="label">Amount</label>
-          <div class="control">
-            <input class="input is-danger" type="number"></input>
-            <p class="help is-danger">Amount must be a valid number</p>
-          </div>
-        </div>
-        <div class="control">
-          <label class="label">&nbsp;</label>
-          <div class="button">
-            1000.00 USD
-          </div>
-        </div>
-      </div>
-      <div class="field is-grouped">
-        <div class="control">
-          <button class="button" @click="createPayment">Create</button>
-        </div>
-        <div class="control">
-          <router-link :to="pageRoute">
-            <button class="button is-text">Cancel</button>
-          </router-link>
-        </div>
-      </div>
-    -->
     </div>
   </div>
 </template>
@@ -71,61 +26,45 @@
 @import (less, reference) url("../theme/form.less");
 </style>
 <script>
-import Form from '../components/forms/index.vue';
-import storeCreateForm from './store.create-form.js';
+import FormMixin from '../components/forms/mixin';
+import storeAuth from '../auth/store';
 
 const formData = {
   formFields: [{
     label: 'Amount',
     category: 'currency',
+    name: 'amount',
   }, {
     label: 'Reference',
     category: 'text',
+    name: 'customerReference',
   }],
   formConfig: {
     'btnOKLabel': 'Create',
     'btnCancelLabel': 'Cancel',
   },
-  formStore: storeCreateForm,
+  formHooks: {
+    btnOK ({ amount, customerReference }) {
+      // @TODO Remove hardcoded values.
+      const defaultParams = {
+        currency: 'BTC',
+        fiatCurrency: 'USD',
+        fiatAmount: '10.00',
+        timestamp: '1580181343',
+        network: 'testnet',
+      };
+      /*
+      (async () => {
+        const result = await storeAuth.state.connector.createPayment({ ...defaultParams, amount, customerReference });
+        console.log(result); 
+      })();
+      */
+    },
+    btnCancel () {
+
+    },
+  },
 };
 
-export default {
-  data() { 
-    return {
-      pageRoute: { name: 'payment-list' },
-      ...formData,
-    };
-  },
-  mounted() {
-    this.$nextTick(this.loaded);
-  },
-  props: [
-  ], 
-  watch: {
-    $route(to, from) {
-      this.loaded();
-    } 
-  },
-  computed: {
-    validCreate () {
-      return storeCreateForm.getters.isValid;
-    },
-  },
-  components: {
-    'napp-form': Form,
-  },
-  methods: {
-    loaded() {
-      //
-      if(this.$route.matched.length > 0) {
-        // Update NavStore
-      } else {
-        // 404
-      } 
-    },
-    createPayment() {
-      this.$router.push({ name: 'payment-create-success' });
-    },
-  }
-};
+export default FormMixin(formData);
 </script>

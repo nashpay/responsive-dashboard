@@ -9,7 +9,6 @@ import App from './App.vue';
 Vue.use(VueRouter);
 
 function main() {
-  console.log('Running main...');
   const app = new Vue({
     el: '#app',
     router,

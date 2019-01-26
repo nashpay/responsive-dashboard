@@ -41,9 +41,9 @@
         padding: 0.75rem 1.50rem 0.75rem 0.75rem;
       }
     }
-	.column:last-child {
-	  margin: 0;
-	}
+    .column:last-child {
+      margin: 0;
+    }
   }
 }
 </style>
@@ -77,6 +77,7 @@ export default {
         // Update NavStore
       } else {
         // 404
+        console.log('No Route Matched...');
       } 
     },
   }

@@ -3,14 +3,19 @@
   <div class="app-header-wrap">
     <nav class="level is-mobile">
       <div class="level-left">
-        <i class="fa fa-bars" @click="toggleSidebar"/>
+        <i class="fa fa-bars" v-on:click="toggleSidebar"/>
       </div>
       <div class="level-right">
         <div class="level-item">
           <i class="fa fa-bell-o" />
         </div>
-        <div class="level-item logout-btn">
-          <p> Logout </p>
+        <div class="level-item auth-btn">
+          <router-link :to="{ name: 'auth-login' }" v-if="isAuth === false">
+            <div class="button"> Login </div>
+          </router-link>
+          <router-link to="/auth/logout" v-else="">
+            <div class="button"> Logout </div>
+          </router-link>
         </div>
       </div>
     </nav>
@@ -44,6 +49,7 @@
 </style>
 <script>
 import NavStore from './store';
+import AuthStore from '../auth/store';
 
 export default {
   data() { 
@@ -51,6 +57,11 @@ export default {
   },
   mounted() {
     this.$nextTick(this.loaded);
+  },
+  computed: {
+    isAuth() {
+      return AuthStore.getters.isAuth;
+    },
   },
   components: {
   },
