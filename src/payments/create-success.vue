@@ -20,14 +20,14 @@
     <div class="card app-payment-card">
       <div class="card-image">
         <figure class="image is-square">
-          <img src="https://nash-qa-qr.s3.ap-southeast-1.amazonaws.com/qr-2bbab3e4-b259-442a-aa92-64342ab865bf">
+          <img :src="`https://nash-qa-qr.s3.ap-southeast-1.amazonaws.com/${qr}`">
         </figure>
       </div>
       <div class="card-content">
         <div class="media">
           <div class="media-content">
-            <p class="title is-4">0.0001 BTC</p>
-            <p class="subtitle is-6">2NEYd7YghfKaHDa18Kf1z3KovsfzbkNh7pB</p>
+            <p class="title is-4">{{ amount }} {{ currency }}</p>
+            <p class="subtitle is-6">{{ address }}</p>
           </div>
         </div>
       </div>
@@ -78,6 +78,11 @@ export default {
     this.$nextTick(this.loaded);
   },
   props: [
+    'amount',
+    'currency',
+    'address',
+    'qr',
+    'expiry',
   ], 
   watch: {
     $route(to, from) {
@@ -86,7 +91,6 @@ export default {
   },
   methods: {
     loaded() {
-      //
       if(this.$route.matched.length > 0) {
         // Update NavStore
       } else {

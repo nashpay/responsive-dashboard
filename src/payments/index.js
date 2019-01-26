@@ -30,6 +30,7 @@ const Routes = [{
     path: 'create/success',
     name: 'payment-create-success',
     component: CreateSuccess,
+    props: route => ({ ...route.query }),
   }, {
     path: 'create/fail',
     name: 'payment-create-fail',

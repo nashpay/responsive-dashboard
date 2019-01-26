@@ -28,6 +28,7 @@
 <script>
 import FormMixin from '../components/forms/mixin';
 import storeAuth from '../auth/store';
+import co from 'co';
 
 const formData = {
   formFields: [{
@@ -37,14 +38,14 @@ const formData = {
   }, {
     label: 'Reference',
     category: 'text',
-    name: 'customerReference',
+    name: 'customerRef',
   }],
   formConfig: {
     'btnOKLabel': 'Create',
     'btnCancelLabel': 'Cancel',
   },
   formHooks: {
-    btnOK ({ amount, customerReference }) {
+    btnOk ({ amount, customerRef }) {
       // @TODO Remove hardcoded values.
       const defaultParams = {
         currency: 'BTC',
@@ -53,18 +54,39 @@ const formData = {
         timestamp: '1580181343',
         network: 'testnet',
       };
-      /*
-      (async () => {
-        const result = await storeAuth.state.connector.createPayment({ ...defaultParams, amount, customerReference });
-        console.log(result); 
-      })();
-      */
+      const body = { ...defaultParams, amount, customerRef };
+
+      co(storeAuth.state.connector.createPayment({ body }))
+        .then(({ statusCode, success: httpSuccess, body: httpBody }) => {
+          if (Object.hasOwnProperty.call(httpBody, 'err') === false) {
+            // Request Success!
+            // Redirect to Payment Create Success Page
+            this.$router.push({
+              name: 'payment-create-success',
+              query: {
+                amount: body.amount,
+                currency: body.currency,
+                address: httpBody.address,
+                qr: httpBody.qrLink.split('.com/')[1],
+                expiry: httpBody.expiry,
+              },
+            });
+          } else {
+
+          }
+        }).catch((err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
     },
     btnCancel () {
 
     },
   },
 };
-
-export default FormMixin(formData);
+const otherConfig = {
+  pageRoute: { name: 'payment-list' },
+};
+export default FormMixin({ ...formData, ...otherConfig });
 </script>

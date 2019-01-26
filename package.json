@@ -24,6 +24,7 @@
   "dependencies": {
     "bitcoinjs-lib": "^4.0.2",
     "bluebird": "^3.5.3",
+    "buffer": "^5.2.1",
     "co": "^4.6.0",
     "decimal.js": "^10.0.2",
     "json-stable-stringify": "^1.0.1",
