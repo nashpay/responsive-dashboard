@@ -39,7 +39,7 @@ describe('NASH API v1 Payments', () => {
       }).get('/api/v1/payments?limit=30&before_id=1')
         .reply(200, []);
 
-      co(api.listPayments({ queryString: { limit: 30, before_id: 1 } })))
+      co(api.listPayments({ queryString: { limit: 30, before_id: 1 } }))
         .then(({ success, body }) => {
           nockListPayment.done();
           assert.equal(success, true);

@@ -11,7 +11,7 @@ const endpoints = {
       resourceUri: '/api/v1/payments',
       method: 'POST',
       queryString,
-      ...body,
+      body,
     });
   },
 };
