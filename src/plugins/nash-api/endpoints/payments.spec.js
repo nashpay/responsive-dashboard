@@ -31,6 +31,21 @@ describe('NASH API v1 Payments', () => {
           done();
         }).catch(done);
     });
+    it('should call list payments endpoints with before_id and limit arguments', (done) => {
+      const nockListPayment = nock(host, {
+        reqheaders: {
+          'x-api-key': API_KEY,
+        },
+      }).get('/api/v1/payments?limit=30&before_id=1')
+        .reply(200, []);
+
+      co(api.listPayments({ queryString: { limit: 30, before_id: 1 } })))
+        .then(({ success, body }) => {
+          nockListPayment.done();
+          assert.equal(success, true);
+          done();
+        }).catch(done);
+    });
   });
   describe('Create Payments', () => {
     it('should call list payments endpoints with no arguments', (done) => {

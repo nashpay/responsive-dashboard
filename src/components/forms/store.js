@@ -29,7 +29,7 @@ const getters = {
     const errorNum = Object.keys(state.errors)
       .reduce((acc, label) => acc.concat(state.errors[label]), [])
       .filter(x => x !== false);
-    if(errorNum.length > 0) {
+    if (errorNum.length > 0) {
       return false;
     }
     return true;

@@ -7,8 +7,9 @@ Bluebird.promisifyAll(request);
 
 const query = ({ opts, creds }) => function* execQuery({
   resourceUri,
-  method, queryString,
-  ...body
+  method,
+  queryString,
+  body,
 }) {
   const { host } = opts;
   const reqOpts = {
@@ -16,6 +17,7 @@ const query = ({ opts, creds }) => function* execQuery({
     headers: {
       'x-api-key': creds.API_KEY,
     },
+    qs: queryString,
     // timeout: 30,
     ...opts,
   };
