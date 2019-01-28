@@ -15,7 +15,7 @@ describe('NASH API v1 Payments', () => {
       host,
     });
   });
-  describe('List Payments', () => {
+  describe('Get Payments', () => {
     it('should call list payments endpoints with no arguments', (done) => {
       const nockListPayment = nock(host, {
         reqheaders: {
@@ -24,7 +24,7 @@ describe('NASH API v1 Payments', () => {
       }).get('/api/v1/payments')
         .reply(200, []);
 
-      co(api.listPayments({}))
+      co(api.getPayments({}))
         .then(({ success, body }) => {
           nockListPayment.done();
           assert.equal(success, true);
@@ -39,7 +39,7 @@ describe('NASH API v1 Payments', () => {
       }).get('/api/v1/payments?limit=30&before_id=1')
         .reply(200, []);
 
-      co(api.listPayments({ queryString: { limit: 30, before_id: 1 } }))
+      co(api.getPayments({ queryString: { limit: 30, before_id: 1 } }))
         .then(({ success, body }) => {
           nockListPayment.done();
           assert.equal(success, true);

@@ -52,6 +52,14 @@
         </tr>
       </tfoot>
      <tbody>
+       <tr v-for="pageItem in pageView">
+         <td> {{ pageItem.id }} </td>
+         <td> {{ pageItem.created_at }} </td>
+         <td> {{ pageItem.address }} </td>
+         <td> {{ pageItem.amount }} </td>
+         <td> {{ pageItem.state }} </td>
+       </tr>
+       <!--
        <tr @click="paymentDetail(1)">
         <td> 1 </td><td> 1 Jan 2019 22:59 </td><td> 2MuDYfKAKp3XL4EYa5xPBGccqDCBLgBXuJW </td> <td>0.00001</td><td> 2 Confirmations </td>
        </tr>
@@ -70,11 +78,26 @@
        <tr>
         <td> 1 </td><td> 1 Jan 2019 22:59 </td><td> 2MuDYfKAKp3XL4EYa5xPBGccqDCBLgBXuJW </td> <td>0.00001</td><td> 2 Confirmations </td>
        </tr>
+       -->
      </tbody>
     </table>
     <nav class="level">
-      <div class="level-item"><p>&nbsp;</p></div>
+      <div class="level-left">
+        <router-link
+          v-if="typeof beforeIdPrev !== 'undefined'"
+          :to="{ name: 'payment-list', query: { beforeId: beforeIdPrev }}"
+        >
+          <div class="button">Prev</div>
+        </router-link>
+      </div>
       <div class="level-right">
+        <router-link
+          v-if="beforeIdNext !== false"
+          :to="{ name: 'payment-list', query: { beforeId: beforeIdNext, beforeIdPrev: beforeId }}"
+        >
+          <div class="button">Next</div>
+        </router-link>
+        <!--
         <div class="level-item pagination-wrapper">
           <nav class="pagination is-centered" role="navigation" aria-label="navigation">
             <a class="pagination-previous"> &lt; </a>
@@ -91,6 +114,7 @@
 
           </nav>
         </div>
+        -->
       </div>
     </nav>
   </div>
@@ -120,6 +144,7 @@
 }
 </style>
 <script>
+import ListStore from './list.store';
 
 export default {
   data() { 
@@ -132,20 +157,47 @@ export default {
     this.$nextTick(this.loaded);
   },
   props: [
+    'beforeId',
+    'beforeIdPrev',
   ], 
   watch: {
     $route(to, from) {
       this.loaded();
-    } 
+    },
+    beforeIdHighest(to, from) {
+	  this.$router.push({ name: 'payment-list', query: { beforeId: to } });
+    },
+  },
+  computed: {
+    pageView() {
+      return ListStore.getters.pageView;
+    },
+    beforeIdHighest() {
+      return ListStore.getters.beforeIdHighest;
+    },
+    beforeIdNext() {
+      return ListStore.getters.beforeIdNext;
+    }
   },
   methods: {
     loaded() {
-      //
-      if(this.$route.matched.length > 0) {
-        // Update NavStore
-      } else {
-        // 404
-      } 
+     // Reload and get payments
+     if (ListStore.getters.beforeIdHighest === null) {
+	   ListStore.dispatch('loadPayments');
+     }
+     if (this.beforeId !== null && typeof this.beforeId !== 'undefined') {
+       if (this.beforeId <= this.beforeIdHighest) {
+         ListStore.dispatch('getPayments', { beforeId: this.beforeId });
+       } else if (this.beforeId > this.beforeIdHighest) {
+         ListStore.dispatch('getPayments', { beforeId: this.beforeIdHighest });
+       }
+     } else {
+       ListStore.dispatch('getPayments', { beforeId: this.beforeIdHighest });
+     }
+     if (this.beforeIdPrev !== null && typeof this.beforeIdPrev !== 'undefined') {
+       console.log(ListStore.actions);
+       ListStore.dispatch('saveBeforeIdPrev', this.beforeIdPrev);
+     }
     },
     paymentDetail(id) {
       this.$router.push({ name: 'payment-detail', params: { id }});

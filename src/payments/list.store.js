@@ -8,34 +8,68 @@ import storeAuth from '../auth/store';
 Vue.use(Vuex);
 
 
-const schema = ['paymentView', 'lastId', 'beforeId', 'pageLimit'];
+const schema = ['pageView', 'beforeIdCurrent', 'beforeIdNext', 'beforeIdPrev', 'beforeIdHighest', 'pageLimit'];
 
 const storeArgs = storeFactory(schema);
 
 //
-const stateReducer = state => (k) => {
-  const keyList = Object.keys(state[k]);
-  const poj = keyList.reduce((acc, key) => ({ ...acc, [key]: state[k][key] }), {});
-  return poj;
-  // Object.keys(state[k]).reduce((acc, x) => ({ ...acc, [x]: state[k][x] }), {});
-};
-const defaultReducer = state => k => defaultVal => (state[k] === 'STORE_DEFAULT' ? defaultVal : stateReducer(state)(k));
+const defaultReducer = state => k => defaultVal => (state[k] === 'STORE_DEFAULT' ? defaultVal : state[k]);
 
 const getters = {
-  paginationLimit: state => defaultReducer(state)('limit')(20),
-  paginationBeforeId: state => defaultReducer(state)('beforeId')(null),
-
+  pageLimit: state => defaultReducer(state)('pageLimit')(20),
+  beforeIdHighest: state => defaultReducer(state)('beforeIdHighest')(null),
+  beforeIdCurrent: state => defaultReducer(state)('beforeIdCurrent')(null),
+  beforeIdNext: state => defaultReducer(state)('beforeIdNext')(false),
+  beforeIdPrev: state => defaultReducer(state)('beforeIdPrev')(null),
+  pageView: state => defaultReducer(state)('pageView')([]),
 };
 
 const actions = {
-  getPayments({ commit, state }) {
+  loadPayments({ commit, state }) {
     co(storeAuth.state.connector.getPayments({
       queryString: {
-        before_id: state.beforeId,
-        limit: state.pageLimit,
+        limit: 1,
       },
-    })).then((result) => {
-      console.log(result);
+    })).then(({ statusCode, success, body }) => {
+      console.log('Loaded payments.');
+      if (statusCode === 200 && success === true && Object.hasOwnProperty.call(body, 'err') === false) {
+        console.log(body);
+        if (body.length > 0) {
+          const firstRow =  body[0];
+          console.log('Highest ID');
+          console.log(firstRow.id);
+          commit('BEFORE_ID_HIGHEST', firstRow.id);
+        } else {
+          commit('BEFORE_ID_HIGHEST', -1); // No entries yet.
+        }
+      }
+    }).catch((err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  },
+  getPayments({ commit, state }, { beforeId }) {
+    co(storeAuth.state.connector.getPayments({
+      queryString: {
+        before_id: beforeId,
+        limit: getters.pageLimit(state),
+      },
+    })).then(({ statusCode, success, body }) => {
+      console.log('Got payments.');
+      const pageLimit = getters.pageLimit(state);
+      if (statusCode === 200 && success === true && Object.hasOwnProperty.call(body, 'err') === false) {
+        commit('PAGE_VIEW', body);
+        const firstRow = body[0];
+        commit('BEFORE_ID_CURRENT', firstRow.id);
+        const lastRow = body[(body.length - 1)];
+        if (body.length === pageLimit) {
+          commit('BEFORE_ID_NEXT', lastRow.id);
+        } else {
+          commit('BEFORE_ID_NEXT', false);
+        }
+        
+      }
     }).catch((err) => {
       if (err) {
         console.log(err);
@@ -44,7 +78,10 @@ const actions = {
   },
 };
 
-const store = new Vuex.Store({ ...storeArgs, getters, actions });
+console.log(storeArgs.actions);
+const storeActions = { actions: { ...storeArgs.actions, ...actions } };
+console.log(storeActions);
+const store = new Vuex.Store({ ...storeArgs, getters, ...storeActions });
 
 
 export default store;

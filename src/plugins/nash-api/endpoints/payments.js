@@ -1,5 +1,5 @@
 const endpoints = {
-  listPayments: queryFn => function listPayments({ queryString }) {
+  getPayments: queryFn => function listPayments({ queryString }) {
     return queryFn({
       resourceUri: '/api/v1/payments',
       method: 'GET',

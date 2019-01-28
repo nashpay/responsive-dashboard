@@ -18,6 +18,7 @@ const Routes = [{
     path: '',
     name: 'payment-list',
     component: List,
+    props: route => ({ ...route.query }),
   }, {
     path: 'detail/:id/delete',
     name: 'payment-detail-delete',
