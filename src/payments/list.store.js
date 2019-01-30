@@ -8,7 +8,7 @@ import storeAuth from '../auth/store';
 Vue.use(Vuex);
 
 
-const schema = ['pageView', 'beforeIdCurrent', 'beforeIdNext', 'beforeIdPrev', 'beforeIdHighest', 'pageLimit'];
+const schema = ['pageView', 'beforeIdNext', 'beforeIdPrev', 'pageLimit'];
 
 const storeArgs = storeFactory(schema);
 
@@ -23,32 +23,6 @@ const getters = {
 };
 
 const actions = {
-  /*
-  loadPayments({ commit, state }) {
-    co(storeAuth.state.connector.getPayments({
-      queryString: {
-        limit: 1,
-      },
-    })).then(({ statusCode, success, body }) => {
-      if (statusCode === 200 && success === true && Object.hasOwnProperty.call(body, 'err') === false) {
-        const { results, prevId, nextId } = body;
-        /*
-        if (body.length > 0) {
-          const firstRow =  body[0];
-          console.log('Highest ID');
-          console.log(firstRow.id);
-          commit('BEFORE_ID_HIGHEST', firstRow.id);
-        } else {
-          commit('BEFORE_ID_HIGHEST', -1); // No entries yet.
-        }
-      }
-    }).catch((err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-  },
-  */
   getPayments({ commit, state }, { beforeId }) {
     const pageLimit = getters.pageLimit(state);
     co(storeAuth.state.connector.getPayments({

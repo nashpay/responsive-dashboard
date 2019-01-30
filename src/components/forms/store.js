@@ -1,9 +1,8 @@
 import Vue from 'vue/dist/vue';
 import Vuex from 'vuex';
+import { storeFactory } from '../../plugins/store-factory';
 
 Vue.use(Vuex);
-
-import { storeFactory } from '../../plugins/store-factory';
 
 const schema = [
   'values',
@@ -12,15 +11,13 @@ const schema = [
 
 const storeArgs = storeFactory(schema);
 
-const stateReducer = state => k => {
+const stateReducer = state => (k) => {
   const keyList = Object.keys(state[k]);
-  const poj = keyList.reduce((acc, key) => {
-    return { ...acc, [key]: state[k][key]};
-  }, {});
+  const poj = keyList.reduce((acc, key) => ({ ...acc, [key]: state[k][key] }), {});
   return poj;
   // Object.keys(state[k]).reduce((acc, x) => ({ ...acc, [x]: state[k][x] }), {});
 };
-const defaultReducer = state => k => defaultVal => state[k] === 'STORE_DEFAULT' ? defaultVal: stateReducer(state)(k);
+const defaultReducer = state => k => defaultVal => (state[k] === 'STORE_DEFAULT' ? defaultVal : stateReducer(state)(k));
 
 const getters = {
   // default sidebarStatus is 0, Hide
