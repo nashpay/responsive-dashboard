@@ -22,7 +22,7 @@
         </div>
       </div>
     </nav>
-    <table class="table is-fullwidth">
+    <table class="table is-fullwidth napp-resource-table">
       <thead>
         <slot name="table-column-header" />
       </thead>
@@ -33,6 +33,9 @@
        <slot name="table-row" />
      </tbody>
     </table>
+    <div class="napp-resource-card"> 
+      <slot name="card-row" />
+    </div>
     <nav class="level">
       <div class="level-left">
         <router-link
@@ -56,6 +59,26 @@
 <style lang="less">
 @import (reference, less) url("../../theme/core.less");
 @import (less, reference) url("../../theme/form.less");
+/* Only Show Table in IPAD and Above */
+.napp-resource-table {
+  display: none;
+  @media @desktop {
+    display: block;
+  }
+  @media @tablet {
+    display: block;
+  }
+}
+.napp-resource-card {
+  display: block;
+  @media @desktop {
+    display: none;
+  }
+  @media @tablet {
+    display: none;
+  }
+}
+
 </style>
 <script>
 import storeFactory from './store';
@@ -98,13 +121,20 @@ export default {
   methods: {
     loaded() {
       if (this.resourceStore === false) {
-        this.resourceStore = storeFactory(this.endpoint);
-        console.log(this.resourceStore);
-      }
-      if (this.beforeId !== null && typeof this.beforeId !== 'undefined') {
-        this.resourceStore.dispatch('getResource', { beforeId: this.beforeId });
+        if(typeof this.endpoint !== 'undefined' && this.endpoint !== null) {
+          this.resourceStore = storeFactory(this.endpoint);
+          if (this.beforeId !== null && typeof this.beforeId !== 'undefined') {
+            this.resourceStore.dispatch('getResource', { beforeId: this.beforeId });
+          } else {
+            this.resourceStore.dispatch('getResource', { beforeId: 0 });
+          }
+        }
       } else {
-        this.resourceStore.dispatch('getResource', { beforeId: 0 });
+        if (this.beforeId !== null && typeof this.beforeId !== 'undefined') {
+          this.resourceStore.dispatch('getResource', { beforeId: this.beforeId });
+        } else {
+          this.resourceStore.dispatch('getResource', { beforeId: 0 });
+        }
       }
     },
   }

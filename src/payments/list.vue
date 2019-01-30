@@ -33,6 +33,28 @@
        <td> {{ pageItem.amount }} </td>
        <td> {{ pageItem.state }} </td>
      </tr>
+     <div slot="card-row">
+       <div class="card tx-card" v-for="pageItem in pageView">
+         <div class="card-content">
+           <nav class="level is-mobile">
+             <div class="level-left has-text-left">
+               <p class="subtitle is-5"> {{ pageItem.address | shorten-address }} </p>
+               <p>
+                 <span class="tag is-light" v-if="pageItem.state === '1001'">Created</span>
+                 <span class="tag is-success" v-if="pageItem.state === '1003'">Confirmed</span>
+                 <span class="tag is-danger" v-if="pageItem.state === '1005'">Failed</span>
+               </p>
+             </div> 
+             <div class="level-right">
+               <p class="subtitle is-5">
+                 <i class="fa fa-plus" />
+                 <span> {{ pageItem.amount }} </span>
+               </p>
+             </div> 
+           </nav>
+         </div>
+       </div>
+     </div>
    </resource-view>
   </div>
 </template>
@@ -58,6 +80,12 @@
   .level-item.pagination-wrapper {
     padding-right: 3.25em;
   }
+  .card.tx-card {
+    font-size: 1.0rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    background-color: #fff;
+    height: 4.8rem;
+  }
 }
 </style>
 <script>
@@ -81,6 +109,13 @@ export default {
   props: [
     'beforeId',
   ], 
+  filters: {
+    'shorten-address' (val) {
+      const first = val.substr(0, 5);
+      const last = val.substr(-5);
+      return `${first}...${last}`;
+    }
+  },
   watch: {
     $route(to, from) {
       this.loaded();
