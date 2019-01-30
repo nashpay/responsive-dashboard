@@ -84,7 +84,7 @@
     <nav class="level">
       <div class="level-left">
         <router-link
-          v-if="typeof beforeIdPrev !== 'undefined'"
+          v-if="beforeIdPrev !== false"
           :to="{ name: 'payment-list', query: { beforeId: beforeIdPrev }}"
         >
           <div class="button">Prev</div>
@@ -93,7 +93,7 @@
       <div class="level-right">
         <router-link
           v-if="beforeIdNext !== false"
-          :to="{ name: 'payment-list', query: { beforeId: beforeIdNext, beforeIdPrev: beforeId }}"
+          :to="{ name: 'payment-list', query: { beforeId: beforeIdNext }}"
         >
           <div class="button">Next</div>
         </router-link>
@@ -158,7 +158,6 @@ export default {
   },
   props: [
     'beforeId',
-    'beforeIdPrev',
   ], 
   watch: {
     $route(to, from) {
@@ -172,31 +171,20 @@ export default {
     pageView() {
       return ListStore.getters.pageView;
     },
-    beforeIdHighest() {
-      return ListStore.getters.beforeIdHighest;
-    },
     beforeIdNext() {
       return ListStore.getters.beforeIdNext;
+    },
+    beforeIdPrev() {
+      return ListStore.getters.beforeIdPrev;
     }
   },
   methods: {
     loaded() {
      // Reload and get payments
-     if (ListStore.getters.beforeIdHighest === null) {
-	   ListStore.dispatch('loadPayments');
-     }
      if (this.beforeId !== null && typeof this.beforeId !== 'undefined') {
-       if (this.beforeId <= this.beforeIdHighest) {
-         ListStore.dispatch('getPayments', { beforeId: this.beforeId });
-       } else if (this.beforeId > this.beforeIdHighest) {
-         ListStore.dispatch('getPayments', { beforeId: this.beforeIdHighest });
-       }
+       ListStore.dispatch('getPayments', { beforeId: this.beforeId });
      } else {
-       ListStore.dispatch('getPayments', { beforeId: this.beforeIdHighest });
-     }
-     if (this.beforeIdPrev !== null && typeof this.beforeIdPrev !== 'undefined') {
-       console.log(ListStore.actions);
-       ListStore.dispatch('saveBeforeIdPrev', this.beforeIdPrev);
+       ListStore.dispatch('getPayments', { beforeId: 0 });
      }
     },
     paymentDetail(id) {

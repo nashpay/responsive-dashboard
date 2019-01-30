@@ -22,7 +22,7 @@ describe('NASH API v1 Payments', () => {
           'x-api-key': API_KEY,
         },
       }).get('/api/v1/payments')
-        .reply(200, []);
+        .reply(200, { results: [], nextId: false, prevId: false });
 
       co(api.getPayments({}))
         .then(({ success, body }) => {
@@ -37,7 +37,7 @@ describe('NASH API v1 Payments', () => {
           'x-api-key': API_KEY,
         },
       }).get('/api/v1/payments?limit=30&before_id=1')
-        .reply(200, []);
+        .reply(200, { results: [], nextId: false, prevId: false });
 
       co(api.getPayments({ queryString: { limit: 30, before_id: 1 } }))
         .then(({ success, body }) => {
