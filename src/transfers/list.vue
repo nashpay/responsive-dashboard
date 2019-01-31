@@ -11,8 +11,8 @@
       </ul>
     </nav> 
    <resource-view 
-     endpoint="getPayments"
-     paginationRoute="payment-list"
+     endpoint="getTransfers"
+     paginationRoute="transfer-list"
      :createRoute="createRoute"
      :beforeId="beforeId"
      v-on:pageViewChange="updatePageView"
@@ -30,22 +30,22 @@
      <tr slot="table-row" v-for="pageItem in pageView">
        <td> {{ pageItem.id }} </td>
        <td> {{ pageItem.created_at }} </td>
-       <td> {{ pageItem.address }} </td>
-       <td> {{ pageItem.amount }} </td>
+       <td> {{ pageItem.outputs[0].address }} </td>
+       <td> {{ pageItem.outputs[0].amt }} </td>
        <td> {{ pageItem.state }} </td>
      </tr>
      <div slot="card-row">
        <div class="card tx-card" v-for="pageItem in pageView">
          <div class="card-content">
-           <p class="card-tx-row"> {{ pageItem.address | shorten-address }} </p>
+           <p class="card-tx-row"> {{ pageItem.outputs[0].address | shorten-address }} </p>
            <p class="card-tx-row">
-             <span class="tag is-light" v-if="pageItem.state === '1001'">Created</span>
-             <span class="tag is-success" v-if="pageItem.state === '1003'">Confirmed</span>
-             <span class="tag is-danger" v-if="pageItem.state === '1005'">Failed</span>
+             <span class="tag is-light" v-if="pageItem.state === '1201'">Created</span>
+             <span class="tag is-success" v-if="pageItem.state === '1203'">Confirmed</span>
+             <span class="tag is-danger" v-if="pageItem.state === '1205'">Failed</span>
            </p>
            <p class="card-tx-row">
              <i class="fa fa-plus" />
-             <span> {{ pageItem.amount }} </span>
+             <span> {{ pageItem.outputs[0].amt }} </span>
            </p>
            <!--
            <nav class="level is-mobile">
@@ -112,8 +112,8 @@ import ResourceView from '../components/resource-view/index.vue';
 export default {
   data() { 
     return {
-      pageRoute: { name: 'payment-list' },
-      createRoute: { name: 'payment-create' },
+      pageRoute: { name: 'transfer-list' },
+      createRoute: { name: 'transfer-create' },
       pageView: [],
     }
   },

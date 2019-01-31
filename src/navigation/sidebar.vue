@@ -30,7 +30,7 @@
     </sidebar-item>
     <sidebar-item
       pageName="Transfers"
-      v-bind:pageRoute="dashboardIndex"
+      v-bind:pageRoute="transferIndex"
       v-bind:sidebarStatus="sidebarStatus"
     >
       <template slot="fa-icon">
@@ -114,6 +114,7 @@ export default {
     return {
       dashboardIndex: { name: 'dashboard-index' },
       paymentIndex: { name: 'payment-list' },
+      transferIndex: { name: 'transfer-list' },
       // Classes
       baseClass: ['column', 'app-sidebar'],
     };

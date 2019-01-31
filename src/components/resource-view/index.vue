@@ -40,7 +40,7 @@
       <div class="level-left">
         <router-link
           v-if="beforeIdPrev !== false"
-          :to="{ name: 'payment-list', query: { beforeId: beforeIdPrev }}"
+          :to="{ name: paginationRoute, query: { beforeId: beforeIdPrev }}"
         >
           <div class="button">Prev</div>
         </router-link>
@@ -48,7 +48,7 @@
       <div class="level-right">
         <router-link
           v-if="beforeIdNext !== false"
-          :to="{ name: 'payment-list', query: { beforeId: beforeIdNext }}"
+          :to="{ name: paginationRoute, query: { beforeId: beforeIdNext }}"
         >
           <div class="button">Next</div>
         </router-link>
@@ -108,6 +108,7 @@ export default {
   props: [
     'beforeId',
     'createRoute',
+    'paginationRoute',
     'endpoint',
   ], 
   watch: {
