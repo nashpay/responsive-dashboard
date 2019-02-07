@@ -145,7 +145,10 @@ export default {
   
     },
     updatePageView(x) {
-      this.pageView = x;
+      this.pageView = x.reduce((acc, y) => {
+        acc.unshift(y);
+        return acc;
+      }, []);
     },
   }
 };
