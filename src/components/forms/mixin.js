@@ -1,7 +1,7 @@
 import Form from './index.vue';
 
-export default (formData) => ({
-  data() { 
+export default formData => ({
+  data() {
     return {
       ...formData,
     };
@@ -10,11 +10,11 @@ export default (formData) => ({
     this.$nextTick(this.loaded);
   },
   props: [
-  ], 
+  ],
   watch: {
     $route(to, from) {
       this.loaded();
-    } 
+    },
   },
   computed: {
   },
@@ -24,11 +24,11 @@ export default (formData) => ({
   methods: {
     loaded() {
       //
-      if(this.$route.matched.length > 0) {
+      if (this.$route.matched.length > 0) {
         // Update NavStore
       } else {
         // 404
-      } 
+      }
     },
     formBtnOk(evt) {
       this.formHooks.btnOk.call(this, evt);
@@ -36,5 +36,5 @@ export default (formData) => ({
     formBtnCancel(evt) {
       this.formHooks.btnCancel.call(this, evt);
     },
-  }
+  },
 });

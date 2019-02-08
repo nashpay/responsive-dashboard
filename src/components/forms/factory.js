@@ -1,8 +1,9 @@
-export default (validator) => ({
-  data() { 
+export default (validatorFn, defaultRules, defaultConfig) => ({
+  data() {
     return {
-       fieldValue: '',
-       fieldError: false,
+      fieldValue: '',
+      fieldError: false,
+      validator: {},
     };
   },
   mounted() {
@@ -11,19 +12,26 @@ export default (validator) => ({
   props: [
     'label',
     'name',
+    'config',
+    'rules',
     'errorMsg',
     'defaultValue',
-  ], 
+  ],
   watch: {
     $route(to, from) {
       this.loaded();
-    } 
+    },
   },
   methods: {
     loaded() {
       if (typeof this.defaultValue !== 'undefined' && this.defaultValue !== null) {
-        this.updateVal({ target: { value: this.defaultValue }});
+        this.updateVal({ target: { value: this.defaultValue } });
       }
+      const validatorOpts = {
+        config: { ...defaultConfig, ...this.config },
+        rules: { ...defaultRules, ...this.rules },
+      };
+      this.validator = validatorFn(validatorOpts);
     },
     updateVal(evt) {
       const val = JSON.parse(JSON.stringify(evt.target.value));
@@ -31,7 +39,7 @@ export default (validator) => ({
       setTimeout(() => this.validate(val), 10);
     },
     validate(y) {
-      const res = validator(y);
+      const res = this.validator(y.trim());
       // this.fieldError = res ? null: res.reduce((acc, row) => `${acc}\n${row(y)}`, '');
       if (res !== true) {
         const errorMsg = res.reduce((acc, row) => `${acc}\n${row(this.label)}`, '');
@@ -48,5 +56,5 @@ export default (validator) => ({
         },
       });
     },
-  }
-}); 
+  },
+});

@@ -5,6 +5,7 @@
         v-if="field.category === 'currency'"
         v-bind:label="field.label"
         v-bind:name="field.name"
+        v-bind:rules="field.rules"
         v-bind:defaultValue="field.defaultValue"
         v-on:formOutput="formOutput"
       />
@@ -12,6 +13,15 @@
         v-if="field.category === 'text'"
         v-bind:label="field.label"
         v-bind:name="field.name"
+        v-bind:rules="field.rules"
+        v-bind:defaultValue="field.defaultValue"
+        v-on:formOutput="formOutput"
+      />
+      <input-cryptoaddress
+        v-if="field.category === 'cryptoaddress'"
+        v-bind:label="field.label"
+        v-bind:name="field.name"
+        v-bind:rules="field.rules"
         v-bind:defaultValue="field.defaultValue"
         v-on:formOutput="formOutput"
       />
@@ -55,6 +65,7 @@
 <script>
 import InputCurrency from './currency.vue';
 import InputText from './text.vue';
+import InputCryptoAddress from './cryptoaddress.vue';
 import formStore from './store';
 
 export default {
@@ -66,6 +77,7 @@ export default {
   components: {
     'input-currency': InputCurrency,
     'input-text': InputText,
+    'input-cryptoaddress': InputCryptoAddress,
   },
   mounted() {
     this.$nextTick(this.loaded);
@@ -94,7 +106,9 @@ export default {
       this.formStore.dispatch('saveErrors', newErrors);
     },
     btnOkAction() {
-      this.$emit('btnOk', this.formStore.getters.formValues);
+      if (this.formStore.getters.isValid === true) {
+        this.$emit('btnOk', this.formStore.getters.formValues);
+      }
     },
     btnCancelAction() {
       this.$emit('btnCancel');

@@ -27,47 +27,31 @@
      </tr>
      <!-- End Of Table Column Header Slot -->
      <!-- Table Row Slot -->
-     <tr slot="table-row" v-for="pageItem in pageView">
-       <td> {{ pageItem.id }} </td>
-       <td> {{ pageItem.created_at }} </td>
-       <td> {{ pageItem.outputs[0].address }} </td>
-       <td> {{ pageItem.outputs[0].amt }} </td>
-       <td> {{ pageItem.state }} </td>
-     </tr>
-     <div slot="card-row">
-       <div class="card tx-card" v-for="pageItem in pageView">
-         <div class="card-content">
-           <p class="card-tx-row"> {{ pageItem.outputs[0].address | shorten-address }} </p>
-           <p class="card-tx-row">
-             <span class="tag is-light" v-if="pageItem.state === '1201'">Created</span>
-             <span class="tag is-success" v-if="pageItem.state === '1203'">Confirmed</span>
-             <span class="tag is-danger" v-if="pageItem.state === '1205'">Failed</span>
-           </p>
-           <p class="card-tx-row">
-             <i class="fa fa-plus" />
-             <span> {{ pageItem.outputs[0].amt }} </span>
-           </p>
-           <!--
-           <nav class="level is-mobile">
-             <div class="level-left has-text-left">
-               <p class="subtitle is-5"> {{ pageItem.address | shorten-address }} </p>
-               <p>
-                 <span class="tag is-light" v-if="pageItem.state === '1001'">Created</span>
-                 <span class="tag is-success" v-if="pageItem.state === '1003'">Confirmed</span>
-                 <span class="tag is-danger" v-if="pageItem.state === '1005'">Failed</span>
-               </p>
-             </div> 
-             <div class="level-right">
-               <p class="subtitle is-5">
-                 <i class="fa fa-plus" />
-                 <span> {{ pageItem.amount }} </span>
-               </p>
-             </div> 
-           </nav>
-           -->
+     <template v-if="pageView.length > 0">
+       <tr slot="table-row" v-for="pageItem in pageView">
+         <td> {{ pageItem.id }} </td>
+         <td> {{ pageItem.created_at }} </td>
+         <td v-if="pageItem.outputs" > {{ pageItem.outputs[0].address }} </td>
+         <td v-if="pageItem.outputs" > {{ pageItem.outputs[0].amt }} </td>
+         <td> {{ pageItem.state }} </td>
+       </tr>
+       <div slot="card-row">
+         <div class="card tx-card" v-for="pageItem in pageView">
+           <div class="card-content">
+             <p v-if="pageItem.outputs" class="card-tx-row"> {{ pageItem.outputs[0].address | shorten-address }} </p>
+             <p class="card-tx-row">
+               <span class="tag is-light" v-if="pageItem.state === '1201'">Created</span>
+               <span class="tag is-success" v-if="pageItem.state === '1203'">Confirmed</span>
+               <span class="tag is-danger" v-if="pageItem.state === '1205'">Failed</span>
+             </p>
+             <p class="card-tx-row">
+               <i class="fa fa-plus" />
+               <span v-if="pageItem.outputs" > {{ pageItem.outputs[0].amt }} </span>
+             </p>
+           </div>
          </div>
        </div>
-     </div>
+     </template>
    </resource-view>
   </div>
 </template>

@@ -17,12 +17,17 @@
 @import (less, reference) url("../../theme/form.less");
 </style>
 <script>
-import { Text } from '../../plugins/form-validator/';
+import { CryptoAddress } from '../../plugins/form-validator/';
 import factory from './factory';
-
-// const validator = Text({});
+/*
+const validator = CryptoAddress({ 
+  rules: {
+    cryptoAddress: { tag: 'btc-testnet' },
+  },
+}) ;
+*/
 const defaultConfig = {};
 const defaultRules = {};
 
-export default factory(Text, defaultRules, defaultConfig);
+export default factory(CryptoAddress, defaultRules, defaultConfig);
 </script>

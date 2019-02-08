@@ -6,6 +6,13 @@ const endpoints = {
       queryString,
     });
   },
+  getBalance: queryFn => function getBalance({ queryString }) {
+    return queryFn({
+      resourceUri: '/api/v1/transfers/balance',
+      method: 'GET',
+      queryString,
+    });
+  },
   postTransferRequest: queryFn => function postTransferRequest({ queryString, body }) {
     return queryFn({
       resourceUri: '/api/v1/transfers',

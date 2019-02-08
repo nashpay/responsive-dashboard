@@ -47,24 +47,6 @@
              <i class="fa fa-plus" />
              <span> {{ pageItem.amount }} </span>
            </p>
-           <!--
-           <nav class="level is-mobile">
-             <div class="level-left has-text-left">
-               <p class="subtitle is-5"> {{ pageItem.address | shorten-address }} </p>
-               <p>
-                 <span class="tag is-light" v-if="pageItem.state === '1001'">Created</span>
-                 <span class="tag is-success" v-if="pageItem.state === '1003'">Confirmed</span>
-                 <span class="tag is-danger" v-if="pageItem.state === '1005'">Failed</span>
-               </p>
-             </div> 
-             <div class="level-right">
-               <p class="subtitle is-5">
-                 <i class="fa fa-plus" />
-                 <span> {{ pageItem.amount }} </span>
-               </p>
-             </div> 
-           </nav>
-           -->
          </div>
        </div>
      </div>

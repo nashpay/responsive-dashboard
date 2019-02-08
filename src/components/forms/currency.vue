@@ -27,6 +27,7 @@
 import { Decimal } from '../../plugins/form-validator/';
 import factory from './factory';
 
+/*
 const validator = Decimal({ 
   config: {
     precision: 9,
@@ -36,6 +37,10 @@ const validator = Decimal({
     min: { value: '0' },
   },
 });
+*/
 
-export default factory(validator);
+const defaultConfig = { precision: 9, rounding: 4 };
+const defaultRules = { min: { value: '0' } };
+
+export default factory(Decimal, defaultRules, defaultConfig);
 </script>
