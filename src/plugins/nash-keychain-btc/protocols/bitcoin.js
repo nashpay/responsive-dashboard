@@ -1,8 +1,7 @@
 import bitcoinJS from 'bitcoinjs-lib';
-import buffer from 'buffer/';
 
 const Networks = {
-  'main': {
+  main: {
     wif: 0x80,
     bip32: {
       public: 0x0488b21e,
@@ -13,7 +12,7 @@ const Networks = {
     messagePrefix: '\x18Bitcoin Signed Message:\n',
     units: 100000000,
   },
-  'testnet3': {
+  testnet3: {
     wif: 0xef,
     bip32: {
       public: 0x043587cf,
@@ -26,7 +25,7 @@ const Networks = {
   },
 };
 
-const getRedeemScript = network => pubKeys => {
+const getRedeemScript = network => (pubKeys) => {
   const redeemCondition = bitcoinJS.payments.p2ms({ m: 2, pubkeys: pubKeys, network });
   const p2sh = bitcoinJS.payments.p2sh({
     redeem: redeemCondition,
@@ -37,28 +36,51 @@ const getRedeemScript = network => pubKeys => {
 
 const ecPairFromPrivateKey = (key, encoding, { network = Networks.main }) => {
   const wallet = bitcoinJS.ECPair.fromPrivateKey(Buffer.from(key, encoding), { network });
-  console.log(wallet.publicKey.toString('hex'));
   return wallet;
 };
 
-const Transaction = ({ networkName, pubKeys, inputs, outputs, script, data = null, cache = {} }) => {
+const txInputSignatureReducer = (acc, signature) => {
+  if (signature !== 0) {
+    return acc + 1;
+  }
+  return acc;
+};
+
+const txInputReducer = (acc, { signatures }) => {
+  const numSigned = signatures.reduce(txInputSignatureReducer, 0);
+  const fullySigned = numSigned >= 2;
+  return acc.concat(fullySigned);
+};
+
+const checkSignatures = inputs => [].every.call(inputs.reduce(txInputReducer, []), x => x === true);
+
+const Transaction = ({
+  networkName,
+  pubKeys,
+  inputs,
+  outputs,
+  script,
+  data = null,
+  cache = {},
+}) => {
   let txBuilder = {};
   let txData = {};
   let txCache = { ...cache };
   let isFullySigned = false;
   let txHex = '';
-  let redeemScript = ''; 
+  let redeemScript = '';
   const network = Networks[networkName];
-  console.log(networkName);
-  console.log(pubKeys);
-  console.log(inputs);
-  console.log(outputs);
-  console.log(data);
   if (data !== null) {
     redeemScript = Buffer.from(script, 'hex');
     txData = bitcoinJS.Transaction.fromBuffer(Buffer.from(data, 'hex'));
     txBuilder = bitcoinJS.TransactionBuilder.fromTransaction(txData, network);
-    txHex = txBuilder.buildIncomplete().toHex();
+    const { __inputs: txInputs } = txBuilder;
+    isFullySigned = checkSignatures(txInputs);
+    if (isFullySigned === false) {
+      txHex = txBuilder.buildIncomplete().toHex();
+    } else {
+      txHex = txBuilder.build().toHex();
+    }
     txData = bitcoinJS.Transaction.fromBuffer(Buffer.from(txHex, 'hex'));
   } else {
     redeemScript = getRedeemScript(network)(pubKeys);
@@ -69,8 +91,6 @@ const Transaction = ({ networkName, pubKeys, inputs, outputs, script, data = nul
     txHex = txBuilder.buildIncomplete().toHex();
     txData = bitcoinJS.Transaction.fromBuffer(Buffer.from(txHex, 'hex'));
   }
-  console.log('redeemScript');
-  console.log(redeemScript.toString('hex'));
   return ({
     txData,
     txBuilder,
@@ -83,12 +103,19 @@ const Transaction = ({ networkName, pubKeys, inputs, outputs, script, data = nul
       return bitcoinJS.TransactionBuilder.fromTransaction(this.txData, this.network);
     },
     signWithPrivKey(key, opts) {
-      const privOpts = typeof opts !== undefined ? { encoding: 'hex' } : opts;
-      const txBuilder = this.clone();
-      const ecPair = ecPairFromPrivateKey(key, privOpts.encoding, { network: this.network }); 
-      // this.txCache.inputs.forEach((input, idx) => txBuilder.sign(idx, ecPair, this.redeemScript, null, input.value));
-      this.txCache.inputs.forEach((input, idx) => txBuilder.sign(idx, ecPair, this.redeemScript));
-      return Transaction({ data: txBuilder.buildIncomplete().toHex(), script: this.redeemScript.toString('hex') });
+      const privOpts = (typeof opts !== 'undefined' && opts !== null) ? opts : { encoding: 'hex' };
+      const txBuilderCopy = this.clone();
+      const ecPair = ecPairFromPrivateKey(key, privOpts.encoding, { network: this.network });
+      this.txCache.inputs.forEach((input, idx) => {
+        txBuilderCopy.sign(idx, ecPair, this.redeemScript);
+      });
+      const updatedData = txBuilderCopy.buildIncomplete().toHex();
+      return Transaction({
+        networkName,
+        data: updatedData,
+        script: this.redeemScript.toString('hex'),
+        cache: this.txCache,
+      });
     },
     submitSignedTransaction(hexData) {
 
@@ -100,10 +127,9 @@ const Transaction = ({ networkName, pubKeys, inputs, outputs, script, data = nul
       return this.txHex;
     },
   });
-
 };
 
 export {
   Transaction,
   Networks,
-}
+};
