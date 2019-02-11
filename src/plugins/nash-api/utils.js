@@ -9,6 +9,7 @@ const query = ({ opts, creds }) => function* execQuery({
   resourceUri,
   method,
   queryString,
+  queryHeaders,
   body,
 }) {
   const { host } = opts;
@@ -16,6 +17,7 @@ const query = ({ opts, creds }) => function* execQuery({
     json: true,
     headers: {
       'x-api-key': creds.API_KEY,
+      ...queryHeaders,
     },
     qs: queryString,
     // timeout: 30,

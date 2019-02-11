@@ -1,6 +1,7 @@
 import Cred from './creds';
 import Payments from './endpoints/payments';
 import Transfers from './endpoints/transfers';
+import Accounts from './endpoints/accounts';
 import Query from './utils';
 
 export default ({
@@ -14,6 +15,7 @@ export default ({
   const endpoints = {
     ...Payments,
     ...Transfers,
+    ...Accounts,
   };
   const api = Object.keys(endpoints)
     .reduce((acc, name) => ({ ...acc, [name]: endpoints[name](queryAPI) }), {});

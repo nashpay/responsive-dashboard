@@ -21,6 +21,9 @@ export default (validatorFn, defaultRules, defaultConfig) => ({
     $route(to, from) {
       this.loaded();
     },
+    rules(to, from) {
+      this.validator.updateRules(to);
+    },
   },
   methods: {
     loaded() {
@@ -39,7 +42,7 @@ export default (validatorFn, defaultRules, defaultConfig) => ({
       setTimeout(() => this.validate(val), 10);
     },
     validate(y) {
-      const res = this.validator(y.trim());
+      const res = this.validator.validate(y.trim());
       // this.fieldError = res ? null: res.reduce((acc, row) => `${acc}\n${row(y)}`, '');
       if (res !== true) {
         const errorMsg = res.reduce((acc, row) => `${acc}\n${row(this.label)}`, '');

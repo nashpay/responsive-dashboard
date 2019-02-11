@@ -25,8 +25,8 @@ const ruleMin = (opts = {}) => (x) => {
 
 const ruleMax = (opts = {}) => (x) => {
   const { value, eqs = true, ...decOpts } = opts;
-  const n = new Decimal(value.toString(), decOpts);
-  const y = new Decimal(x.toString(), decOpts).round();
+  const n = new Decimal(value.toString(), decOpts); // Value is the upper bound
+  const y = new Decimal(x.toString(), decOpts);
   const res = eqs ? y.greaterThan(n) : y.greaterThanOrEqualTo(n);
   if (res) {
     return ERROR_MSG.MAX(n);

@@ -4,7 +4,7 @@ import nock from 'nock';
 
 import Api from '../index';
 import { API_KEY, API_SECRET } from '../stubs';
-import { createTransferReply, signTransferPostBody } from './transfers.stubs.js';
+import { createTransferReply, signTransferPostBody } from './transfers.stubs';
 
 describe('NASH API v1 Transfers', () => {
   let api = {};
@@ -17,7 +17,7 @@ describe('NASH API v1 Transfers', () => {
     });
   });
   describe('Get Transferss', () => {
-    it('should call list transferss endpoints with no arguments', (done) => {
+    it('should call list transfers endpoints with no arguments', (done) => {
       const nockListTransfer = nock(host, {
         reqheaders: {
           'x-api-key': API_KEY,

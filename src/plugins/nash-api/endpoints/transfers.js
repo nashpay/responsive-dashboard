@@ -6,11 +6,12 @@ const endpoints = {
       queryString,
     });
   },
-  getBalance: queryFn => function getBalance({ queryString }) {
+  getBalance: queryFn => function getBalance({ queryString, queryHeaders }) {
     return queryFn({
       resourceUri: '/api/v1/transfers/balance',
       method: 'GET',
       queryString,
+      queryHeaders,
     });
   },
   postTransferRequest: queryFn => function postTransferRequest({ queryString, body }) {

@@ -8,9 +8,11 @@
   </div>
 </template>
 <script>
+import co from 'co';
 import FormMixin from '../components/forms/mixin';
 import storeAuth from './store';
 import NashAPI from '../plugins/nash-api/';
+import { postAuth } from './actions';
 
 // @TODO Remove Defaults
 const defaults = {
@@ -46,7 +48,11 @@ const formData = {
       const connector = NashAPI({ apiKey, apiSecret, host: apiHost });
       storeAuth.dispatch('saveConnector', connector);
       storeAuth.dispatch('saveAuthenticated', true);
-      this.$router.push({ name: 'payment-list' });
+      // Fetch SubAccounts
+      const that = this;
+      co(postAuth({ connector, storeAuth, router: this.$router }))
+        .then(() => console.log('done!'))
+        .catch((err) => console.log(err));
     },
   },
 };

@@ -13,6 +13,7 @@
           </li>
         </ul>
       </nav> 
+      <p>Account Balance {{ accountBalance }} </p>
       <napp-form 
         v-bind:formFields="formFields"
         v-bind:formConfig="formConfig"
@@ -27,15 +28,21 @@
 </style>
 <script>
 import FormMixin from '../components/forms/mixin';
+import AuthStore from '../auth/store';
+
+// TODO: Add support for multi-account
+const defaultAccount = AuthStore.getters.getDefaultAccount;
+
 const formData = {
   formFields: [{
     label: 'Amount',
     category: 'currency',
     name: 'amount',
+    rules: { max: { precision: 4, value: '1.0000' } },
   }, {
     label: 'Address',
     category: 'cryptoaddress',
-    rules: { cryptoAddress: { tag: 'btc-testnet' } },
+    rules: { cryptoAddress: { tag: 'btc-testnet' } }, // TODO Remove hardcode for network
     name: 'address',
   }],
   formConfig: {
@@ -58,6 +65,21 @@ const formData = {
 const otherConfig = {
   pageRoute: { name: 'transfer-list' },
 };
-export default FormMixin({ ...formData, ...otherConfig });
+const computedFns = {
+  defaultAccount () {
+    return AuthStore.getters.getDefaultAccount;
+  },
+  accountBalance () {
+    if (this.defaultAccount !== false) {
+      const avail = this.defaultAccount.state.accountBalanceAvailable;
+      if (avail !== 'STORE_DEFAULT' && typeof avail !== 'undefined') {
+        this.formFields[0].rules = { max: { precision: 4, value: avail } };
+        return avail;
+      }
+    }
+    return '0.0000';
+  }
+};
+export default FormMixin({ ...formData, ...otherConfig, computedFns });
 
 </script>

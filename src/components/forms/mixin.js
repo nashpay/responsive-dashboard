@@ -17,6 +17,7 @@ export default formData => ({
     },
   },
   computed: {
+    ...formData.computedFns,
   },
   components: {
     'napp-form': Form,
