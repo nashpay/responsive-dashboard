@@ -54,6 +54,10 @@ const formData = {
       console.log('btnOK Pressed');
       console.log(amount);
       console.log(address);
+      this.$router.push({
+        name: 'transfer-create-check-request',
+        query: { address, value: amount },
+      });
     },
     btnCancel () {
 	  this.$router.push({

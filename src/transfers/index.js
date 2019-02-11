@@ -3,6 +3,7 @@ import Index from './index.vue';
 import List from './list.vue';
 // import DetailDelete from './detail-delete.vue';
 import Create from './create.vue';
+import CheckRequest from './create-check-request.vue';
 // import CreateFail from './create-fail.vue';
 // import CreateSuccess from './create-success.vue';
 
@@ -27,6 +28,11 @@ const Routes = [{
       path: 'create/',
       name: 'transfer-create',
       component: Create,
+    }, {
+      path: 'create/check-request',
+      name: 'transfer-create-check-request',
+      component: CheckRequest,
+      props: route => ({ ...route.query }),
     },
   /*
   }, {
