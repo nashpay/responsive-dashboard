@@ -1,4 +1,5 @@
 import ruleEngine from './base';
+    
 
 export default (userOpts = {}) => {
   const defaultConfig = {
@@ -11,5 +12,6 @@ export default (userOpts = {}) => {
     config: { ...defaultConfig, ...userOpts.config },
     ruleList: { ...defaultRuleSet, ...userOpts.rules },
   };
+  console.log(opts);
   return ruleEngine(opts);
 };

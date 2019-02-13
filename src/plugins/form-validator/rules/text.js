@@ -1,4 +1,5 @@
 import bitcoinlib from 'bitcoinjs-lib';
+import bip39 from 'bip39';
 
 const regexNoSpecialChars = new RegExp('[^a-zA-Z0-9 -]', 'gm');
 const regexAlphaNumeric = new RegExp('[^a-zA-Z0-9]', 'gm');
@@ -32,6 +33,8 @@ const ERROR_MSG = {
   ALPHA_NUMERIC: x => `${x} is not alphanumeric`,
   NO_SPECIAL_CHARS: x => `${x} has special characters`,
   INVALID_ADDRESS: x => `${x} is an invalid address`,
+  BIP39_SHORT_PHRASE: x => 'Mnemonic phrase needs minimum of 12 words',
+  BIP39_BAD_PHRASE: x => 'Mnemonic phrase is invalid',
 };
 
 const ruleNoSpecialChars = (opts = {}) => (x) => {
@@ -62,11 +65,27 @@ const ruleCryptoAddress = (opts = {}) => (x) => {
   return null;
 };
 
+const ruleIsBIP39 = (opts = {}) => (x) => {
+  console.log(x);
+  console.log('isBIP 39 rule ran...');
+  const phraseLength = x.trim().split(/\s+/g).length
+  if (phraseLength < 12) {
+    return ERROR_MSG.BIP39_SHORT_PHRASE;
+  }
+  const res = bip39.validateMnemonic(x);
+  if (res === true) {
+    return true;
+  } else {
+    return ERROR_MSG.BIP39_BAD_PHRASE;
+  }
+};
+
 
 const ruleMap = {
   noSpecialChars: ruleNoSpecialChars,
   alphaNumeric: ruleAlphaNumeric,
   cryptoAddress: ruleCryptoAddress,
+  isBIP39: ruleIsBIP39,
 };
 
 export default ruleMap;

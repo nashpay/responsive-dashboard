@@ -20,6 +20,13 @@
       </textarea>
     </template>
     <template v-if="signingAuth === 'seedPhraseAuth'">
+      <!-- -->
+	  <napp-form 
+		v-bind:formFields="formFields"
+		v-bind:formConfig="formConfig"
+		v-on:btnOk="formBtnOk"
+		v-on:btnCancel="formBtnCancel"
+	  />
     </template> 
     <nav class="level is-mobile">
       <div class="level-left">

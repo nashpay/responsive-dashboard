@@ -49,25 +49,3 @@ const ruleMap = {
 };
 
 export default ruleMap;
-/*
-export default (opts = {}) => (y) => {
-  const defaultConfig = {
-    places: 0,
-  };
-  const defaultRuleset = {
-    max: false,
-    min: false,
-    notNumber: true,
-    required: true,
-  };
-  const config = { ...defaultConfig, ...opts.config };
-  const ruleList = { ...defaultRuleset, ...opts.ruleset };
-  const execRuleSet = Object.keys(ruleList)
-    .filter(x => ruleList[x] !== false)
-    .reduce((acc, x) => acc.concat(ruleMap[x]({ ...config, ...ruleList[x] })), [])
-    .reduce((acc, x) => acc.concat(x(y)), [])
-    .filter(x => x !== true);
-  const output = execRuleSet.length > 0 ? execRuleSet : true;
-  return output;
-};
-*/
