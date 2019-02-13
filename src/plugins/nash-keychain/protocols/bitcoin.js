@@ -47,9 +47,12 @@ const txInputSignatureReducer = (acc, signature) => {
 };
 
 const txInputReducer = (acc, { signatures }) => {
-  const numSigned = signatures.reduce(txInputSignatureReducer, 0);
-  const fullySigned = numSigned >= 2;
-  return acc.concat(fullySigned);
+  if (typeof signatures !== 'undefined') {
+    const numSigned = signatures.reduce(txInputSignatureReducer, 0);
+    const fullySigned = numSigned >= 2;
+    return acc.concat(fullySigned);
+  }
+  return acc.concat(false);
 };
 
 const checkSignatures = inputs => [].every.call(inputs.reduce(txInputReducer, []), x => x === true);

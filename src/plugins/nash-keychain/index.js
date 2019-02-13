@@ -1,4 +1,4 @@
-import Bitcoin from './protocols/bitcoin';
+import * as Bitcoin from './protocols/bitcoin';
 
 export {
   Bitcoin,

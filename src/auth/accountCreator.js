@@ -8,8 +8,8 @@ import storeAuth from './store';
 Vue.use(Vuex);
 
 
-const accountCreator = ({ subAccountId = '0' }) => {
-  const schema = ['accountBalancePending', 'accountBalanceAvailable', 'subAccountId'];
+const accountCreator = ({ subAccountId = '0', accountNumber = '10000' }) => {
+  const schema = ['accountBalancePending', 'accountBalanceAvailable', 'subAccountId', 'accountNumber'];
 
   const storeArgs = storeFactory(schema);
   const queryHeaders = {};
@@ -31,6 +31,7 @@ const accountCreator = ({ subAccountId = '0' }) => {
           } = body;
           commit('ACCOUNT_BALANCE_PENDING', pending);
           commit('ACCOUNT_BALANCE_AVAILABLE', available);
+          commit('ACCOUNT_NUMBER', accountNumber);
         }
       }).catch((err) => {
         if (err) {
