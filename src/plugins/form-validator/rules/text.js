@@ -66,8 +66,6 @@ const ruleCryptoAddress = (opts = {}) => (x) => {
 };
 
 const ruleIsBIP39 = (opts = {}) => (x) => {
-  console.log(x);
-  console.log('isBIP 39 rule ran...');
   const phraseLength = x.trim().split(/\s+/g).length
   if (phraseLength < 12) {
     return ERROR_MSG.BIP39_SHORT_PHRASE;

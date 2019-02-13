@@ -21,12 +21,7 @@
     </template>
     <template v-if="signingAuth === 'seedPhraseAuth'">
       <!-- -->
-	  <napp-form 
-		v-bind:formFields="formFields"
-		v-bind:formConfig="formConfig"
-		v-on:btnOk="formBtnOk"
-		v-on:btnCancel="formBtnCancel"
-	  />
+     <section-seed-phrase />
     </template> 
     <nav class="level is-mobile">
       <div class="level-left">
@@ -71,6 +66,7 @@
 import co from 'co';
 import storeAuth from '../auth/store';
 import { makeTXFromStore } from './check-request.actions';
+import SectionSeedPhrase from './form-signature-seed-phrase.vue';
 export default {
   data() { 
     return {
@@ -94,6 +90,9 @@ export default {
       }
       return '';
     },
+  },
+  components: {
+    'section-seed-phrase': SectionSeedPhrase,
   },
   watch: {
     $route(to, from) {

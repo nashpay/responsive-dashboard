@@ -28,6 +28,9 @@ const formData = {
     category: 'text',
     name: 'apiHost',
     defaultValue: defaults.apiHost,
+    rules: {
+      noSpecialChars: false,
+    },
   }, {
     label: 'API Key',
     category: 'text',
@@ -38,6 +41,9 @@ const formData = {
     category: 'text',
     name: 'apiSecret',
     defaultValue: defaults.apiSecret,
+    rules: {
+      noSpecialChars: false,
+    },
   }],
   formConfig: {
     'btnOKLabel': 'Login',

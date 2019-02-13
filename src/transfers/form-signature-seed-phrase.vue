@@ -18,6 +18,9 @@ const formData = {
     label: 'Seed Phrase',
     category: 'text',
     name: 'seedPhrase',
+    rules: {
+      isBIP39: {},
+    },
   }],
   formConfig: {
     'btnOKLabel': 'Sign',
@@ -31,5 +34,7 @@ const formData = {
     },
   },
 };
+
+const otherConfig = {};
 export default FormMixin({ ...formData, ...otherConfig });
 </script>
