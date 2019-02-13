@@ -18,6 +18,8 @@ import {
 } from './bitcoin.stubs';
 
 const inputs = [{
+  // redeemScript: '522103c45c92fec9c4e56a059ed9144adb3b62e792a39fcb91a0b6cdb6f0a35011e12a2103286b9fedfa17cf8f4e67a17e5b2a807cb2f293e147ae78079632a187b8e0379a2102d0d6e081c9affa8bf20a8a75109be5a9ce4995753df04a2649973f72a0aa4ad753ae',
+  redeemScript,
   txHash: 'baa9e8b194153c280fe8bb1a671e4b25090d27a0c422e0242a85667bda8f9292',
   vout: 4, // Index of this output in previous transaction
   value: 32500000, // 0.325 Coin
@@ -61,7 +63,6 @@ describe('NASH Bitcoin Keychain Operations', () => {
         pubKeys,
       });
       assert.equal(tx.toHex(), txNoSignatures);
-      assert.equal(tx.getRedeemScript(), redeemScript);
     });
     it('should create a transaction for p2sh correctly with raw hex data', () => {
     });
@@ -80,10 +81,12 @@ describe('NASH Bitcoin Keychain Operations', () => {
       const manyInputs = [{
         txHash: 'baa9e8b194153c280fe8bb1a671e4b25090d27a0c422e0242a85667bda8f9292',
         value: 32500000, // 0.325 BTC
+        redeemScript,
         vout: 4,
       }, {
         txHash: 'baa9e8b194153c280fe8bb1a671e4b25090d27a0c422e0242a85667bda8f9292',
         value: 32500000, // 0.325 BTC
+        redeemScript,
         vout: 3,
       }];
       const manyOutputs = [{

@@ -1,6 +1,10 @@
-import { Bitcoin } from '../plugins/nash-keychain/';
+import { Bitcoin } from '../plugins/nash-keychain';
 
-const txInputReducer = (acc, row) => acc.concat({ txHash: row.txId, vout: row.vout, value: row.value });
+const txInputReducer = (acc, row) => acc.concat({
+  txHash: row.txId,
+  vout: row.vout,
+  value: row.value,
+});
 
 const queryTransferRequestSingleOutput = function* q({ address, value, connector }) {
   const payload = { addresses: [{ address, value }] };
@@ -9,6 +13,7 @@ const queryTransferRequestSingleOutput = function* q({ address, value, connector
   if (res.statusCode === 200 && res.success === true) {
     // Could become legacy code in the future if the API changes...
     const inputs = res.body.txInputs.reduce(txInputReducer, []);
+    //
     const { txOutputs: outputs, currency: coin, network } = res.body;
     if (coin === 'BTC' && network === 'testnet') {
       const tx = Bitcoin.Transaction({
