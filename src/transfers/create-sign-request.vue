@@ -68,7 +68,11 @@ import storeAuth from '../auth/store';
 import { 
   makeTXFromStore,
   walletFromSeedphrase,
+  signTransferRequest,
 } from './check-request.actions';
+import TxStore from './tx-store';
+
+
 import SectionSeedPhrase from './form-signature-seed-phrase.vue';
 export default {
   data() { 
@@ -107,12 +111,32 @@ export default {
       this.tx = makeTXFromStore();
     },
     signTransaction({ method, value }) {
-      console.log(method);
-      console.log(value);
       if (method === 'seedPhrase') {
         const wallet = walletFromSeedphrase({ phrase: value });
-		this.tx = this.tx.signWithHDWallet(wallet);    
-		console.log(`Partial Signatures? :${this.tx.isPartiallySigned}`);
+        this.tx = this.tx.signWithHDWallet(wallet);    
+        console.log(`Partial Signatures? :${this.tx.isPartiallySigned}`);
+        if (this.tx.isPartiallySigned === true) {
+           // Broadcast Signature
+           co(signTransferRequest({
+             tx: this.tx, 
+             connector: storeAuth.state.connector,
+           })).then((res) => {
+             const { body: { result: txId } } = res;
+             this.$router.push({
+               name: 'transfer-create-success',
+               query: { 
+                 amount: TxStore.state.destValue,
+                 address: TxStore.state.destAddr,
+                 txId,
+                 coin: TxStore.state.txCoin,
+                 network: TxStore.state.txNetwork,
+               },
+             }); 
+           }).catch((err) => {
+
+           });
+          
+        }
       }
     },
   }

@@ -144,18 +144,13 @@ export default {
   },
   methods: {
     loaded() {
-      console.log(this.address);
-      console.log(this.value);
       co(queryTransferRequestSingleOutput({
         address: this.address,
         value: this.value,
         connector: storeAuth.state.connector,
       }))
         .then((res) => {
-          console.log(res);
-          console.log(res.toHex());
           this.tx = res;
-          console.log('done request');
         })
         .catch((err) => console.log(err));
     },

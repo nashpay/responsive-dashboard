@@ -26,6 +26,9 @@ const queryTransferRequestSingleOutput = function* q({ address, value, connector
         inputs,
         outputs,
       });
+      TxStore.dispatch('saveDestAddr', address);
+      TxStore.dispatch('saveDestValue', value);
+      TxStore.dispatch('saveTxResponse', JSON.stringify(res.body));
       TxStore.dispatch('saveAccountId', String(subAccountId));
       TxStore.dispatch('saveTxInputs', inputs);
       TxStore.dispatch('saveTxOutputs', outputs);
@@ -34,6 +37,20 @@ const queryTransferRequestSingleOutput = function* q({ address, value, connector
       return tx;
     }
     return false;
+  }
+  return false;
+};
+
+const signTransferRequest = function* q({ tx, connector }) {
+  console.log('signTransferRequest called...');
+  const payload = JSON.parse(TxStore.state.txResponse);
+  console.log(payload);
+  payload.txInfo.txinc = tx.toHex();
+  console.log(payload);
+  const res = yield connector.postTransferSign({ body: payload });
+  if (res.statusCode === 200 && res.success === true) {
+    // Could become legacy code in the future if the API changes...
+    return res;
   }
   return false;
 };
@@ -98,6 +115,7 @@ const walletFromSeedphrase = ({ phrase }) => {
 
 export {
   queryTransferRequestSingleOutput,
+  signTransferRequest,
   walletFromSeedphrase,
   makeTXFromStore,
 };
