@@ -21,7 +21,7 @@
     </template>
     <template v-if="signingAuth === 'seedPhraseAuth'">
       <!-- -->
-     <section-seed-phrase />
+     <section-seed-phrase v-on:authValue="signTransaction"/>
     </template> 
     <nav class="level is-mobile">
       <div class="level-left">
@@ -65,7 +65,10 @@
 <script>
 import co from 'co';
 import storeAuth from '../auth/store';
-import { makeTXFromStore } from './check-request.actions';
+import { 
+  makeTXFromStore,
+  walletFromSeedphrase,
+} from './check-request.actions';
 import SectionSeedPhrase from './form-signature-seed-phrase.vue';
 export default {
   data() { 
@@ -102,6 +105,15 @@ export default {
   methods: {
     loaded() {
       this.tx = makeTXFromStore();
+    },
+    signTransaction({ method, value }) {
+      console.log(method);
+      console.log(value);
+      if (method === 'seedPhrase') {
+        const wallet = walletFromSeedphrase({ phrase: value });
+		this.tx = this.tx.signWithHDWallet(wallet);    
+		console.log(`Partial Signatures? :${this.tx.isPartiallySigned}`);
+      }
     },
   }
 };

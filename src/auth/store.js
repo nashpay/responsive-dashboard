@@ -20,7 +20,7 @@ const getters = {
     return state.accounts[id];
   },
   getAllAccounts: (state) => {
-    return state.accounts;
+    return state.accounts === 'STORE_DEFAULT' ? false : state.accounts;
   },
 };
 

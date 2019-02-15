@@ -1,4 +1,7 @@
 import bitcoinJS from 'bitcoinjs-lib';
+import bip39 from 'bip39';
+import bip32 from 'bip32';
+import base58 from 'bs58';
 
 const Networks = {
   main: {
@@ -46,16 +49,16 @@ const txInputSignatureReducer = (acc, signature) => {
   return acc;
 };
 
-const txInputReducer = (acc, { signatures }) => {
+const txInputReducer = threshold => (acc, { signatures }) => {
   if (typeof signatures !== 'undefined') {
     const numSigned = signatures.reduce(txInputSignatureReducer, 0);
-    const fullySigned = numSigned >= 2;
+    const fullySigned = numSigned >= threshold;
     return acc.concat(fullySigned);
   }
   return acc.concat(false);
 };
 
-const checkSignatures = inputs => [].every.call(inputs.reduce(txInputReducer, []), x => x === true);
+const checkSignatures = threshold => inputs => [].every.call(inputs.reduce(txInputReducer(threshold), []), x => x === true);
 
 const Transaction = ({
   networkName,
@@ -70,13 +73,15 @@ const Transaction = ({
   let txData = {};
   let txCache = { ...cache };
   let isFullySigned = false;
+  let isPartiallySigned = false;
   let txHex = '';
   const network = Networks[networkName];
   if (data !== null) {
     txData = bitcoinJS.Transaction.fromBuffer(Buffer.from(data, 'hex'));
     txBuilder = bitcoinJS.TransactionBuilder.fromTransaction(txData, network);
     const { __inputs: txInputs } = txBuilder;
-    isFullySigned = checkSignatures(txInputs);
+    isFullySigned = checkSignatures(2)(txInputs);
+    isPartiallySigned = checkSignatures(1)(txInputs);
     if (isFullySigned === false) {
       txHex = txBuilder.buildIncomplete().toHex();
     } else {
@@ -97,6 +102,7 @@ const Transaction = ({
     txCache,
     txHex,
     isFullySigned,
+    isPartiallySigned,
     network,
     clone() {
       return bitcoinJS.TransactionBuilder.fromTransaction(this.txData, this.network);
@@ -115,6 +121,23 @@ const Transaction = ({
         cache: this.txCache,
       });
     },
+    signWithHDWallet(wallet) {
+      const txBuilderCopy = this.clone();
+      this.txCache.inputs.forEach((input, idx) => {
+        // For Each Input, derive according to change and index
+        const target = wallet.derive(input.change).derive(input.index);
+		// const ecPair = ecPairFromPrivateKey(target.getPrivKey(), { network: this.network });
+		const ecPair = bitcoinJS.ECPair.fromPrivateKey(target.getPrivKey(), { network });
+ 
+        txBuilderCopy.sign(idx, ecPair, Buffer.from(input.redeemScript, 'hex'));
+      });
+      const updatedData = txBuilderCopy.buildIncomplete().toHex();
+      return Transaction({
+        networkName,
+        data: updatedData,
+        cache: this.txCache,
+      });
+    },
     submitSignedTransaction(hexData) {
 
     },
@@ -124,7 +147,27 @@ const Transaction = ({
   });
 };
 
+const Wallet = ({ HD }) => {
+  return ({
+    HD,
+    fromSeedphrase(phrase, path, networkName) {
+	  const seed = bip39.mnemonicToSeed(phrase);
+      const network = Networks[networkName];
+      const root = bip32.fromSeed(seed, network);
+      const HD = root.derivePath(path);
+      return Wallet({ HD });
+    },
+    derive(child) {
+      return Wallet({ HD: this.HD.derive(child) });
+    },
+    getPrivKey() {
+      return this.HD.privateKey;
+    },
+  });
+};
+
 export {
   Transaction,
   Networks,
+  Wallet,
 };
