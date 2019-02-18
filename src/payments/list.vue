@@ -29,10 +29,15 @@
      <!-- Table Row Slot -->
      <tr slot="table-row" v-for="pageItem in pageView">
        <td> {{ pageItem.id }} </td>
-       <td> {{ pageItem.created_at }} </td>
+       <td> {{ pageItem.created_at | friendly-datetime }} </td>
        <td> {{ pageItem.address }} </td>
        <td> {{ pageItem.amount }} </td>
-       <td> {{ pageItem.state }} </td>
+       <td>
+         <span class="tag is-light" v-if="pageItem.state === '1001'">Created</span>
+         <span class="tag is-info" v-if="pageItem.state === '1002'">Pending</span>
+         <span class="tag is-success" v-if="pageItem.state === '1003'">Confirmed</span>
+         <span class="tag is-danger" v-if="pageItem.state === '1005'">Failed</span>
+       </td>
      </tr>
      <div slot="card-row">
        <div class="card tx-card" v-for="pageItem in pageView">
@@ -40,6 +45,7 @@
            <p class="card-tx-row"> {{ pageItem.address | shorten-address }} </p>
            <p class="card-tx-row">
              <span class="tag is-light" v-if="pageItem.state === '1001'">Created</span>
+             <span class="tag is-info" v-if="pageItem.state === '1002'">Pending</span>
              <span class="tag is-success" v-if="pageItem.state === '1003'">Confirmed</span>
              <span class="tag is-danger" v-if="pageItem.state === '1005'">Failed</span>
            </p>
@@ -90,6 +96,7 @@
 <script>
 // import ListStore from './list.store';
 import ResourceView from '../components/resource-view/index.vue';
+import { unixToDateTime } from '../components/helpers';
 
 export default {
   data() { 
@@ -113,7 +120,10 @@ export default {
       const first = val.substr(0, 7);
       const last = val.substr(-7);
       return `${first}...${last}`;
-    }
+    },
+    'friendly-datetime' (val) {
+      return unixToDateTime(val);
+    },
   },
   watch: {
     $route(to, from) {

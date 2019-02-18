@@ -121,17 +121,19 @@ export default {
              tx: this.tx, 
              connector: storeAuth.state.connector,
            })).then((res) => {
-             const { body: { result: txId } } = res;
-             this.$router.push({
-               name: 'transfer-create-success',
-               query: { 
-                 amount: TxStore.state.destValue,
-                 address: TxStore.state.destAddr,
-                 txId,
-                 coin: TxStore.state.txCoin,
-                 network: TxStore.state.txNetwork,
-               },
-             }); 
+             const { body: { result: txId, error: signError } } = res;
+             if (signError === null && typeof txId !== 'undefined') {
+               this.$router.push({
+                 name: 'transfer-create-success',
+                 query: { 
+                   amount: TxStore.state.destValue,
+                   address: TxStore.state.destAddr,
+                   txId,
+                   coin: TxStore.state.txCoin,
+                   network: TxStore.state.txNetwork,
+                 },
+               }); 
+             }
            }).catch((err) => {
 
            });
