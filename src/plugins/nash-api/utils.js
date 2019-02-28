@@ -24,6 +24,7 @@ const query = ({ opts, creds }) => function* execQuery({
     ...opts,
   };
   const uri = `${host}${resourceUri}`;
+  console.log(uri);
   try {
     if (method === 'GET') {
       const resp = yield request.getAsync(uri, reqOpts);

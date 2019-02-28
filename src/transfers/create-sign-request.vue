@@ -3,9 +3,8 @@
     <h1 class="subtitle is-5"> Signing Method</h1>
     <div class="select">
       <select v-model="signingAuth">
-       <option value="privateKeyAuth">Private Key</option>
        <option value="seedPhraseAuth">Seed Phrase</option>
-       <option value="offlineAuth">Offline Signing</option>
+       <option value="ledgerNanoS">ledgerNanoS</option>
       </select>
     </div>
     <p>&nbsp;</p>
@@ -22,6 +21,10 @@
     <template v-if="signingAuth === 'seedPhraseAuth'">
       <!-- -->
      <section-seed-phrase v-on:authValue="signTransaction"/>
+    </template> 
+    <template v-if="signingAuth === 'ledgerNanoS'">
+      <!-- -->
+     <section-ledgernanos v-on:authValue="signTransaction"/>
     </template> 
     <nav class="level is-mobile">
       <div class="level-left">
@@ -74,6 +77,7 @@ import TxStore from './tx-store';
 
 
 import SectionSeedPhrase from './form-signature-seed-phrase.vue';
+import SectionLedgerAPI from './form-ledger-api.vue';
 export default {
   data() { 
     return {
@@ -100,6 +104,7 @@ export default {
   },
   components: {
     'section-seed-phrase': SectionSeedPhrase,
+    'section-ledgernanos': SectionLedgerAPI,
   },
   watch: {
     $route(to, from) {
