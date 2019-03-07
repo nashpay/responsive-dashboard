@@ -84,7 +84,7 @@ export default {
         const currentView = this.$route.matched[0];
         const { name: pathName } = currentView;
         const isAuth = storeAuth.state.authenticated;
-        if (pathName !== 'auth' && isAuth === false || isAuth === 'STORE_DEFAULT') {
+        if (pathName.indexOf('auth') === -1 && (isAuth === false || isAuth === 'STORE_DEFAULT')) {
           //
           this.$router.push({ name: 'auth-login' });
         }

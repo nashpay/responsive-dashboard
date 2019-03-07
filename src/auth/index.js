@@ -1,5 +1,6 @@
 import Login from './login.vue';
 import Logout from './logout.vue';
+import Register from './register.vue';
 import Index from './index.vue';
 
 const Routes = [{
@@ -18,6 +19,10 @@ const Routes = [{
     path: 'logout',
     name: 'auth-logout',
     component: Logout,
+  }, {
+    path: 'register',
+    name: 'auth-register',
+    component: Register,
   }],
 }];
 

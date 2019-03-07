@@ -7,6 +7,9 @@
       </div>
       <div class="level-right">
         <div class="level-item">
+          <p> Live Network </p>
+        </div>
+        <div class="level-item">
           <i class="fa fa-bell-o" />
         </div>
         <div class="level-item auth-btn">

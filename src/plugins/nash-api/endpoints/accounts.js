@@ -14,6 +14,14 @@ const endpoints = {
       body,
     });
   },
+  createAccount: queryFn => function createAccount({ queryString, body }) {
+    return queryFn({
+      resourceUri: '/api/v1/auth/register',
+      method: 'POST',
+      queryString,
+      body,
+    });
+  },
 };
 
 export default endpoints;

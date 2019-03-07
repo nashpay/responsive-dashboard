@@ -32,8 +32,11 @@ const query = ({ opts, creds }) => function* execQuery({
       return { success: true, statusCode, body: replyBody };
     }
     if (method === 'POST') {
-      const bodyStr = stringify(body);
-      const signature = creds.signBody(bodyStr);
+      let signature = '';
+      if (uri.indexOf('auth') === -1) {
+        const bodyStr = stringify(body);
+        signature = creds.signBody(bodyStr);
+      }
       const postOpts = {
         json: true,
         headers: {
