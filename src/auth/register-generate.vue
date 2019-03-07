@@ -183,7 +183,7 @@ export default {
       const network = Networks[tag];
       const root = bip32.fromSeed(seed, network);
       const accountPath = `m/44'/0'/10000'/3/1`;
-      const pubKey = root.derivePath(accountPath).neutered.toBase58(); // New Production Setting
+      const pubKey = root.derivePath(accountPath).neutered().toBase58(); // New Production Setting
       return pubKey;
     },
     copyValToClipboard(str) {
