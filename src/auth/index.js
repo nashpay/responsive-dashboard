@@ -1,4 +1,5 @@
 import Login from './login.vue';
+import Logout from './logout.vue';
 import Index from './index.vue';
 
 const Routes = [{
@@ -10,11 +11,13 @@ const Routes = [{
     name: 'auth-placeholder',
     component: Index,
   }, {
-    path: '',
-    name: 'payment-list',
     path: 'login',
     name: 'auth-login',
     component: Login,
+  }, {
+    path: 'logout',
+    name: 'auth-logout',
+    component: Logout,
   }],
 }];
 

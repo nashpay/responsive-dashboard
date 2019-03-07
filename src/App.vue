@@ -1,12 +1,12 @@
 <template>
 <div id="app">
   <div class="columns is-mobile">
-    <app-sidebar />
-    <app-sidebar-overlay/>
+    <app-sidebar v-if="isAuth"/>
+    <app-sidebar-overlay v-if="isAuth"/>
     <div class="app-container column">
-      <app-header />
+      <app-header v-if="isAuth"/>
       <router-view />
-      <app-footer />
+      <app-footer v-if="isAuth"/>
     </div>
   </div>
 </div>
@@ -49,10 +49,16 @@
 </style>
 <script>
 import { Header, Footer, Sidebar, SidebarOverlay, store as NavStore } from './navigation';
+import storeAuth from './auth/store';
 
 export default {
   data() { 
     return {};
+  },
+  computed: {
+    isAuth () {
+      return storeAuth.getters.isAuth;
+    },
   },
   mounted() {
     this.$nextTick(this.loaded);
@@ -75,6 +81,13 @@ export default {
       //
       if(this.$route.matched.length > 0) {
         // Update NavStore
+        const currentView = this.$route.matched[0];
+        const { name: pathName } = currentView;
+        const isAuth = storeAuth.state.authenticated;
+        if (pathName !== 'auth' && isAuth === false || isAuth === 'STORE_DEFAULT') {
+          //
+          this.$router.push({ name: 'auth-login' });
+        }
       } else {
         // 404
         console.log('No Route Matched...');

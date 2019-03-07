@@ -13,7 +13,7 @@
           <router-link :to="{ name: 'auth-login' }" v-if="isAuth === false">
             <div class="button"> Login </div>
           </router-link>
-          <router-link to="/auth/logout" v-else="">
+          <router-link :to="{ name: 'auth-logout' }" v-else="">
             <div class="button"> Logout </div>
           </router-link>
         </div>
