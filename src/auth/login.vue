@@ -15,6 +15,15 @@ import NashAPI from '../plugins/nash-api/';
 import { postAuth } from './actions';
 
 // @TODO Remove Defaults
+
+const testEnv = {
+  apiHost: 'https://testnet.nashpay.io',
+}
+
+const prodEnv = {
+  apiHost: 'https://livenet.nashpay.io',
+}
+
 const defaults = {
   apiHost: 'https://testnet.nashpay.io',
   apiKey: '9b628719c7fc2a3bd137472128626ef56cf154fcf8c4ed6f912fdd453a3bb4fc',
@@ -23,7 +32,9 @@ const defaults = {
 
 
 const formData = {
-  formFields: [{
+  formFields: [
+  /*
+  {
     label: 'API Host',
     category: 'text',
     name: 'apiHost',
@@ -32,6 +43,8 @@ const formData = {
       noSpecialChars: false,
     },
   }, {
+  */
+  {
     label: 'API Key',
     category: 'text',
     name: 'apiKey',
@@ -49,15 +62,19 @@ const formData = {
     'btnOKLabel': 'Login',
   },
   formHooks: {
-    btnOk ({ apiKey, apiSecret, apiHost }) {
-      // Todo Verify that API keys are correct before saving.
+    // btnOk ({ apiKey, apiSecret, apiHost }) {
+    btnOk ({ apiKey, apiSecret }) {
+      // TODO HardCode API Host
+      const { apiHost } = testEnv; // testEnv means testnet backend
       const connector = NashAPI({ apiKey, apiSecret, host: apiHost });
       storeAuth.dispatch('saveConnector', connector);
       storeAuth.dispatch('saveAuthenticated', true);
+       
       // Fetch SubAccounts
       const that = this;
       co(postAuth({ connector, storeAuth, router: this.$router }))
-        .then(() => console.log('done!'))
+        .then(() => {
+        })
         .catch((err) => console.log(err));
     },
   },
