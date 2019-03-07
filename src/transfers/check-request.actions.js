@@ -36,6 +36,23 @@ const queryTransferRequestSingleOutput = function* q({ address, value, connector
       TxStore.dispatch('saveTxNetwork', network);
       return tx;
     }
+    if (coin === 'BTC' && network === 'live') {
+      const tx = Bitcoin.Transaction({
+        networkName: 'main',
+        // data: res.body.txInfo.txinc,
+        inputs,
+        outputs,
+      });
+      TxStore.dispatch('saveDestAddr', address);
+      TxStore.dispatch('saveDestValue', value);
+      TxStore.dispatch('saveTxResponse', JSON.stringify(res.body));
+      TxStore.dispatch('saveAccountId', String(subAccountId));
+      TxStore.dispatch('saveTxInputs', inputs);
+      TxStore.dispatch('saveTxOutputs', outputs);
+      TxStore.dispatch('saveTxCoin', coin);
+      TxStore.dispatch('saveTxNetwork', network);
+      return tx;
+    }
     return false;
   }
   return false;
@@ -65,6 +82,15 @@ const makeTX = ({ coin, network, inputs, outputs }) => {
     });
     return tx;
   }
+  if (coin === 'BTC' && network === 'live') {
+    const tx = Bitcoin.Transaction({
+      networkName: 'main',
+      // data: res.body.txInfo.txinc,
+      inputs,
+      outputs,
+    });
+    return tx;
+  }
 };
 
 const makeTXFromStore = () => {
@@ -84,9 +110,10 @@ const makeTXFromStore = () => {
 
 // BIP44 Mappings
 const bip44Map = {
-  'BTC': {
-    'testnet': 'm/44\'/1\'',
-  }
+  BTC: {
+    testnet: 'm/44\'/1\'',
+    live: 'm/44\'/0\'',
+  },
 };
 
 const walletFromSeedphrase = ({ phrase }) => {
@@ -99,11 +126,13 @@ const walletFromSeedphrase = ({ phrase }) => {
   const accountList = AuthStore.getters.getAllAccounts;
   if (accountList !== false) {
     if (Object.hasOwnProperty.call(accountList, accountId) === false) {
-      const derivPath = `${bip44}/10000\'`;
+      const derivPath = `${bip44}/10000'`;
       if (txCoin === 'BTC' && txNetwork === 'testnet') {
-        console.log(derivPath);
         const wallet = Bitcoin.Wallet({}).fromSeedphrase(phrase, derivPath, 'testnet3');
-        console.log(wallet.getPrivKey());
+        return wallet;
+      }
+      if (txCoin === 'BTC' && txNetwork === 'live') {
+        const wallet = Bitcoin.Wallet({}).fromSeedphrase(phrase, derivPath, 'main');
         return wallet;
       }
       return false;

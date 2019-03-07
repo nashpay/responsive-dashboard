@@ -19,13 +19,6 @@
 <script>
 import { CryptoAddress } from '../../plugins/form-validator/';
 import factory from './factory';
-/*
-const validator = CryptoAddress({ 
-  rules: {
-    cryptoAddress: { tag: 'btc-testnet' },
-  },
-}) ;
-*/
 const defaultConfig = {};
 const defaultRules = {};
 

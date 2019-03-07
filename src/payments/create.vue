@@ -53,7 +53,7 @@ const formData = {
         fiatCurrency: 'USD',
         fiatAmount: '10.00',
         timestamp: '1580181343',
-        network: 'testnet',
+        network: 'live',
       };
       const body = { ...defaultParams, amount, customerRef };
 

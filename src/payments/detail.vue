@@ -30,7 +30,7 @@
           <td>Currency</td><td>BTC</td>
         </tr>
         <tr>
-          <td>Network</td><td>Testnet</td>
+          <td>Network</td><td>Livenet</td>
         </tr>
         <tr>
           <td>Created</td><td>1 January 2019 13:40</td>

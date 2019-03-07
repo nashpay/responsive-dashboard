@@ -42,7 +42,7 @@ const formData = {
   }, {
     label: 'Address',
     category: 'cryptoaddress',
-    rules: { cryptoAddress: { tag: 'btc-testnet' } }, // TODO Remove hardcode for network
+    rules: { cryptoAddress: { tag: 'btc-live' } }, // TODO Remove hardcode for network
     name: 'address',
   }],
   formConfig: {
