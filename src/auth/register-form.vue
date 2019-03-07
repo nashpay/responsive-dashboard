@@ -3,6 +3,7 @@
     v-bind:formFields="formFields"
     v-bind:formConfig="formConfig"
     v-on:btnOk="formBtnOk"
+    v-on:btnCancel="formBtnCancel"
   />
 </template>
 <script>
@@ -23,7 +24,7 @@ const prodEnv = {
 const registerAuth = function* registerAuth(body) {
   const connector = NashAPI({ apiKey: 'abc', apiSecret: 'xxx', host: prodEnv.apiHost });
   const res = yield connector.createAccount({ body });
-  console.log(res);
+  return res;
 }
 
 const formData = {
@@ -36,9 +37,13 @@ const formData = {
   }],
   formConfig: {
     'btnOKLabel': 'Register',
+    'btnCancelLabel': 'Login',
   },
   formHooks: {
     // btnOk ({ apiKey, apiSecret, apiHost }) {
+    btnCancel () {
+      this.$router.push({ name: 'auth-login' });
+    },
     btnOk ({ username }) {
       const body = {
         pubKeyOne: RegisterStore.getters.pubKeyOne,
@@ -48,7 +53,10 @@ const formData = {
         username,
       };
       co(registerAuth(body)).then((res) => {
-
+        const { success, statusCode, body } = res;
+        if (statusCode === 200 && success === true) {
+          this.$router.push({ name: 'auth-login', query: { register: 'success' } });
+        }
       }).catch((err) => console.log(err));
     },
   },

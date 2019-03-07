@@ -1,10 +1,20 @@
 <template>
-  <div class="container-subrouter">
-   <h1 class="title is-4"> Registration</h1>
-   <h1 class="subtitle is-5">Live Network</h1>
-   <register-generate />
-   <register-form />
-  </div>
+  <section class="hero is-danger is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="title is-4"> Nashpay</div>
+        <div class="subtitle is-5"> Registration</div>
+        <div class="card">
+          <div class="card-content">
+            <div class="content">
+                <register-generate />
+                <register-form />
+            </div>
+          </div> <!-- End of Card Content -->
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 <script>
 import RegisterGenerate from './register-generate.vue';

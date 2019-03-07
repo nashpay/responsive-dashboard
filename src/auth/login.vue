@@ -1,13 +1,24 @@
 <template>
-  <div class="container-subrouter">
-   <h1 class="title is-4"> Login</h1>
-   <h1 class="subtitle is-5">Live Network</h1>
-    <napp-form 
-      v-bind:formFields="formFields"
-      v-bind:formConfig="formConfig"
-      v-on:btnOk="formBtnOk"
-    />
-  </div>
+  <section class="hero is-danger is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="title is-4"> Nashpay</div>
+        <div class="subtitle is-5">Login</div>
+        <div class="card">
+          <div class="card-content">
+            <div class="content">
+              <napp-form 
+                v-bind:formFields="formFields"
+                v-bind:formConfig="formConfig"
+                v-on:btnOk="formBtnOk"
+                v-on:btnCancel="formBtnCancel"
+              />
+            </div>
+          </div> <!-- End of Card Content -->
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 <script>
 import co from 'co';
@@ -41,9 +52,13 @@ const formData = {
   }],
   formConfig: {
     'btnOKLabel': 'Login',
+    'btnCancelLabel': 'Register',
   },
   formHooks: {
     // btnOk ({ apiKey, apiSecret, apiHost }) {
+    btnCancel () {
+      this.$router.push({ name: 'auth-register' });
+    },
     btnOk ({ apiKey, apiSecret }) {
       // TODO HardCode API Host
       const { apiHost } = prodEnv; // testEnv means testnet backend
