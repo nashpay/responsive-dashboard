@@ -210,10 +210,7 @@ export default {
         console.log('Generating key pair...');
         rsa.generateKeyPair({
           bits: 2048,
-          workers: 2,
         }, (err, keyPair) => {
-          console.log('err');
-          console.log(err);
           if (err) reject(err);
           resolve(keyPair);
         });
