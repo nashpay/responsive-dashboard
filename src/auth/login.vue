@@ -46,7 +46,7 @@ const formData = {
     // btnOk ({ apiKey, apiSecret, apiHost }) {
     btnOk ({ apiKey, apiSecret }) {
       // TODO HardCode API Host
-      const { apiHost } = testEnv; // testEnv means testnet backend
+      const { apiHost } = prodEnv; // testEnv means testnet backend
       const connector = NashAPI({ apiKey, apiSecret, host: apiHost });
       storeAuth.dispatch('saveConnector', connector);
       storeAuth.dispatch('saveAuthenticated', true);
