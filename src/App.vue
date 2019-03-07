@@ -82,9 +82,8 @@ export default {
       if(this.$route.matched.length > 0) {
         // Update NavStore
         const currentView = this.$route.matched[0];
-        const { name: pathName } = currentView;
         const isAuth = storeAuth.state.authenticated;
-        if (pathName.indexOf('auth') === -1 && (isAuth === false || isAuth === 'STORE_DEFAULT')) {
+        if (currentView.path.indexOf('auth') === -1 && (isAuth === false || isAuth === 'STORE_DEFAULT')) {
           //
           this.$router.push({ name: 'auth-login' });
         }
