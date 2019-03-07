@@ -8,7 +8,7 @@
         <div class="level-item">
           <div class="select">
             <select>
-              <option> 20 </option>
+              <option> 10 </option>
             </select>
           </div>
         </div>

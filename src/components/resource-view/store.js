@@ -16,7 +16,7 @@ const storeArgs = storeFactory(schema);
 const defaultReducer = state => k => defaultVal => (state[k] === 'STORE_DEFAULT' ? defaultVal : state[k]);
 
 const getters = {
-  pageLimit: state => defaultReducer(state)('pageLimit')(20),
+  pageLimit: state => defaultReducer(state)('pageLimit')(10),
   beforeIdNext: state => defaultReducer(state)('beforeIdNext')(false),
   beforeIdPrev: state => defaultReducer(state)('beforeIdPrev')(false),
   pageView: state => defaultReducer(state)('pageView')([]),
