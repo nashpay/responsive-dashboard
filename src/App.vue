@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <div class="columns is-mobile">
+  <div class="columns is-mobile" v-if="isAuth">
     <app-sidebar v-if="isAuth"/>
     <app-sidebar-overlay v-if="isAuth"/>
     <div class="app-container column">
@@ -9,6 +9,7 @@
       <app-footer v-if="isAuth"/>
     </div>
   </div>
+  <router-view v-if="!isAuth"/>
 </div>
   
 </template>

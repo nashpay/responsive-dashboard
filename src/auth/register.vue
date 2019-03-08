@@ -1,20 +1,16 @@
 <template>
-  <section class="hero is-danger is-fullheight">
-    <div class="hero-body">
-      <div class="container">
-        <div class="title is-4"> Nashpay</div>
-        <div class="subtitle is-5"> Registration</div>
-        <div class="card">
-          <div class="card-content">
-            <div class="content">
-                <register-generate />
-                <register-form />
-            </div>
-          </div> <!-- End of Card Content -->
+  <div class="register-wrapper">
+    <div class="title is-4"> Nashpay</div>
+    <div class="subtitle is-5"> Registration</div>
+    <div class="card">
+      <div class="card-content">
+        <div class="content">
+            <register-generate />
+            <register-form />
         </div>
-      </div>
+      </div> <!-- End of Card Content -->
     </div>
-  </section>
+  </div>
 </template>
 <script>
 import RegisterGenerate from './register-generate.vue';

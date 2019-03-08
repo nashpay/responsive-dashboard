@@ -6,7 +6,7 @@
         class="textarea is-danger"
         v-on:input="updateVal"
         v-bind:value="fieldValue"
-        rows="5"
+        rows="3"
       />
       <p class="help is-danger" v-if="fieldError !== false"> {{ fieldError }}</p>
     </div>

@@ -56,15 +56,20 @@
   .field {
     .control {
       input.input {
+        /*
         max-width: 10rem;
+        */
       }
       select {
+        /*
         width: 10rem;
+        */
       }
       textarea {
-        max-width: 15rem;
+        /* max-width: 15rem;
         min-width: 15rem;
         width: 15rem;
+        */
       }
     }
   }

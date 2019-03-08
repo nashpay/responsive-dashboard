@@ -23,6 +23,7 @@ const Routes = [{
     path: 'register',
     name: 'auth-register',
     component: Register,
+    props: route => ({ register: route.query.register }),
   }],
 }];
 

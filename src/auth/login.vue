@@ -1,80 +1,56 @@
 <template>
-  <section class="hero is-danger is-fullheight">
-    <div class="hero-body">
-      <div class="container">
-        <div class="title is-4"> Nashpay</div>
-        <div class="subtitle is-5">Login</div>
-        <div class="card">
-          <div class="card-content">
-            <div class="content">
-              <napp-form 
-                v-bind:formFields="formFields"
-                v-bind:formConfig="formConfig"
-                v-on:btnOk="formBtnOk"
-                v-on:btnCancel="formBtnCancel"
-              />
-            </div>
-          </div> <!-- End of Card Content -->
+  <div class="hero-center-card">
+    <div class="title is-4"> Nashpay</div>
+    <div class="subtitle is-5">Login</div>
+    <div class="card">
+      <div class="card-content">
+        <div class="content">
+          <div class="notification is-success" v-if="register">
+            <button class="delete"></button>
+            Registration Successful
+          </div>
+          <login-form />
         </div>
-      </div>
+      </div> <!-- End of Card Content -->
     </div>
-  </section>
+  </div>
 </template>
-<script>
-import co from 'co';
-import FormMixin from '../components/forms/mixin';
-import storeAuth from './store';
-import NashAPI from '../plugins/nash-api/';
-import { postAuth } from './actions';
+<style lang="less">
+@import (reference, less) url("../theme/core.less");
 
-// @TODO Remove Defaults
-
-const prodEnv = {
-  apiHost: 'https://livenet.nashpay.io',
+.hero-center-card {
+  max-width: 30rem;
+  margin-left: auto;
+  margin-right: auto;
 }
+</style>
+<script>
+import LoginForm from './login-form.vue';
 
-
-const formData = {
-  formFields: [
-  {
-    label: 'API Key',
-    category: 'text-input',
-    name: 'apiKey',
-    defaultValue: '',
-  }, {
-    label: 'API Secret',
-    category: 'text',
-    name: 'apiSecret',
-    defaultValue: '',
-    rules: {
-      noSpecialChars: false,
-    },
-  }],
-  formConfig: {
-    'btnOKLabel': 'Login',
-    'btnCancelLabel': 'Register',
+export default {
+  data() { 
+    return {
+    };
   },
-  formHooks: {
-    // btnOk ({ apiKey, apiSecret, apiHost }) {
-    btnCancel () {
-      this.$router.push({ name: 'auth-register' });
-    },
-    btnOk ({ apiKey, apiSecret }) {
-      // TODO HardCode API Host
-      const { apiHost } = prodEnv; // testEnv means testnet backend
-      const connector = NashAPI({ apiKey, apiSecret, host: apiHost });
-      storeAuth.dispatch('saveConnector', connector);
-      storeAuth.dispatch('saveAuthenticated', true);
-       
-      // Fetch SubAccounts
-      const that = this;
-      co(postAuth({ connector, storeAuth, router: this.$router }))
-        .then(() => {
-        })
-        .catch((err) => console.log(err));
-    },
+  mounted() {
+    this.$nextTick(this.loaded);
   },
+  components: {
+    'login-form': LoginForm,
+  },
+  computed: {
+  },
+  props: [
+    'register',
+  ], 
+  watch: {
+    $route(to, from) {
+      this.loaded();
+    } 
+  },
+  methods: {
+    loaded() {
+    },
+  }
 };
-
-export default FormMixin(formData);
 </script>

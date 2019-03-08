@@ -1,7 +1,11 @@
 <template>
-  <div class="container-inner">
-    <router-view />
-  </div>
+  <section class="hero is-danger is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <router-view />
+      </div>
+    </div>
+  </section>
 </template>
 <style lang="less">
 </style>
