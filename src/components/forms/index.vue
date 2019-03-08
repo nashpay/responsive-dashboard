@@ -121,6 +121,7 @@ export default {
       this.formStore.dispatch('saveErrors', newErrors);
     },
     btnOkAction() {
+      console.log('btnOkAction fired...');
       if (this.formStore.getters.isValid === true) {
         this.$emit('btnOk', this.formStore.getters.formValues);
       }

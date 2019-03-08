@@ -47,6 +47,7 @@ const formData = {
   },
   formHooks: {
     btnOk ({ amount, customerRef }) {
+      console.log('Payment OK Button reached.');
       // @TODO Remove hardcoded values.
       const defaultParams = {
         currency: 'BTC',
