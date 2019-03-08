@@ -5,7 +5,7 @@
     <div class="card">
       <div class="card-content">
         <div class="content">
-          <div class="notification is-success" v-if="register">
+          <div class="notification is-success" v-if="register === 'success'">
             <button class="delete"></button>
             Registration Successful
           </div>
@@ -39,9 +39,9 @@ export default {
     'login-form': LoginForm,
   },
   computed: {
+    register () { return this.$route.query.register; },
   },
   props: [
-    'register',
   ], 
   watch: {
     $route(to, from) {
