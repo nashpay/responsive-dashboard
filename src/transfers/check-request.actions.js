@@ -127,7 +127,14 @@ const signTransferRequest = function* q({ tx, connector }) {
   payload.txInfo.txinc = tx.toHex();
   console.log(payload);
   */
-  const payload = { txSigned: tx.toHex() };
+  const payload = JSON.parse(TxStore.state.txResponse);
+  payload.txSigned = tx.toHex();
+  console.log(payload);
+  /*
+  const payload = {
+    txSigned: tx.toHex(),
+  };
+  */
   const res = yield connector.postTransferSign({ body: payload });
   if (res.statusCode === 200 && res.success === true) {
     return res;
