@@ -12,7 +12,9 @@ const txInputReducer = allInputs => (acc, row, idx) => acc.concat({
 });
 
 const queryTransferRequestSingleOutput = function* q({ address, value, satPerByte, connector }) {
-  const payload = { addresses: [{ address, value }], satPerByte: parseInt(satPerByte, 10) };
+  console.log(`raw satPerByte: ${satPerByte}`);
+  const sendSatByte = parseInt(satPerByte, 10);
+  const payload = { addresses: [{ address, value }], satPerByte: sendSatByte };
   const res = yield connector.postTransferRequest({ body: payload });
   // TODO By Right it should have returned { success: true, result } , ignore for now
   const { body } = res;
@@ -49,6 +51,7 @@ const queryTransferRequestSingleOutput = function* q({ address, value, satPerByt
       TxStore.dispatch('saveTxOutputs', outputs);
       TxStore.dispatch('saveTxCoin', coin);
       TxStore.dispatch('saveTxNetwork', network);
+      return tx;
     }
   }
 };

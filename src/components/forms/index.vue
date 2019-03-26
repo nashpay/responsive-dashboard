@@ -95,6 +95,7 @@ export default {
   data() { 
     return {
       formStore,
+      formKeys: [],
     };
   },
   components: {
@@ -121,14 +122,39 @@ export default {
   methods: {
     loaded() {
       // Apply Defaults
+      const formKeys = this.formFields.reduce((acc, row) => {
+        return acc.concat(row.name);
+      }, []);
+      this.formKeys = formKeys;
       
     },
     formOutput({ values, errors }) {
       // Update the Store
-      const newValues = { ...this.formStore.getters.formValues, ...values };
+      // Need to Prevent Double Saving
+      const whitelist = this.formKeys;
+      const prevValues = this.formStore.getters.formValues;
+      const prevErrors = this.formStore.getters.formErrors;
+      const carryOverValues = Object.keys(prevValues).reduce((acc, valKey) => {
+        if (whitelist.indexOf(valKey) > -1) {
+          acc[valKey] = prevValues[valKey];
+        }
+        return acc;
+      }, {});
+      const carryOverErrors = Object.keys(prevErrors).reduce((acc, errKey) => {
+        if (whitelist.indexOf(errKey) > -1) {
+          acc[errKey] = prevErrors[errKey];
+        }
+        return acc;
+      }, {});
+      const newValues = { ...carryOverValues, ...values }; 
+      const newErrors = { ...carryOverErrors, ...errors }; 
       this.formStore.dispatch('saveValues', newValues);
-      const newErrors = { ...this.formStore.getters.formErrors, ...errors };
       this.formStore.dispatch('saveErrors', newErrors);
+
+      /*
+      const newValues = { ...this.formStore.getters.formValues, ...values };
+      const newErrors = { ...this.formStore.getters.formErrors, ...errors };
+      */
     },
     btnOkAction() {
       console.log('btnOkAction fired...');
