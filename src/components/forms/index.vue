@@ -9,6 +9,14 @@
         v-bind:defaultValue="field.defaultValue"
         v-on:formOutput="formOutput"
       />
+      <input-integer
+        v-if="field.category === 'integer'"
+        v-bind:label="field.label"
+        v-bind:name="field.name"
+        v-bind:rules="field.rules"
+        v-bind:defaultValue="field.defaultValue"
+        v-on:formOutput="formOutput"
+      />
       <input-textarea
         v-if="field.category === 'text'"
         v-bind:label="field.label"
@@ -80,6 +88,7 @@ import InputCurrency from './currency.vue';
 import InputTextArea from './text.vue';
 import InputText from './text-input.vue';
 import InputCryptoAddress from './cryptoaddress.vue';
+import InputInteger from './integer.vue';
 import formStore from './store';
 
 export default {
@@ -90,6 +99,7 @@ export default {
   },
   components: {
     'input-currency': InputCurrency,
+    'input-integer': InputInteger,
     'input-text': InputText,
     'input-textarea': InputTextArea,
     'input-cryptoaddress': InputCryptoAddress,

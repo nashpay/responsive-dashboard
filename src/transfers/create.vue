@@ -40,6 +40,11 @@ const formData = {
     name: 'amount',
     rules: { max: { precision: 4, value: '1.0000' } },
   }, {
+    label: 'SatPerByte',
+    category: 'integer',
+    name: 'satPerByte',
+    rules: { },
+  }, {
     label: 'Address',
     category: 'cryptoaddress',
     rules: { cryptoAddress: { tag: 'btc-live' } }, // TODO Remove hardcode for network
@@ -50,13 +55,14 @@ const formData = {
     'btnCancelLabel': 'Cancel',
   },
   formHooks: {
-    btnOk ({ amount, address }) {
+    btnOk ({ amount, address, satPerByte }) {
       console.log('btnOK Pressed');
       console.log(amount);
       console.log(address);
+      console.log(satPerByte);
       this.$router.push({
         name: 'transfer-create-check-request',
-        query: { address, value: amount },
+        query: { address, value: amount, satPerByte },
       });
     },
     btnCancel () {

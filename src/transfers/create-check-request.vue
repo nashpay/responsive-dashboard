@@ -147,6 +147,7 @@ export default {
       co(queryTransferRequestSingleOutput({
         address: this.address,
         value: this.value,
+        satPerByte: this.satPerByte,
         connector: storeAuth.state.connector,
       }))
         .then((res) => {

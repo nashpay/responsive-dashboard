@@ -121,13 +121,31 @@ const Transaction = ({
         cache: this.txCache,
       });
     },
-    signWithHDWallet(wallet) {
+    signWithHDWalletLegacy(wallet) {
       const txBuilderCopy = this.clone();
       this.txCache.inputs.forEach((input, idx) => {
         // For Each Input, derive according to change and index
         const target = wallet.derive(input.change).derive(input.index);
-		// const ecPair = ecPairFromPrivateKey(target.getPrivKey(), { network: this.network });
-		const ecPair = bitcoinJS.ECPair.fromPrivateKey(target.getPrivKey(), { network });
+        // const ecPair = ecPairFromPrivateKey(target.getPrivKey(), { network: this.network });
+        const ecPair = bitcoinJS.ECPair.fromPrivateKey(target.getPrivKey(), { network });
+ 
+        txBuilderCopy.sign(idx, ecPair, Buffer.from(input.redeemScript, 'hex'));
+      });
+      const updatedData = txBuilderCopy.buildIncomplete().toHex();
+      return Transaction({
+        networkName,
+        data: updatedData,
+        cache: this.txCache,
+      });
+    },
+    signWithHDWallet(wallet) {
+      const txBuilderCopy = this.clone();
+      this.txCache.inputs.forEach((input, idx) => {
+        // For Each Input, derive according to change and index
+        // TODO New hardcoded path for Nashpay Wallets generated from dashboard!!!
+        const target = wallet.derive(3).derive(1);
+        // const ecPair = ecPairFromPrivateKey(target.getPrivKey(), { network: this.network });
+        const ecPair = bitcoinJS.ECPair.fromPrivateKey(target.getPrivKey(), { network });
  
         txBuilderCopy.sign(idx, ecPair, Buffer.from(input.redeemScript, 'hex'));
       });
@@ -151,7 +169,7 @@ const Wallet = ({ HD }) => {
   return ({
     HD,
     fromSeedphrase(phrase, path, networkName) {
-	  const seed = bip39.mnemonicToSeed(phrase);
+      const seed = bip39.mnemonicToSeed(phrase);
       const network = Networks[networkName];
       const root = bip32.fromSeed(seed, network);
       const HD = root.derivePath(path);
