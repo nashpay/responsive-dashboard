@@ -17,6 +17,7 @@ import { postAuth } from './actions';
 
 const prodEnv = {
   apiHost: 'https://livenet.nashpay.io',
+  // apiHost: 'https://testnet.nashpay.io',
 }
 
 

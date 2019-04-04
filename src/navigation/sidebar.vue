@@ -62,11 +62,12 @@
 @import (reference, less) url("../theme/core.less");
 
 .app-sidebar {
+  height: 100vh;
   padding: 0;
   color: @secondary-color;
-  height: 100%;
   /* background-color: #fafafa; */
-  background-color: #e5e5e5;
+  /* background-color: #e5e5e5; */
+  background-color: @pri-red;
   @media @desktop {
     width: 25%;
   }
@@ -76,6 +77,7 @@
 }
 .app-sidebar.app-sidebar-show {
   z-index: 10;
+  height: 100vh;
   /* position: absolute; */
   position: fixed;
   @media @desktop {

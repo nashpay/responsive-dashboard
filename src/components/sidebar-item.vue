@@ -23,11 +23,12 @@
   width: 12rem;
   /* background-color: #b3b3b3; */
   /* background-color: #ccc; */
-  background-color: #e5e5e5;
+  background-color: @pri-red;
   a {
-    color: @gray; 
+    background-color: @pri-red;
+    color: #fff;
     .app-sidebar-wrap {
-      padding: 0.5rem 1rem 0 1rem;
+      padding: 1rem 1rem 0 1rem;
       .sidebar-icon {
         padding: 0.75rem 0rem 0.40rem 0.75rem;
       }
@@ -46,8 +47,8 @@
       .sidebar-name {
         padding: 0.75rem 0.75rem 0.40rem 0;
         p {
-          font-size: 1rem;
-          font-weight: 500;
+          font-size: 0.8rem;
+          font-weight: 800;
           line-height: 1.25;
           margin-bottom: -0.2rem;
           display: block;
@@ -57,11 +58,11 @@
       }
     }
   }
-  a.active {
-    color: @primary-color;
+  a.router-link-active {
+    background-color: #212529;
   }
   a:hover {
-    color: @primary-color;
+    background-color: #212529;
   }
 }
 .app-sidebar-item:first-child {
@@ -87,6 +88,9 @@
       }
     }
   }
+}
+.app-sidebar-item.active {
+  background-color: #212529;
 }
 </style>
 <script>
@@ -118,6 +122,8 @@ export default {
   ], 
   watch: {
     $route(to, from) {
+      console.log('route changed');
+      console.log(to);
       this.loaded();
     } 
   },
