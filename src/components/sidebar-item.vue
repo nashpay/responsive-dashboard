@@ -28,9 +28,9 @@
     background-color: @pri-red;
     color: #fff;
     .app-sidebar-wrap {
-      padding: 1rem 1rem 0 1rem;
+      padding: 0.5rem 1rem 0.5rem 1rem;
       .sidebar-icon {
-        padding: 0.75rem 0rem 0.40rem 0.75rem;
+        padding: 0.75rem 0rem 0.75rem 0.75rem;
       }
       .level-item.sidebar-name {
         justify-content: left;
@@ -63,6 +63,12 @@
   }
   a:hover {
     background-color: #212529;
+  }
+}
+.app-sidebar-item.app-sidebar-active {
+  background-color: #d12e4e;
+  a {
+    background-color: #d12e4e;
   }
 }
 .app-sidebar-item:first-child {
@@ -100,16 +106,33 @@ export default {
     return {
       baseClassSidebarItem: ['level-item', 'sidebar-name'],
       baseClassSidebar: ['app-sidebar-item'],
+      routeName: '',
     };
   },
   computed: {
     clsSidebarItemName () {
+      let sideBarItmNameCls = [...this.baseClassSidebarItem];
       const toggleClass = this.sidebarStatus === 0 ? 'sidebar-name-hide': null;
-      return [...this.baseClassSidebarItem, toggleClass];
+      sideBarItmNameCls = [...sideBarItmNameCls, toggleClass];
+      if (this.routeName !== '') {
+        if (this.routeName.indexOf(this.routeFilter) > -1) {
+          //
+          sideBarItmNameCls = [...sideBarItmNameCls, 'sidebar-name-active'];
+        }
+      }
+      return sideBarItmNameCls;
     },
     clsSidebarItem () {
+      let sideBarItmCls = [...this.baseClassSidebar];
       const toggleClass = this.sidebarStatus === 0 ? 'app-sidebar-item-hide': null;
-      return [...this.baseClassSidebar, toggleClass];
+      sideBarItmCls = [...sideBarItmCls, toggleClass];
+      if (this.routeName !== '') {
+        if (this.routeName.indexOf(this.routeFilter) > -1) {
+          //
+          sideBarItmCls = [...sideBarItmCls, 'app-sidebar-active'];
+        }
+      }
+      return sideBarItmCls;
     },
   },
   mounted() {
@@ -117,13 +140,14 @@ export default {
   },
   props: [
     'pageName',
+    'routeFilter',
     'pageRoute',
     'sidebarStatus',
   ], 
   watch: {
     $route(to, from) {
-      console.log('route changed');
-      console.log(to);
+      const { name } = to;
+      this.routeName = name;
       this.loaded();
     } 
   },

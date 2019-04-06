@@ -21,6 +21,7 @@
     </sidebar-item>
     <sidebar-item 
       pageName="Payments"
+      routeFilter="payment-"
       v-bind:pageRoute="paymentIndex"
       v-bind:sidebarStatus="sidebarStatus"
     >
@@ -30,6 +31,7 @@
     </sidebar-item>
     <sidebar-item
       pageName="Transfers"
+      routeFilter="transfer-"
       v-bind:pageRoute="transferIndex"
       v-bind:sidebarStatus="sidebarStatus"
     >
@@ -39,6 +41,7 @@
     </sidebar-item>
     <sidebar-item
       pageName="API"
+      routeFilter="api-"
       v-bind:pageRoute="dashboardIndex"
       v-bind:sidebarStatus="sidebarStatus"
     >
@@ -48,6 +51,7 @@
     </sidebar-item>
     <sidebar-item
       pageName="Settings"
+      routeFilter="setting-"
       v-bind:pageRoute="dashboardIndex"
       v-bind:sidebarStatus="sidebarStatus"
     >
@@ -99,7 +103,7 @@
   display: none;
   @media @desktop {
     display: block;
-    max-width: 13rem;
+    max-width: 12rem;
   }
   @media @tablet {
     display: block;
