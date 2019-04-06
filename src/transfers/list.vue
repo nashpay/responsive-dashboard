@@ -28,7 +28,7 @@
      <!-- End Of Table Column Header Slot -->
      <!-- Table Row Slot -->
      <template v-if="pageView.length > 0">
-       <tr slot="table-row" v-for="pageItem in pageView">
+       <tr slot="table-row" v-for="pageItem in pageView" v-on:click="getDetail(pageItem.id)">
          <td> {{ pageItem.id }} </td>
          <td> {{ pageItem.createdAt | friendly-datetime }} </td>
          <td v-if="pageItem.outputs" > {{ pageItem.outputs[0].address }} </td>
@@ -137,6 +137,9 @@ export default {
   methods: {
     loaded() {
   
+    },
+    getDetail(transferId) {
+      this.$router.push({ name: 'transfer-detail', query: { transferId } });
     },
     updatePageView(x) {
       this.pageView = x.reduce((acc, y) => {

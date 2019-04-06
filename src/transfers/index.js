@@ -6,6 +6,7 @@ import Create from './create.vue';
 import CheckRequest from './create-check-request.vue';
 import SignRequest from './create-sign-request.vue';
 import CreateSuccess from './create-sign-success.vue';
+import Detail from './detail.vue';
 // import CreateFail from './create-fail.vue';
 // import CreateSuccess from './create-success.vue';
 
@@ -25,6 +26,11 @@ const Routes = [{
       path: '',
       name: 'transfer-list',
       component: List,
+      props: route => ({ ...route.query }),
+    }, {
+      path: 'detail/',
+      name: 'transfer-detail',
+      component: Detail,
       props: route => ({ ...route.query }),
     }, {
       path: 'create/',

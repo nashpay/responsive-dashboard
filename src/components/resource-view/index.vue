@@ -63,10 +63,24 @@
 .napp-resource-table {
   display: none;
   @media @desktop {
-    display: block;
+    width: 100%;
+    display: table;
   }
   @media @tablet {
-    display: block;
+    width: 100%;
+    display: table;
+  }
+  thead {
+    width: 100%;
+  }
+  tbody {
+    width: 100%;
+  }
+  tr.napp-table-header {
+    width: 100%;
+  }
+  tr.napp-table-row {
+    width: 100%;
   }
 }
 .napp-resource-card {

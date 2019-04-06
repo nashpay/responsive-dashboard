@@ -114,6 +114,8 @@
 <script>
 import { SidebarHeader, SidebarItem } from '../components';
 import NavStore from './store';
+import storeAuth from '../auth/store'; // Access to List of Accounts
+import AccountControllers from './controllers';
 
 export default {
   data() { 
@@ -123,9 +125,12 @@ export default {
       transferIndex: { name: 'transfer-list' },
       // Classes
       baseClass: ['column', 'app-sidebar'],
+      accController: 'notloaded',
     };
   },
   mounted() {
+    const accController = AccountControllers(storeAuth);
+    this.accController = accController;
     this.$nextTick(this.loaded);
   },
   watch: {
@@ -152,6 +157,9 @@ export default {
       //
       if(this.$route.matched.length > 0) {
         // Update NavStore
+        if (this.accController !== 'notloaded') {
+	  this.accController.refreshAllBalances();
+        }
       } else {
         // 404
       } 

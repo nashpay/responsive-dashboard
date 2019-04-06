@@ -7,7 +7,14 @@
       </div>
       <div class="level-right">
         <div class="level-item">
-          <p> Live Network </p>
+          <div class="balance-section">
+            <p class="balance-label">Available</p>
+            <p class="balance-value"> {{ totalAvailable }} BTC</p>
+          </div>
+          <div class="balance-section">
+            <p class="balance-label">Pending</p>
+            <p class="balance-value"> {{ totalPending }} BTC</p>
+          </div>
         </div>
         <div class="level-item">
           <i class="fa fa-bell-o" />
@@ -36,6 +43,20 @@
   /* border-bottom: solid 1px @primary-color; */
   .app-header-wrap {
     padding: 1.50rem 1rem 1.50rem 1rem;
+    .balance-section {
+      display: block;
+      .balance-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        display: block;
+        padding: 0 0.5rem 0 0.5rem;
+      }
+      .balance-value {
+        font-size: 1.0rem;
+        display: block;
+        padding: 0 0.5rem 0 0.5rem;
+      }
+    }
     .logout-btn {
       p {
         font-size: 1rem;
@@ -53,17 +74,36 @@
 <script>
 import NavStore from './store';
 import AuthStore from '../auth/store';
+import AccountControllers from '../navigation/controllers';
 
 export default {
   data() { 
-    return {};
+    return {
+      accController: 'notloaded',
+    };
   },
   mounted() {
+    const accController = AccountControllers(AuthStore);
+    this.accController = accController;
     this.$nextTick(this.loaded);
   },
   computed: {
     isAuth() {
       return AuthStore.getters.isAuth;
+    },
+    totalAvailable() {
+      if (this.accController !== 'notloaded') {
+        const { totalAvailable } = this.accController.getAllAccountBalance();
+        return totalAvailable.toString();
+      }
+      return '0.0000';
+    },
+    totalPending() {
+      if (this.accController !== 'notloaded') {
+        const { totalPending } = this.accController.getAllAccountBalance();
+        return totalPending.toString();
+      }
+      return '0.0000';
     },
   },
   components: {

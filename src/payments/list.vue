@@ -18,7 +18,7 @@
      v-on:pageViewChange="updatePageView"
    >
      <!-- Table Column Header Slot -->
-     <tr slot="table-column-header">
+     <tr slot="table-column-header" class="napp-table-header">
        <th> ID </th>
        <th> Date </th>
        <th> Address </th>
@@ -27,7 +27,7 @@
      </tr>
      <!-- End Of Table Column Header Slot -->
      <!-- Table Row Slot -->
-     <tr slot="table-row" v-for="pageItem in pageView">
+     <tr slot="table-row" class="napp-table-row" v-for="pageItem in pageView">
        <td> {{ pageItem.id }} </td>
        <td> {{ pageItem.created_at | friendly-datetime }} </td>
        <td> {{ pageItem.address }} </td>

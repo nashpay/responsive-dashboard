@@ -25,6 +25,7 @@
   /* background-color: #ccc; */
   background-color: @pri-red;
   a {
+    outline: 0;
     background-color: @pri-red;
     color: #fff;
     .app-sidebar-wrap {
@@ -65,9 +66,11 @@
     background-color: #212529;
   }
 }
+
 .app-sidebar-item.app-sidebar-active {
   background-color: #d12e4e;
   a {
+    outline: 0;
     background-color: #d12e4e;
   }
 }
