@@ -15,6 +15,7 @@ const accountCreator = ({ subAccountId = '0', accountNumber = '10000' }) => {
     'subAccountId',
     'accountNumber',
     'transferSingle',
+    'paymentSingle',
   ];
 
   const storeArgs = storeFactory(schema);
@@ -59,6 +60,23 @@ const accountCreator = ({ subAccountId = '0', accountNumber = '10000' }) => {
           commit('TRANSFER_SINGLE', results);
         } else {
           commit('TRANSFER_SINGLE', null);
+        }
+      }).catch((err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    },
+    getPaymentById({ commit, state }, { paymentId }) {
+      co(storeAuth.state.connector.getPaymentById({
+        paymentId,
+        queryString: {},
+      })).then(({ statusCode, success, body }) => {
+        //
+        if (statusCode === 200 && success === true) {
+          commit('PAYMENT_SINGLE', body);
+        } else {
+          commit('PAYMENT_SINGLE', null);
         }
       }).catch((err) => {
         if (err) {

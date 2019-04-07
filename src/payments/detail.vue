@@ -12,34 +12,62 @@
         </li>
       </ul>
     </nav>  <!-- End of Breadcrumbs -->
-    <table class="app-horizontal-table">
-      <tbody>
-        <tr>
-          <td>Reference</td><td>d94c10df-0508-41a9-af8f-11dd588caf46</td>
-        </tr>
-        <tr>
-          <td>Address</td><td>2NEYd7YghfKaHDa18Kf1z3KovsfzbkNh7pB</td>
-        </tr>
-        <tr>
-          <td>Amount</td><td>0.0001</td>
-        </tr>
-        <tr>
-          <td>Status</td><td><button class="button"> Confirmed </button></td>
-        </tr>
-        <tr>
-          <td>Currency</td><td>BTC</td>
-        </tr>
-        <tr>
-          <td>Network</td><td>Livenet</td>
-        </tr>
-        <tr>
-          <td>Created</td><td>1 January 2019 13:40</td>
-        </tr>
-        <tr>
-          <td>Expiry</td><td>1 January 2019 16:40</td>
-        </tr>
-      </tbody>
-    </table> <!-- End of Horizontal Table -->
+    <template v-if="paymentDetail !== null">
+      <table class="app-horizontal-table">
+        <tbody>
+          <tr>
+            <td>Created</td><td>{{ paymentDetail.created_at | friendly-datetime }}</td>
+          </tr>
+          <tr>
+            <td>Expiry</td><td>{{ paymentDetail.expiry | friendly-datetime }}</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>
+              <span class="tag is-light" v-if="paymentDetail.state === '1001'">Created</span>
+              <span class="tag is-info" v-if="paymentDetail.state === '1002'">Pending</span>
+              <span class="tag is-success" v-if="paymentDetail.state === '1003'">Confirmed</span>
+              <span class="tag is-danger" v-if="paymentDetail.state === '1005'">Failed</span>
+            </td> 
+          </tr>
+          <tr>
+            <td>Amount</td><td>{{ paymentDetail.amount }}</td>
+          </tr>
+          <tr>
+            <td>Address</td><td>{{ paymentDetail.address }}</td>
+          </tr>
+          <tr>
+            <td>Customer Reference </td><td>{{ paymentDetail.customer_ref }}</td>
+          </tr>
+        </tbody>
+      </table> <!-- End of Horizontal Table -->
+      <table class="table is-fullwidth napp-resource-table">
+        <thead>
+          <tr>
+            <th>Transaction ID </th>
+            <th>N </th>
+            <th>Confirmations </th>
+            <th>Amount</th>
+          </tr>
+        </thead> 
+        <tfoot>
+          <tr>
+            <th>Transaction ID </th>
+            <th>N </th>
+            <th>Confirmations </th>
+            <th>Amount</th>
+          </tr>
+        </tfoot> 
+        <tbody>
+          <tr v-for="tx in paymentDetail.txs">
+            <td>{{ tx.tx_id }}</td>
+            <td>{{ tx.n }}</td>
+            <td>{{ tx.confirmations }}</td>
+            <td>{{ tx.received }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
     <div class="field is-grouped">
       <div class="control">
         <router-link :to="pageRoute">
@@ -78,18 +106,39 @@
 }
 </style>
 <script>
+import AuthStore from '../auth/store';
+import AccountControllers from '../navigation/controllers';
+import { unixToDateTime } from '../components/helpers';
 
 export default {
   data() { 
     return {
       pageRoute: { name: 'payment-list' },
+      accController: 'notloaded',
     };
   },
   mounted() {
+    const accController = AccountControllers(AuthStore);
+    this.accController = accController;
     this.$nextTick(this.loaded);
   },
+  computed: {
+    paymentDetail() {
+      if (this.accController !== 'notloaded') {
+        const paymentDetail = this.accController.renderPaymentById();
+        return paymentDetail;
+      }
+      return null;
+    },
+  },
   props: [
+    'paymentId',
   ], 
+  filters: {
+    'friendly-datetime' (val) {
+      return unixToDateTime(val);
+    },
+  },
   watch: {
     $route(to, from) {
       this.loaded();
@@ -98,10 +147,9 @@ export default {
   methods: {
     loaded() {
       //
-      if(this.$route.matched.length > 0) {
-      } else {
-        // 404
-      } 
+      if (this.accController !== 'notloaded') {
+        this.accController.getPaymentById(this.paymentId);
+      }
     },
   }
 };

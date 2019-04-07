@@ -11,9 +11,10 @@ const Routes = [{
   // name: 'payment-index',
   component: Index,
   children: [{
-    path: 'detail/:id',
+    path: 'detail/',
     name: 'payment-detail',
     component: Detail,
+    props: route => ({ ...route.query }),
   }, {
     path: '',
     name: 'payment-list',

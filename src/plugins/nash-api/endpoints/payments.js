@@ -6,6 +6,13 @@ const endpoints = {
       queryString,
     });
   },
+  getPaymentById: queryFn => function getPaymentById({ queryString, paymentId }) {
+    return queryFn({
+      resourceUri: `/api/v1/payments/${paymentId}`,
+      method: 'GET',
+      queryString,
+    });
+  },
   createPayment: queryFn => function createPayment({ queryString, body }) {
     return queryFn({
       resourceUri: '/api/v1/payments',

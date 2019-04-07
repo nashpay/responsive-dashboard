@@ -27,7 +27,7 @@
      </tr>
      <!-- End Of Table Column Header Slot -->
      <!-- Table Row Slot -->
-     <tr slot="table-row" class="napp-table-row" v-for="pageItem in pageView">
+     <tr slot="table-row" class="napp-table-row" v-for="pageItem in pageView" v-on:click="getDetail(pageItem.id)">
        <td> {{ pageItem.id }} </td>
        <td> {{ pageItem.created_at | friendly-datetime }} </td>
        <td> {{ pageItem.address }} </td>
@@ -135,6 +135,9 @@ export default {
   methods: {
     loaded() {
   
+    },
+    getDetail(paymentId) {
+      this.$router.push({ name: 'payment-detail', query: { paymentId } });
     },
     updatePageView(x) {
       this.pageView = x;

@@ -129,18 +129,24 @@ export default {
     'get-dest-address' (val) {
       if (typeof val !== 'undefined' && val !== null) {
         const { outputs } = val;
-        const userOut = outputs.filter(output => output.recipient === 'user')[0];
-        const { address } = userOut;
-        return address;
+        if (typeof outputs !== 'undefined' && val !== null) {
+	  const userOut = outputs.filter(output => output.recipient === 'user')[0];
+	  const { address } = userOut;
+	  return address;
+        }
+        return 'xxx';
       }
       return 'xxx';
     },
     'get-dest-amt' (val) {
       if (typeof val !== 'undefined' && val !== null) {
         const { outputs } = val;
-        const userOut = outputs.filter(output => output.recipient === 'user')[0];
-        const { amt } = userOut;
-        return amt;
+        if (typeof outputs !== 'undefined' && val !== null) {
+          const userOut = outputs.filter(output => output.recipient === 'user')[0];
+          const { amt } = userOut;
+          return amt;
+        }
+        return '0.0000';
       }
       return '0.0000';
     },
