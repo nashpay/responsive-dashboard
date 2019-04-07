@@ -29,6 +29,14 @@ const pageRefreshHook = (storeAuth) => {
       }
       return { totalPending, totalAvailable };
     },
+    getTransferById (transferId, accountId = '0') {
+      const account = storeAuth.getters.getAccountById(accountId);
+      account.dispatch('getTransferById', { transferId });
+    },
+    renderTransferById (accountId = '0') {
+      const account = storeAuth.getters.getAccountById(accountId);
+      return account.state.transferSingle;
+    }
   });
 }
 export default pageRefreshHook;

@@ -9,7 +9,13 @@ Vue.use(Vuex);
 
 
 const accountCreator = ({ subAccountId = '0', accountNumber = '10000' }) => {
-  const schema = ['accountBalancePending', 'accountBalanceAvailable', 'subAccountId', 'accountNumber'];
+  const schema = [
+    'accountBalancePending',
+    'accountBalanceAvailable',
+    'subAccountId',
+    'accountNumber',
+    'transferSingle',
+  ];
 
   const storeArgs = storeFactory(schema);
   const queryHeaders = {};
@@ -32,6 +38,27 @@ const accountCreator = ({ subAccountId = '0', accountNumber = '10000' }) => {
           commit('ACCOUNT_BALANCE_PENDING', pending);
           commit('ACCOUNT_BALANCE_AVAILABLE', available);
           commit('ACCOUNT_NUMBER', accountNumber);
+        }
+      }).catch((err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    },
+    getTransferById({ commit, state }, { transferId }) {
+      co(storeAuth.state.connector.getTransferById({
+        transferId,
+        queryString: {},
+      })).then(({ statusCode, success, body }) => {
+        //
+        // console.log(statusCode);
+        // console.log(success);
+        // console.log(body);
+        if (statusCode === 200 && success === true) {
+          const { results } = body;
+          commit('TRANSFER_SINGLE', results);
+        } else {
+          commit('TRANSFER_SINGLE', null);
         }
       }).catch((err) => {
         if (err) {
