@@ -31,12 +31,12 @@
        <tr slot="table-row" v-for="pageItem in pageView" v-on:click="getDetail(pageItem.id)">
          <td> {{ pageItem.id }} </td>
          <td> {{ pageItem.createdAt | friendly-datetime }} </td>
-         <td v-if="pageItem.outputs" > {{ pageItem.outputs[0].address }} </td>
-         <td v-if="pageItem.outputs" > {{ pageItem.outputs[0].amt }} </td>
+         <td v-if="pageItem.outputs" > {{ pageItem | get-dest-address }} </td>
+         <td v-if="pageItem.outputs" > {{ pageItem | get-dest-amt }} </td>
          <td>
-           <span class="tag is-light" v-if="pageItem.state === '1201'">Created</span>
-           <span class="tag is-info" v-if="pageItem.state === '1202'">Pending</span>
-           <span class="tag is-success" v-if="pageItem.state === '1203'">Confirmed</span>
+           <span class="tag is-light" v-if="pageItem.state === '1201'">Created | {{ pageItem.confirmations }}</span>
+           <span class="tag is-info" v-if="pageItem.state === '1202'">Pending | {{ pageItem.confirmations }}</span>
+           <span class="tag is-success" v-if="pageItem.state === '1203'">Confirmed | {{ pageItem.confirmations }}</span>
            <span class="tag is-danger" v-if="pageItem.state === '1205'">Failed</span>
          </td>
        </tr>
@@ -125,6 +125,24 @@ export default {
     },
     'friendly-datetime' (val) {
       return unixToDateTime(val);
+    },
+    'get-dest-address' (val) {
+      if (typeof val !== 'undefined' && val !== null) {
+        const { outputs } = val;
+        const userOut = outputs.filter(output => output.recipient === 'user')[0];
+        const { address } = userOut;
+        return address;
+      }
+      return 'xxx';
+    },
+    'get-dest-amt' (val) {
+      if (typeof val !== 'undefined' && val !== null) {
+        const { outputs } = val;
+        const userOut = outputs.filter(output => output.recipient === 'user')[0];
+        const { amt } = userOut;
+        return amt;
+      }
+      return '0.0000';
     },
   },
   watch: {
