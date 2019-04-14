@@ -86,16 +86,16 @@
   position: fixed;
   @media @desktop {
     display: block;
-	z-index: 0;
-	/* position: relative; */
-	position: static;
+        z-index: 0;
+        /* position: relative; */
+        position: static;
     max-width: 13rem;
   }
   @media @tablet {
-	z-index: 0;
+        z-index: 0;
     display: block;
-	/* position: relative; */
-	position: static;
+        /* position: relative; */
+        position: static;
     max-width: 13rem;
   }
 }
@@ -158,7 +158,7 @@ export default {
       if(this.$route.matched.length > 0) {
         // Update NavStore
         if (this.accController !== 'notloaded') {
-	  this.accController.refreshAllBalances();
+          this.accController.refreshAllBalances();
         }
       } else {
         // 404

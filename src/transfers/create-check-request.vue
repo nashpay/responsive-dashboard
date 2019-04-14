@@ -102,6 +102,7 @@
 import co from 'co';
 import storeAuth from '../auth/store';
 import { queryTransferRequestSingleOutput } from './check-request.actions';
+
 export default {
   data() { 
     return {

@@ -29,6 +29,7 @@
 <script>
 import FormMixin from '../components/forms/mixin';
 import AuthStore from '../auth/store';
+import FeeStore from '../streaming/feeStore';
 
 // TODO: Add support for multi-account
 const defaultAccount = AuthStore.getters.getDefaultAccount;
@@ -88,6 +89,15 @@ const computedFns = {
       }
     }
     return '0.0000';
+  },
+  feeFastest () {
+    return FeeStore.getters.getFastest;
+  },
+  feeMedium () {
+    return FeeStore.getters.getMedium;
+  },
+  feeSlow () {
+    return FeeStore.getters.getSlow;
   }
 };
 export default FormMixin({ ...formData, ...otherConfig, computedFns });

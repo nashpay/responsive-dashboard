@@ -51,6 +51,7 @@
 <script>
 import { Header, Footer, Sidebar, SidebarOverlay, store as NavStore } from './navigation';
 import storeAuth from './auth/store';
+import streamer from './streaming';
 
 export default {
   data() { 
@@ -62,6 +63,8 @@ export default {
     },
   },
   mounted() {
+    // TODO Hardcoded WS Host
+    streamer('wss://livenet.nashpay.io/api/ws');
     this.$nextTick(this.loaded);
   },
   components: {
