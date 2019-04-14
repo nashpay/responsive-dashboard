@@ -41,8 +41,7 @@
     "vue": "^2.5.22",
     "vue-router": "^3.0.2",
     "vueify": "^9.4.1",
-    "vuex": "^3.0.1",
-    "ws": "^6.2.1"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

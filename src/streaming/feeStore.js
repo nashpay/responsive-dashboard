@@ -11,7 +11,7 @@ const storeArgs = storeFactory(schema);
 const getters = {
   getFastest: state => (state.data === 'STORE_DEFAULT' ? false : state.data.fastest),
   getMedium: state => (state.data === 'STORE_DEFAULT' ? false : state.data.medium),
-  getSlowest: state => (state.data === 'STORE_DEFAULT' ? false : state.data.longest),
+  getSlow: state => (state.data === 'STORE_DEFAULT' ? false : state.data.longest),
 };
 
 const store = new Vuex.Store({ ...storeArgs, getters });

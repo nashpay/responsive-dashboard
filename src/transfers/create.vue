@@ -14,6 +14,33 @@
         </ul>
       </nav> 
       <p>Account Balance {{ accountBalance }} </p>
+      <nav class="panel">
+        <p class="panel-heading">Network Fees</p>
+        <div class="panel-block" v-if="feeFastest !== false">
+          <div class="control">
+            <label class="radio">
+             <input type="radio" name="satPerByte" v-model="satPerByte", v-bind:value="feeFastest.fee">
+             (Fastest {{ feeFastest.delay }} blocks) {{ feeFastest.fee }}
+            </label>
+          </div>
+        </div> <!-- End of Fastest -->
+        <div class="panel-block" v-if="feeMedium !== false">
+          <div class="control">
+            <label class="radio">
+             <input type="radio" name="answer", v-model="satPerByte", v-bind:value="feeMedium.fee">
+             (Medium {{ feeMedium.delay }} blocks) {{ feeMedium.fee }}
+            </label>
+          </div>
+        </div> <!-- End of Medium -->
+        <div class="panel-block" v-if="feeMedium !== false">
+          <div class="control">
+            <label class="radio">
+             <input type="radio" name="answer", v-model="satPerByte", v-bind:value="feeSlow.fee">
+             (Slow {{ feeSlow.delay }} blocks) {{ feeSlow.fee }}
+            </label>
+          </div>
+        </div> <!-- End of Slowest -->
+      </nav>
       <napp-form 
         v-bind:formFields="formFields"
         v-bind:formConfig="formConfig"
@@ -40,11 +67,13 @@ const formData = {
     category: 'currency',
     name: 'amount',
     rules: { max: { precision: 4, value: '1.0000' } },
+  /*
   }, {
     label: 'SatPerByte',
     category: 'integer',
     name: 'satPerByte',
     rules: { },
+  */
   }, {
     label: 'Address',
     category: 'cryptoaddress',
@@ -56,25 +85,27 @@ const formData = {
     'btnCancelLabel': 'Cancel',
   },
   formHooks: {
-    btnOk ({ amount, address, satPerByte }) {
+    // btnOk ({ amount, address, satPerByte }) {
+    btnOk ({ amount, address }) {
       console.log('btnOK Pressed');
       console.log(amount);
       console.log(address);
-      console.log(satPerByte);
+      console.log(this.satPerByte);
       this.$router.push({
         name: 'transfer-create-check-request',
-        query: { address, value: amount, satPerByte },
+        query: { address, value: amount, satPerByte: this.satPerByte },
       });
     },
     btnCancel () {
-	  this.$router.push({
-		name: 'transfer-list',
-	  });
+      this.$router.push({
+            name: 'transfer-list',
+      });
     },
   },
 };
 const otherConfig = {
   pageRoute: { name: 'transfer-list' },
+  satPerByte: 50,
 };
 const computedFns = {
   defaultAccount () {
@@ -91,6 +122,7 @@ const computedFns = {
     return '0.0000';
   },
   feeFastest () {
+    console.log(JSON.stringify(FeeStore.getters.getFastest, null, 2));
     return FeeStore.getters.getFastest;
   },
   feeMedium () {
@@ -98,8 +130,14 @@ const computedFns = {
   },
   feeSlow () {
     return FeeStore.getters.getSlow;
-  }
+  },
 };
-export default FormMixin({ ...formData, ...otherConfig, computedFns });
+
+const watchFns = {
+  satPerByte (to, from) {
+    // Trigger the max withdrawal amount
+  },
+};
+export default FormMixin({ ...formData, ...otherConfig, computedFns, watchFns });
 
 </script>
