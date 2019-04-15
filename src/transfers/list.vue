@@ -130,9 +130,9 @@ export default {
       if (typeof val !== 'undefined' && val !== null) {
         const { outputs } = val;
         if (typeof outputs !== 'undefined' && val !== null) {
-	  const userOut = outputs.filter(output => output.recipient === 'user')[0];
-	  const { address } = userOut;
-	  return address;
+          const userOut = outputs.filter(output => output.recipient === 'user')[0];
+          const { address } = userOut;
+          return address;
         }
         return 'xxx';
       }

@@ -15,6 +15,7 @@ export default formData => ({
     $route(to, from) {
       this.loaded();
     },
+    ...formData.watchFns,
   },
   computed: {
     ...formData.computedFns,
@@ -24,12 +25,7 @@ export default formData => ({
   },
   methods: {
     loaded() {
-      //
-      if (this.$route.matched.length > 0) {
-        // Update NavStore
-      } else {
-        // 404
-      }
+      console.log('Form mixin loaded called...');
     },
     formBtnOk(evt) {
       this.formHooks.btnOk.call(this, evt);

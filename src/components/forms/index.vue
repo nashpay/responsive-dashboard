@@ -122,11 +122,11 @@ export default {
   methods: {
     loaded() {
       // Apply Defaults
+      console.log('Form called...');
       const formKeys = this.formFields.reduce((acc, row) => {
         return acc.concat(row.name);
       }, []);
       this.formKeys = formKeys;
-      
     },
     formOutput({ values, errors }) {
       // Update the Store

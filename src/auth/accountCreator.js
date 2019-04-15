@@ -16,6 +16,8 @@ const accountCreator = ({ subAccountId = '0', accountNumber = '10000' }) => {
     'accountNumber',
     'transferSingle',
     'paymentSingle',
+    'accountMaxBalanceAmt',
+    'accountAvailableCount',
   ];
 
   const storeArgs = storeFactory(schema);
@@ -45,6 +47,21 @@ const accountCreator = ({ subAccountId = '0', accountNumber = '10000' }) => {
           console.log(err);
         }
       });
+    },
+    getMaxBalance({ commit, state }, { satPerByte }) {
+      co(storeAuth.state.connector.getMaxBalance({ satPerByte }))
+        .then(({ statusCode, success, body }) => {
+          if (statusCode === 200 && success === true) {
+            const { maxAmt, available, availableCount } = body;
+            commit('ACCOUNT_MAX_BALANCE_AMT', maxAmt);
+            commit('ACCOUNT_BALANCE_AVAILABLE', available);
+            commit('ACCOUNT_AVAILABLE_COUNT', availableCount);
+          }
+        }).catch((err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
     },
     getTransferById({ commit, state }, { transferId }) {
       co(storeAuth.state.connector.getTransferById({

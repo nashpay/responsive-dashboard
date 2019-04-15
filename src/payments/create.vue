@@ -83,9 +83,9 @@ const formData = {
         });
     },
     btnCancel () {
-	  this.$router.push({
-		name: 'payment-list',
-	  });
+      this.$router.push({
+        name: 'payment-list',
+      });
     },
   },
 };

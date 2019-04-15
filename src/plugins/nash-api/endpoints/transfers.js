@@ -21,6 +21,14 @@ const endpoints = {
       queryHeaders,
     });
   },
+  getMaxBalance: queryFn => function getMaxBalance({ satPerByte, queryHeaders }) {
+    return queryFn({
+      resourceUri: `/api/v1/transfers/max_balance/${satPerByte}`,
+      method: 'GET',
+      queryString: {},
+      queryHeaders,
+    });
+  },
   postTransferRequest: queryFn => function postTransferRequest({ queryString, body }) {
     return queryFn({
       resourceUri: '/api/v1/transfers',

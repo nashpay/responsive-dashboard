@@ -112,23 +112,44 @@ const computedFns = {
     return AuthStore.getters.getDefaultAccount;
   },
   accountBalance () {
+    console.log('accountBalance');
     if (this.defaultAccount !== false) {
       const avail = this.defaultAccount.state.accountBalanceAvailable;
+      console.log('avail');
+      console.log(avail);
       if (avail !== 'STORE_DEFAULT' && typeof avail !== 'undefined') {
+        console.log(avail);
         this.formFields[0].rules = { max: { precision: 4, value: avail } };
         return avail;
       }
     }
     return '0.0000';
   },
+  accountMaxBalance () {
+    console.log('accountMaxBalance');
+    if (this.defaultAccount !== false) {
+      const availMax = this.defaultAccount.state.accountMaxBalanceAmt;
+      if (avail !== 'STORE_DEFAULT' && typeof avail !== 'undefined') {
+        this.formFields[0].rules = { max: { precision: 4, value: availMax } };
+        return availMax;
+      }
+    }
+    return '0.0000';
+  },
   feeFastest () {
-    console.log(JSON.stringify(FeeStore.getters.getFastest, null, 2));
+    console.log(FeeStore.getters.getFastest);
+    console.log(FeeStore.getters.getFastest.fee);
+    console.log(FeeStore.getters.getFastest.delay);
     return FeeStore.getters.getFastest;
   },
   feeMedium () {
+    console.log(FeeStore.getters.getMedium.fee);
+    console.log(FeeStore.getters.getMedium.delay);
     return FeeStore.getters.getMedium;
   },
   feeSlow () {
+    console.log(FeeStore.getters.getSlow.fee);
+    console.log(FeeStore.getters.getSlow.delay);
     return FeeStore.getters.getSlow;
   },
 };
@@ -136,8 +157,14 @@ const computedFns = {
 const watchFns = {
   satPerByte (to, from) {
     // Trigger the max withdrawal amount
+    console.log('satPerByte changed...');
+    if (this.defaultAccount !== false) {
+      this.defaultAccount.dispatch('getMaxBalance', { satPerByte });
+    }
   },
 };
+console.log(watchFns);
+console.log('export formMixin');
 export default FormMixin({ ...formData, ...otherConfig, computedFns, watchFns });
 
 </script>
