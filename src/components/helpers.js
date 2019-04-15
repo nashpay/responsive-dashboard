@@ -13,8 +13,8 @@ const unixToDateTime = (unixTS) => {
  */
 
 const CURRENCIES = {
-  'BTC': 9,
-  'BCH': 9,
+  BTC: 9,
+  BCH: 9,
 };
 
 const ERROR_MSG = {
@@ -78,7 +78,6 @@ const cryptonumber = decimals => (value, native = false) => {
   const fnsCmp = opsCmp
     .map(x => [x, y => o.value[x](y.value)])
     .reduce((acc, [k, fn]) => Object.assign(acc, { [k]: fn }), {});
-  
   return { ...o, ...fns, ...fnsCmp };
 };
 

@@ -9,7 +9,11 @@ const schema = ['data', 'activeFiat'];
 const storeArgs = storeFactory(schema);
 
 const getRateByCoin = (state, coin, fiat) => {
-  const { data, activeFiat } = state;
+  const { data, activeFiat: af } = state;
+  let activeFiat = 'USD';
+  if (af !== 'STORE_DEFAULT') {
+    activeFiat = af;
+  }
   const rateKey = `${coin}-${activeFiat}`;
   return data[rateKey] ? data[rateKey] : false;
 };

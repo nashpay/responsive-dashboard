@@ -25,7 +25,11 @@ export default formData => ({
   },
   methods: {
     loaded() {
-      console.log('Form mixin loaded called...');
+      // console.log('Form mixin loaded called...');
+      const { loadHandler } = formData;
+      if (typeof loadHandler !== 'undefined') {
+        loadHandler(this);
+      }
     },
     formBtnOk(evt) {
       this.formHooks.btnOk.call(this, evt);

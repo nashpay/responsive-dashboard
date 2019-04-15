@@ -13,7 +13,10 @@
           </li>
         </ul>
       </nav> 
-      <p>Account Balance {{ accountBalance }} </p>
+      <!-- <p>Account Balance {{ accountBalance }} </p> -->
+      <p>Maximum Transfer Amount</p>
+      <p class="title is-3"> {{ accountMaxBalance }}</p>
+      <p class="subtitle is-5"> {{ accountMaxFiatBalance }} {{ accountFiat }}</p>
       <nav class="panel">
         <p class="panel-heading">Network Fees</p>
         <div class="panel-block" v-if="feeFastest !== false">
@@ -54,9 +57,13 @@
 <style lang="less">
 </style>
 <script>
+import { Decimal } from 'decimal.js';
+
 import FormMixin from '../components/forms/mixin';
 import AuthStore from '../auth/store';
 import FeeStore from '../streaming/feeStore';
+import RateStore from '../streaming/rateStore';
+import { cryptonumber } from '../components/helpers';
 
 // TODO: Add support for multi-account
 const defaultAccount = AuthStore.getters.getDefaultAccount;
@@ -112,24 +119,19 @@ const computedFns = {
     return AuthStore.getters.getDefaultAccount;
   },
   accountBalance () {
-    console.log('accountBalance');
     if (this.defaultAccount !== false) {
       const avail = this.defaultAccount.state.accountBalanceAvailable;
-      console.log('avail');
-      console.log(avail);
       if (avail !== 'STORE_DEFAULT' && typeof avail !== 'undefined') {
-        console.log(avail);
-        this.formFields[0].rules = { max: { precision: 4, value: avail } };
+        // this.formFields[0].rules = { max: { precision: 4, value: avail } };
         return avail;
       }
     }
     return '0.0000';
   },
   accountMaxBalance () {
-    console.log('accountMaxBalance');
     if (this.defaultAccount !== false) {
       const availMax = this.defaultAccount.state.accountMaxBalanceAmt;
-      if (avail !== 'STORE_DEFAULT' && typeof avail !== 'undefined') {
+      if (availMax !== 'STORE_DEFAULT' && typeof availMax !== 'undefined') {
         this.formFields[0].rules = { max: { precision: 4, value: availMax } };
         return availMax;
       }
@@ -137,34 +139,54 @@ const computedFns = {
     return '0.0000';
   },
   feeFastest () {
-    console.log(FeeStore.getters.getFastest);
-    console.log(FeeStore.getters.getFastest.fee);
-    console.log(FeeStore.getters.getFastest.delay);
     return FeeStore.getters.getFastest;
   },
   feeMedium () {
-    console.log(FeeStore.getters.getMedium.fee);
-    console.log(FeeStore.getters.getMedium.delay);
     return FeeStore.getters.getMedium;
   },
   feeSlow () {
-    console.log(FeeStore.getters.getSlow.fee);
-    console.log(FeeStore.getters.getSlow.delay);
     return FeeStore.getters.getSlow;
   },
+  // Fiat Max Balance
+  accountFiat() {
+    return RateStore.getters.getActiveFiat;
+  },
+  accountMaxFiatBalance () {
+    // TODO Support multi currency , add BCH
+    // const coin = cryptonumber('BTC');
+    const savedRate = RateStore.getters.getRate('BTC');
+    if (savedRate !== false) {
+      //
+      // const availMax = this.defaultAccount.getters.getAccountMaxBalanceAmt;
+      const availMax = this.accountMaxBalance;
+      if (availMax !== '0.0000') {
+        const availMaxDec = new Decimal(availMax);
+        const savedRateDec = new Decimal(savedRate);
+        const fiatBalance = availMaxDec.mul(savedRateDec);
+        return fiatBalance.toFixed(2);
+      }
+      return '0.00';
+    }
+    return '0.00';
+  },
+  // Fiat Transfer Balance
 };
 
 const watchFns = {
   satPerByte (to, from) {
     // Trigger the max withdrawal amount
-    console.log('satPerByte changed...');
     if (this.defaultAccount !== false) {
-      this.defaultAccount.dispatch('getMaxBalance', { satPerByte });
+      this.defaultAccount.dispatch('getMaxBalance', { satPerByte: to });
     }
   },
 };
-console.log(watchFns);
-console.log('export formMixin');
-export default FormMixin({ ...formData, ...otherConfig, computedFns, watchFns });
+
+const loadHandler = (that) => {
+  //
+  if (that.defaultAccount !== false) {
+    that.defaultAccount.dispatch('getMaxBalance', { satPerByte: that.satPerByte });
+  }
+};
+export default FormMixin({ ...formData, ...otherConfig, computedFns, watchFns, loadHandler });
 
 </script>

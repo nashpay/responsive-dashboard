@@ -102,9 +102,12 @@ const accountCreator = ({ subAccountId = '0', accountNumber = '10000' }) => {
       });
     },
   };
+  const storeGetters = {
+    getAccountMaxBalanceAmt: state => state.accountMaxBalanceAmt,
+  };
 
   const storeActions = { actions: { ...storeArgs.actions, ...actions } };
-  const store = new Vuex.Store({ ...storeArgs, ...storeActions });
+  const store = new Vuex.Store({ ...storeArgs, ...storeActions, getters: storeGetters });
   return store;
 };
 
