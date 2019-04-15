@@ -19,7 +19,7 @@
         <div class="panel-block" v-if="feeFastest !== false">
           <div class="control">
             <label class="radio">
-             <input type="radio" name="satPerByte" v-model="satPerByte", v-bind:value="feeFastest.fee">
+             <input type="radio" name="satPerByte" v-model="satPerByte" v-bind:value="feeFastest.fee">
              (Fastest {{ feeFastest.delay }} blocks) {{ feeFastest.fee }}
             </label>
           </div>
@@ -27,7 +27,7 @@
         <div class="panel-block" v-if="feeMedium !== false">
           <div class="control">
             <label class="radio">
-             <input type="radio" name="answer", v-model="satPerByte", v-bind:value="feeMedium.fee">
+             <input type="radio" name="satPerByte" v-model="satPerByte" v-bind:value="feeMedium.fee">
              (Medium {{ feeMedium.delay }} blocks) {{ feeMedium.fee }}
             </label>
           </div>
@@ -35,7 +35,7 @@
         <div class="panel-block" v-if="feeMedium !== false">
           <div class="control">
             <label class="radio">
-             <input type="radio" name="answer", v-model="satPerByte", v-bind:value="feeSlow.fee">
+             <input type="radio" name="satPerByte" v-model="satPerByte" v-bind:value="feeSlow.fee">
              (Slow {{ feeSlow.delay }} blocks) {{ feeSlow.fee }}
             </label>
           </div>
