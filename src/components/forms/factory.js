@@ -1,63 +1,79 @@
-export default (validatorFn, defaultRules, defaultConfig) => ({
-  data() {
-    return {
-      fieldValue: '',
-      fieldError: false,
-      validator: {},
-    };
-  },
-  mounted() {
-    this.$nextTick(this.loaded);
-  },
-  props: [
-    'label',
-    'name',
-    'config',
-    'rules',
-    'errorMsg',
-    'defaultValue',
-  ],
-  watch: {
-    $route(to, from) {
-      this.loaded();
-    },
-    rules(to, from) {
-      this.validator.updateRules(to);
-    },
-  },
-  methods: {
-    loaded() {
-      if (typeof this.defaultValue !== 'undefined' && this.defaultValue !== null) {
-        this.updateVal({ target: { value: this.defaultValue } });
-      }
-      const validatorOpts = {
-        config: { ...defaultConfig, ...this.config },
-        rules: { ...defaultRules, ...this.rules },
+export default (validatorFn, defaultRules, defaultConfig, extras) => {
+  let mixinAdd = [];
+  if (typeof extras !== 'undefined') {
+    const { mixins } = extras;
+    if (typeof mixins !== 'undefined') {
+      mixinAdd = mixins;
+    }
+  }
+  //
+  return ({
+    data() {
+      return {
+        fieldValue: '',
+        fieldError: false,
+        validator: {},
       };
-      this.validator = validatorFn(validatorOpts);
     },
-    updateVal(evt) {
-      const val = JSON.parse(JSON.stringify(evt.target.value));
-      this.fieldValue = val;
-      setTimeout(() => this.validate(val), 10);
+    mounted() {
+      this.$nextTick(this.loaded);
     },
-    validate(y) {
-      const res = this.validator.validate(y.trim());
-      // this.fieldError = res ? null: res.reduce((acc, row) => `${acc}\n${row(y)}`, '');
-      if (res !== true) {
-        const errorMsg = res.reduce((acc, row) => `${acc}\n${row(this.label)}`, '');
-        this.fieldError = errorMsg;
-      } else {
-        this.fieldError = false;
-      }
-      this.$emit('formOutput', {
-        values: {
-          [this.name]: this.fieldValue,
-        },
-        errors: {
-          [this.name]: this.fieldError,
-        },
-      });
+    mixins: mixinAdd,
+    props: [
+      'label',
+      'name',
+      'config',
+      'rules',
+      'errorMsg',
+      'defaultValue',
+    ],
+    watch: {
+      $route(to, from) {
+        this.loaded();
+      },
+      rules(to, from) {
+        this.validator.updateRules(to);
+      },
     },
-  },
-});
+    methods: {
+      loaded() {
+        if (typeof this.defaultValue !== 'undefined' && this.defaultValue !== null) {
+          this.updateVal({ target: { value: this.defaultValue } });
+        }
+        const validatorOpts = {
+          config: { ...defaultConfig, ...this.config },
+          rules: { ...defaultRules, ...this.rules },
+        };
+        this.validator = validatorFn(validatorOpts);
+      },
+      updateVal(evt) {
+        const val = JSON.parse(JSON.stringify(evt.target.value));
+        this.fieldValue = val;
+        setTimeout(() => this.validate(val), 10);
+      },
+      validate(y) {
+        const res = this.validator.validate(y.trim());
+        // this.fieldError = res ? null: res.reduce((acc, row) => `${acc}\n${row(y)}`, '');
+        if (res !== true) {
+          const errorMsg = res.reduce((acc, row) => `${acc}\n${row(this.label)}`, '');
+          this.fieldError = errorMsg;
+        } else {
+          // Check for hooks
+          if (typeof this.postValidateHook !== 'undefined') {
+            //
+            this.postValidateHook();
+          }
+          this.fieldError = false;
+        }
+        this.$emit('formOutput', {
+          values: {
+            [this.name]: this.fieldValue,
+          },
+          errors: {
+            [this.name]: this.fieldError,
+          },
+        });
+      },
+    },
+  });
+};

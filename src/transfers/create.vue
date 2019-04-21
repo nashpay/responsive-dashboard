@@ -22,7 +22,7 @@
         <div class="panel-block" v-if="feeFastest !== false">
           <div class="control">
             <label class="radio">
-             <input type="radio" name="satPerByte" v-model="satPerByte" v-bind:value="feeFastest.fee">
+             <input type="radio" name="feeSelection" v-model="feeSelection" value="fastest">
              (Fastest {{ feeFastest.delay }} blocks) {{ feeFastest.fee }}
             </label>
           </div>
@@ -30,19 +30,31 @@
         <div class="panel-block" v-if="feeMedium !== false">
           <div class="control">
             <label class="radio">
-             <input type="radio" name="satPerByte" v-model="satPerByte" v-bind:value="feeMedium.fee">
+             <input type="radio" name="feeSelection" v-model="feeSelection" value="medium">
              (Medium {{ feeMedium.delay }} blocks) {{ feeMedium.fee }}
             </label>
           </div>
         </div> <!-- End of Medium -->
-        <div class="panel-block" v-if="feeMedium !== false">
+        <div class="panel-block" v-if="feeSlow !== false">
           <div class="control">
             <label class="radio">
-             <input type="radio" name="satPerByte" v-model="satPerByte" v-bind:value="feeSlow.fee">
+             <input type="radio" name="feeSelection" v-model="feeSelection" value="slow">
              (Slow {{ feeSlow.delay }} blocks) {{ feeSlow.fee }}
             </label>
           </div>
         </div> <!-- End of Slowest -->
+        <div class="panel-block">
+          <div class="control">
+            <label class="radio">
+             <input type="radio" name="feeSelection" v-model="feeSelection" value="custom">
+             Custom
+            </label>
+            <input
+              class="input transfer-create"
+              v-model="customSatPerByte"
+            />
+          </div>
+        </div> <!-- End of Custom -->
       </nav>
       <napp-form 
         v-bind:formFields="formFields"
@@ -55,6 +67,11 @@
   </div>
 </template>
 <style lang="less">
+.napp-form-wrapper {
+  input.input.transfer-create {
+    width: 30%;
+  }
+}
 </style>
 <script>
 import { Decimal } from 'decimal.js';
@@ -64,6 +81,9 @@ import AuthStore from '../auth/store';
 import FeeStore from '../streaming/feeStore';
 import RateStore from '../streaming/rateStore';
 import { cryptonumber } from '../components/helpers';
+
+import CreateMixin from './create.mixin.js';
+
 
 // TODO: Add support for multi-account
 const defaultAccount = AuthStore.getters.getDefaultAccount;
@@ -94,10 +114,6 @@ const formData = {
   formHooks: {
     // btnOk ({ amount, address, satPerByte }) {
     btnOk ({ amount, address }) {
-      console.log('btnOK Pressed');
-      console.log(amount);
-      console.log(address);
-      console.log(this.satPerByte);
       this.$router.push({
         name: 'transfer-create-check-request',
         query: { address, value: amount, satPerByte: this.satPerByte },
@@ -142,10 +158,20 @@ const computedFns = {
     return FeeStore.getters.getFastest;
   },
   feeMedium () {
-    return FeeStore.getters.getMedium;
+    const rawVal = FeeStore.getters.getMedium;
+    const { delay, fee } = rawVal;
+    if (typeof delay === 'undefined' || typeof fee === 'undefined') {
+      return { delay: 3, fee: 1 };
+    }
+    return rawVal;
   },
   feeSlow () {
-    return FeeStore.getters.getSlow;
+    const rawVal = FeeStore.getters.getSlow;
+    const { delay, fee } = rawVal;
+    if (typeof delay === 'undefined' || typeof fee === 'undefined') {
+      return { delay: 6, fee: 1 };
+    }
+    return rawVal;
   },
   // Fiat Max Balance
   accountFiat() {
@@ -187,6 +213,11 @@ const loadHandler = (that) => {
     that.defaultAccount.dispatch('getMaxBalance', { satPerByte: that.satPerByte });
   }
 };
-export default FormMixin({ ...formData, ...otherConfig, computedFns, watchFns, loadHandler });
+
+const mixins = [
+  CreateMixin,
+];
+
+export default FormMixin({ ...formData, ...otherConfig, computedFns, watchFns, loadHandler, mixins });
 
 </script>

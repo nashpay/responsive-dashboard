@@ -122,7 +122,6 @@ export default {
   methods: {
     loaded() {
       // Apply Defaults
-      console.log('Form called...');
       const formKeys = this.formFields.reduce((acc, row) => {
         return acc.concat(row.name);
       }, []);
@@ -157,7 +156,6 @@ export default {
       */
     },
     btnOkAction() {
-      console.log('btnOkAction fired...');
       if (this.formStore.getters.isValid === true) {
         this.$emit('btnOk', this.formStore.getters.formValues);
       }

@@ -30,7 +30,7 @@ const handleMsg = (rawMsg) => {
 const streamer = (wsHost) => {
   const ws = new WebSocket(wsHost);
   ws.addEventListener('open', () => {
-    console.log('WS Opened!');
+    // console.log('WS Opened!');
   });
   ws.addEventListener('message', handleMsg);
   // TODO Add disconnect logic and rery logic

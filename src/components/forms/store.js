@@ -26,7 +26,6 @@ const getters = {
     const errorNum = Object.keys(state.errors)
       .reduce((acc, label) => acc.concat(state.errors[label]), [])
       .filter(x => x !== false);
-    console.log(`isValid: Found ${errorNum.length} errors`);
     if (errorNum.length > 0) {
       return false;
     }

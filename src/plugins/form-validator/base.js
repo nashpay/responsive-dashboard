@@ -66,7 +66,7 @@ const engine = (opts = {}) => {
         }, [])
         .filter(x => x !== true);
       const output = execRuleSet.length > 0 ? execRuleSet : true;
-      console.log(`Validation Output: ${output}`);
+      // console.log(`Validation Output: ${output}`);
       return output;
     },
   });

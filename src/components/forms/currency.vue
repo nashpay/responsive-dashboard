@@ -14,7 +14,7 @@
     <div class="control">
       <label class="label">&nbsp;</label>
       <div class="button">
-        1000.00 USD
+        {{ currencyFiat }} {{ accountFiat }}
       </div>
     </div> <!-- End of Control -->
   </div> <!-- End of Grouped Field -->
@@ -26,6 +26,8 @@
 <script>
 import { Decimal } from '../../plugins/form-validator/';
 import factory from './factory';
+import RateStore from '../../streaming/rateStore';
+import currencyMixin from './currency.mixin';
 
 /*
 const validator = Decimal({ 
@@ -42,5 +44,5 @@ const validator = Decimal({
 const defaultConfig = { precision: 9, rounding: 4 };
 const defaultRules = { min: { value: '0' } };
 
-export default factory(Decimal, defaultRules, defaultConfig);
+export default factory(Decimal, defaultRules, defaultConfig, { mixins: [currencyMixin] });
 </script>
