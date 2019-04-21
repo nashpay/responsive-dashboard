@@ -9,21 +9,54 @@
         </li>
       </ul>
     </nav> 
-    <h1 class="subtitle is-5">Check Transaction </h1>
-    <table class="app-horizontal-table">
-      <tbody>
-	<tr>
-	  <td>Change Amount</td><td>{{ txChange }}</td>
-	</tr>
-	<tr>
-	  <td>Nash Fee</td><td>{{ nashFee }}</td>
-	</tr>
-	<tr>
-	  <td>Network Fee</td><td>{{ networkFee }}</td>
-	</tr>
-      </tbody>
+    <h1 class="subtitle is-5"> Transaction Inputs </h1>
+    <table class="table is-fullwidth napp-resource-table">
+      <thead>
+        <tr>
+          <th>Transaction Hash</th>
+          <th>Vout</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Transaction Hash</th>
+          <th>Vout</th>
+          <th>Value</th>
+        </tr>
+      </tfoot>
+     <tbody>
+       <tr v-for="txinput in txInputs">
+         <td>{{ txinput.txHash }}</td>
+         <td>{{ txinput.vout }}</td>
+         <td>{{ txinput.value }}</td>
+       </tr>
+     </tbody>
     </table>
-    
+    <h1 class="subtitle is-5"> Transaction Outputs </h1>
+    <table class="table is-fullwidth napp-resource-table">
+      <thead>
+        <tr>
+          <th>Address</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Address</th>
+          <th>Value</th>
+        </tr>
+      </tfoot>
+     <tbody>
+       <tr v-for="txoutput in txOutputs">
+         <td>
+          {{ txoutput.address }}
+           <template v-if="txoutput.hasOwnProperty('addressId')">(change)</template>
+         </td>
+         <td>{{ txoutput.value }}</td>
+       </tr>
+     </tbody>
+    </table>
     <nav class="level is-mobile">
       <div class="level-left">
        <div class="level-item">
@@ -70,9 +103,6 @@ import co from 'co';
 import storeAuth from '../auth/store';
 import { queryTransferRequestSingleOutput } from './check-request.actions';
 
-import Decimal from 'decimal.js';
-import BigNumber from 'bignumber.js';
-
 export default {
   data() { 
     return {
@@ -89,12 +119,6 @@ export default {
     'value',
     'satPerByte',
   ], 
-  filters: {
-    cryptoToFiat (n) {
-      const cryptoVal = BigNumber(n);
-
-    },
-  },
   computed: {
     txInputs () { 
       if (this.tx !== '') {
@@ -114,58 +138,6 @@ export default {
       }
       return '';
     },
-    // Check Transaction Fields
-    txRecipients() {
-      //
-      const offset = BigNumber('100000000');
-      // Raw values in sats, convert to coin values
-      if (this.txOutputs.length !== 0) {
-	const nOutput = this.txOutputs.filter(output => output.cat !== 'gateway')
-          .filter(output => output.cat !== 'change');
-	return nOutput;
-      }
-      return [];
-    },
-    networkFee() {
-      if(this.txOutputs.length !== 0&& this.txInputs.length !== 0) {
-        // Sum All 
-	const offset = BigNumber('100000000');
-        const inValues = this.txInputs.reduce((acc, txIn) => acc.plus(BigNumber(txIn.value)), BigNumber('0'));
-        const outValues = this.txOutputs.reduce((acc, txOut) => acc.plus(BigNumber(txOut.value)), BigNumber('0'));
-        const aFee = inValues.minus(outValues);
-        const bFee = aFee.div(offset);
-        return bFee.toPrecision(5);
-      }
-      return '0.000';
-    },
-    nashFee() {
-      const offset = BigNumber('100000000');
-      // Raw values in sats, convert to coin values
-      if (this.txOutputs.length !== 0) {
-        const nOutput = this.txOutputs.filter(output => output.cat === 'gateway');
-        if (nOutput.length !== 0) {
-          const [tOutput] = nOutput;
-          const nVal = BigNumber(tOutput.value).div(offset).toPrecision(5);
-          return nVal;
-        }
-        return '0.000';
-      }
-      return '0.000';
-    },
-    txChange() {
-      const offset = BigNumber('100000000');
-      // Raw values in sats, convert to coin values
-      if (this.txOutputs.length !== 0) {
-        const nOutput = this.txOutputs.filter(output => output.cat === 'change');
-        if (nOutput.length !== 0) {
-          const [tOutput] = nOutput;
-          const nVal = BigNumber(tOutput.value).div(offset).toPrecision(5);
-          return nVal;
-        }
-        return '0.000';
-      }
-      return '0.000';
-    },
   },
   watch: {
     $route(to, from) {
@@ -184,7 +156,6 @@ export default {
           this.tx = res;
         })
         .catch((err) => console.log(err));
-
     },
   }
 };
