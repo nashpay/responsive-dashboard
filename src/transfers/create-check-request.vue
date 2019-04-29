@@ -12,15 +12,23 @@
     <h1 class="subtitle is-5">Check Transaction </h1>
     <table class="app-horizontal-table">
       <tbody>
-	<tr>
-	  <td>Change Amount</td><td>{{ txChange }}</td>
-	</tr>
-	<tr>
-	  <td>Nash Fee</td><td>{{ nashFee }}</td>
-	</tr>
-	<tr>
-	  <td>Network Fee</td><td>{{ networkFee }}</td>
-	</tr>
+        <template v-for="(dest, idx) in txRecipients">
+          <tr>
+            <td>Destination #{{ idx + 1 }}</td><td>{{ dest.address }}</td>
+          </tr>
+          <tr>
+            <td>Value #{{ idx + 1 }}</td><td>{{ dest.value }} ({{ dest.value | cryptoToFiat }} {{ accountFiat }})</td>
+          </tr>
+        </template>
+        <tr>
+          <td>Change Amount</td><td>{{ txChange }} ({{ txChange | cryptoToFiat }} {{ accountFiat }})</td>
+        </tr>
+        <tr>
+          <td>Nash Fee</td><td>{{ nashFee }} ({{ nashFee | cryptoToFiat}} {{ accountFiat }})</td>
+        </tr>
+        <tr>
+          <td>Network Fee</td><td>{{ networkFee }} ({{ networkFee | cryptoToFiat }} {{ accountFiat }})</td>
+        </tr>
       </tbody>
     </table>
     
@@ -70,6 +78,7 @@ import co from 'co';
 import storeAuth from '../auth/store';
 import { queryTransferRequestSingleOutput } from './check-request.actions';
 
+import RateStore from '../streaming/rateStore';
 import Decimal from 'decimal.js';
 import BigNumber from 'bignumber.js';
 
@@ -92,7 +101,15 @@ export default {
   filters: {
     cryptoToFiat (n) {
       const cryptoVal = BigNumber(n);
-
+      const savedRate = RateStore.getters.getRate('BTC');
+      if (savedRate !== false) {
+        //
+        // const availMax = this.defaultAccount.getters.getAccountMaxBalanceAmt;
+        const savedRateDec = BigNumber(savedRate);
+        const fiatRate = cryptoVal.times(savedRateDec);
+        return fiatRate.toFixed(2);
+      }
+      return '0.00';
     },
   },
   computed: {
@@ -120,16 +137,21 @@ export default {
       const offset = BigNumber('100000000');
       // Raw values in sats, convert to coin values
       if (this.txOutputs.length !== 0) {
-	const nOutput = this.txOutputs.filter(output => output.cat !== 'gateway')
-          .filter(output => output.cat !== 'change');
-	return nOutput;
+        const nOutput = this.txOutputs.filter(output => output.cat !== 'gateway')
+          .filter(output => output.cat !== 'change')
+          .map(({ address, value }) => {
+            //
+            const nVal = BigNumber(String(value)).div(offset).toPrecision(5);
+            return { address, value: nVal };
+          });
+        return nOutput;
       }
       return [];
     },
     networkFee() {
       if(this.txOutputs.length !== 0&& this.txInputs.length !== 0) {
         // Sum All 
-	const offset = BigNumber('100000000');
+        const offset = BigNumber('100000000');
         const inValues = this.txInputs.reduce((acc, txIn) => acc.plus(BigNumber(txIn.value)), BigNumber('0'));
         const outValues = this.txOutputs.reduce((acc, txOut) => acc.plus(BigNumber(txOut.value)), BigNumber('0'));
         const aFee = inValues.minus(outValues);
@@ -165,6 +187,9 @@ export default {
         return '0.000';
       }
       return '0.000';
+    },
+    accountFiat() {
+      return RateStore.getters.getActiveFiat;
     },
   },
   watch: {
